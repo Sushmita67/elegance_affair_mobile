@@ -14,26 +14,39 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final List<Map<String, String>> _onboardingData = [
     {
       "image": "assets/images/onb.jpg",
-      "title": "Discover Stunning Jewelry",
-      "description": "Find timeless pieces crafted with precision and elegance."
+      "title": "Discover Stunning Jewelry💍💎",
+      "description":
+          "Find timeless pieces crafted with precision and elegance.",
     },
     {
       "image": "assets/images/jewelry.jpg",
-      "title": "Personalize Your Look",
+      "title": "Personalize Your Look🪞✨",
       "description":
-      "Create your unique style with customizable jewelry designs."
+          "Create your unique style with customizable jewelry designs.",
     },
     {
       "image": "assets/images/splash3.jpeg",
-      "title": "Shop with Confidence",
+      "title": "Shop with Confidence🛍️🪄",
       "description":
-      "Enjoy free returns and a lifetime warranty on all purchases."
+          "Enjoy free returns and a lifetime warranty on all purchases.",
     },
   ];
 
-  void _goToHome() {
-    Navigator.pushReplacementNamed(
-        context, '/start screen'); // Navigate to the home page
+  void _goToLogin() {
+    Navigator.pushReplacementNamed(context, '/start screen');
+  }
+
+  void _skipToLastPage() {
+    _controller.jumpToPage(_onboardingData.length - 1);
+  }
+
+  void _goBack() {
+    if (_currentIndex > 0) {
+      _controller.previousPage(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
   }
 
   @override
@@ -60,97 +73,130 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             },
           ),
 
-          // Content Overlay
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              // Top Bar (Skip Button)
-              Padding(
-                padding: const EdgeInsets.only(top: 50, right: 20),
-                child: Align(
-                  alignment: Alignment.topRight,
-                  child: TextButton(
-                    onPressed: _goToHome,
-                    child: const Text(
-                      "Skip",
-                      style: TextStyle(color: Colors.white, fontSize: 16),
+          // Top Navigation Bar with Skip Button and Back Button
+          Positioned(
+            top: 40,
+            left: 20,
+            right: 20,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Back Button (Only visible on 2nd and 3rd pages)
+                if (_currentIndex > 0)
+                  IconButton(
+                    icon: const Icon(Icons.arrow_back,
+                        color: Colors.black, size: 30),
+                    onPressed: _goBack,
+                  )
+                else
+                  const SizedBox(width: 48), // Empty space for alignment
+
+                // Skip Button (Visible on all pages)
+                TextButton(
+                  onPressed: _skipToLastPage,
+                  child: const Text(
+                    "Skip",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
-              ),
+              ],
+            ),
+          ),
 
-              // Centered Content (Text)
-              Column(
-                mainAxisSize: MainAxisSize.min,
+          // Centered Title and Description with Transparent Background
+          Positioned(
+            bottom: 100,
+            left: 20,
+            right: 20,
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.black
+                    .withOpacity(0.5), // Semi-transparent background
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  // Title
                   Text(
                     _onboardingData[_currentIndex]["title"]!,
                     style: const TextStyle(
-                      fontSize: 24,
+                      fontSize: 28,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black, // Black title text
+                      // fontFamily: 'NotoColorEmoji',
+                      color: Colors.white,
                     ),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 10),
+                  // Description
                   Text(
                     _onboardingData[_currentIndex]["description"]!,
                     style: const TextStyle(
-                      fontSize: 16,
-                      color: Colors.black, // Black description text
+                      fontSize: 18,
+                      color: Colors.white,
                     ),
                     textAlign: TextAlign.center,
                   ),
                 ],
               ),
+            ),
+          ),
 
-              // Bottom Bar (Dots and Next Button)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 30, left: 20, right: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: List.generate(
-                        _onboardingData.length,
-                            (index) => Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 4),
-                          width: 8,
-                          height: 8,
-                          decoration: BoxDecoration(
-                            color: _currentIndex == index
-                                ? Colors.pink
-                                : Colors.grey,
-                            shape: BoxShape.circle,
-                          ),
-                        ),
+          // Bottom Dots and Navigation Buttons
+          Positioned(
+            bottom: 20,
+            left: 20,
+            right: 20,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Dots Indicator
+                Row(
+                  children: List.generate(
+                    _onboardingData.length,
+                    (index) => Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 4),
+                      width: 8,
+                      height: 8,
+                      decoration: BoxDecoration(
+                        color:
+                            _currentIndex == index ? Colors.pink : Colors.grey,
+                        shape: BoxShape.circle,
                       ),
                     ),
-                    TextButton(
-                      onPressed: () {
-                        if (_currentIndex == _onboardingData.length - 1) {
-                          _goToHome(); // On the last page, navigate to home
-                        } else {
-                          _controller.nextPage(
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeInOut,
-                          );
-                        }
-                      },
-                      child: Text(
-                        _currentIndex == _onboardingData.length - 1
-                            ? "Get Started"
-                            : "Next",
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: Colors.black, // Black "Get Started" text
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
-            ],
+                // Next or Get Started Button
+                TextButton(
+                  onPressed: () {
+                    if (_currentIndex == _onboardingData.length - 1) {
+                      _goToLogin();
+                    } else {
+                      _controller.nextPage(
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeInOut,
+                      );
+                    }
+                  },
+                  child: Text(
+                    _currentIndex == _onboardingData.length - 1
+                        ? "Get Started"
+                        : "Next",
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),

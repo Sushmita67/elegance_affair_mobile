@@ -12,9 +12,9 @@ class HomePageScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'assets/icons/elegance_affair.png', // Replace with your logo path
-              height: 50, // Adjust height as needed
-              width: 180, // Adjust width as needed
+              'assets/icons/elegance_affair.png',
+              height: 50,
+              width: 180,
             ),
           ],
         ),
@@ -53,7 +53,8 @@ class HomePageScreen extends StatelessWidget {
               ),
               Container(
                 decoration: BoxDecoration(
-                  color: Color.fromRGBO(211, 211, 211, 0.5), // Light grey with transparency
+                  color: Color.fromRGBO(
+                      211, 211, 211, 0.5), // Light grey with transparency
                   borderRadius: BorderRadius.circular(8),
                 ),
                 padding: const EdgeInsets.all(16.0),
@@ -130,7 +131,7 @@ class HomePageScreen extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                "Rs${(1000 + index * 50)}",  // Changed to ₹
+                                "Rs${(1000 + index * 50)}", // Changed to ₹
                                 style: TextStyle(
                                   fontSize: 14,
                                   color: Colors.grey[700],
@@ -169,8 +170,8 @@ class HomePageScreen extends StatelessWidget {
                       GestureDetector(
                         onTap: () => Navigator.pushNamed(
                             context, '/collection_new_year'),
-                        child: buildCollectionItem(context, "New Year",
-                            'assets/images/jewels.jpg'),
+                        child: buildCollectionItem(
+                            context, "New Year", 'assets/images/jewels.jpg'),
                       ),
                       GestureDetector(
                         onTap: () =>
@@ -181,8 +182,8 @@ class HomePageScreen extends StatelessWidget {
                       GestureDetector(
                         onTap: () =>
                             Navigator.pushNamed(context, '/collection_wedding'),
-                        child: buildCollectionItem(context, "Wedding",
-                            'assets/images/jewels.jpg'),
+                        child: buildCollectionItem(
+                            context, "Wedding", 'assets/images/jewels.jpg'),
                       ),
                     ],
                   ),
@@ -226,6 +227,3 @@ class HomePageScreen extends StatelessWidget {
     );
   }
 }
-
-
-

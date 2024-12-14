@@ -12,7 +12,7 @@ class SignUpPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Image.asset('assets/icons/elegance_affair.png', height: 100),
+            Image.asset('assets/icons/elegance_affair.png', height: 100),
             const SizedBox(height: 20),
             TextField(
               decoration: InputDecoration(
@@ -73,7 +73,3 @@ class SignUpPage extends StatelessWidget {
     );
   }
 }
-
-
-
-
