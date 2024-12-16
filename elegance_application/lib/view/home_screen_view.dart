@@ -14,7 +14,7 @@ class HomePageScreen extends StatelessWidget {
             Image.asset(
               'assets/icons/elegance_affair.png',
               height: 50,
-              width: 180,
+              width: 190,
             ),
           ],
         ),
@@ -46,15 +46,15 @@ class HomePageScreen extends StatelessWidget {
           Column(
             children: [
               Image.asset(
-                'assets/images/jewels.jpg', // Replace with your image path
+                'assets/images/jewels.jpg',
                 width: double.infinity,
                 height: 250,
                 fit: BoxFit.cover,
               ),
               Container(
                 decoration: BoxDecoration(
-                  color: Color.fromRGBO(
-                      211, 211, 211, 0.5), // Light grey with transparency
+                  color: Colors.black
+                      .withOpacity(0.5), // Semi-transparent background
                   borderRadius: BorderRadius.circular(8),
                 ),
                 padding: const EdgeInsets.all(16.0),
@@ -62,7 +62,7 @@ class HomePageScreen extends StatelessWidget {
                   "Elegance Affair's jewelry collection features a stunning array of American diamond and gold-plated designs, perfect for adding a touch of glamour to any outfit. Each piece combines elegance with modern sophistication, offering a variety of styles to complement your personal taste.",
                   style: TextStyle(
                     fontSize: 16,
-                    color: Colors.black,
+                    color: Colors.white,
                     height: 1.5,
                   ),
                   textAlign: TextAlign.center,

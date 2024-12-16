@@ -81,15 +81,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // Back Button (Only visible on 2nd and 3rd pages)
-                if (_currentIndex > 0)
-                  IconButton(
-                    icon: const Icon(Icons.arrow_back,
-                        color: Colors.black, size: 30),
-                    onPressed: _goBack,
-                  )
-                else
-                  const SizedBox(width: 48),
+                // // Back Button (Only visible on 2nd and 3rd pages)
+                // if (_currentIndex > 0)
+                //   IconButton(
+                //     icon: const Icon(Icons.arrow_back,
+                //         color: Colors.black, size: 30),
+                //     onPressed: _goBack,
+                //   )
+                // else
+                //   const SizedBox(width: 48),
 
                 // Skip Button (Visible on all pages)
                 TextButton(

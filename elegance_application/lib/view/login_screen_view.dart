@@ -8,6 +8,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[200],
       body: Container(
         color: Colors.white,
         child: SingleChildScrollView(
@@ -21,7 +22,7 @@ class LoginPage extends StatelessWidget {
                 Center(
                   child: SvgPicture.asset(
                     'assets/icons/elegance-affair.svg',
-                    height: 110,
+                    height: 150,
                   ),
                 ),
                 const SizedBox(height: 30),
@@ -85,7 +86,7 @@ class LoginPage extends StatelessWidget {
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/login');
+                      Navigator.pushNamed(context, '/homepage');
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.black,
