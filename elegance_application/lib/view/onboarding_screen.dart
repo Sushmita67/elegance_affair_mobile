@@ -13,19 +13,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   final List<Map<String, String>> _onboardingData = [
     {
-      "image": "assets/images/onb.jpg",
+      "image": "assets/images/jewels.jpg",
       "title": "Discover Stunning Jewelry💍💎",
       "description":
           "Find timeless pieces crafted with precision and elegance.",
     },
     {
-      "image": "assets/images/jewelry.jpg",
+      "image": "assets/images/ring.jpg",
       "title": "Personalize Your Look🪞✨",
       "description":
           "Create your unique style with customizable jewelry designs.",
     },
     {
-      "image": "assets/images/splash3.jpeg",
+      "image": "assets/images/Neckset.jpg",
       "title": "Shop with Confidence🛍️🪄",
       "description":
           "Enjoy free returns and a lifetime warranty on all purchases.",
@@ -89,7 +89,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     onPressed: _goBack,
                   )
                 else
-                  const SizedBox(width: 48), // Empty space for alignment
+                  const SizedBox(width: 48),
 
                 // Skip Button (Visible on all pages)
                 TextButton(
@@ -128,7 +128,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     style: const TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
-                      // fontFamily: 'NotoColorEmoji',
                       color: Colors.white,
                     ),
                     textAlign: TextAlign.center,

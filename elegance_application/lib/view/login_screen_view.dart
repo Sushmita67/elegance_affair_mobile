@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart'; // For custom fonts
 
 class LoginPage extends StatelessWidget {
@@ -15,15 +16,15 @@ class LoginPage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 50),
+                const SizedBox(height: 70),
                 // Logo
                 Center(
-                  child: Image.asset(
-                    'assets/icons/elegance_affair.png',
-                    height: 80,
+                  child: SvgPicture.asset(
+                    'assets/icons/elegance-affair.svg',
+                    height: 110,
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 30),
                 // Heading Text
                 Text(
                   "Welcome Back!",
@@ -33,7 +34,7 @@ class LoginPage extends StatelessWidget {
                     color: Colors.black87,
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 25),
                 // Email Field
                 TextField(
                   decoration: InputDecoration(
@@ -45,7 +46,7 @@ class LoginPage extends StatelessWidget {
                     border: const OutlineInputBorder(),
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 25),
                 // Password Field
                 TextField(
                   decoration: InputDecoration(
@@ -59,78 +60,155 @@ class LoginPage extends StatelessWidget {
                   obscureText: true,
                 ),
                 const SizedBox(height: 20),
+
+                // Forgot Password Align Right
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/forgot_password');
+                    },
+                    child: Text(
+                      "FORGOT PASSWORD?",
+                      style: GoogleFonts.montserrat(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                        color: Colors.grey.shade600,
+                      ),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 20),
                 // Login Button
-                ElevatedButton(
-                  onPressed: () {
-                    // Navigate to the HomeScreen after login
-                    Navigator.pushReplacementNamed(context, '/homepage');
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 30, vertical: 15),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/login');
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.black,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 30, vertical: 15),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
+                    child: const Text(
+                      "Log In",
+                      style: TextStyle(fontSize: 18),
                     ),
                   ),
-                  child: const Text(
-                    "Log In",
-                    style: TextStyle(fontSize: 18),
-                  ),
                 ),
-                const SizedBox(height: 10),
-                TextButton(
-                  onPressed: () {
-                    // Add forgot password functionality
-                  },
-                  child: const Text("Forgot Password?"),
-                ),
-                const SizedBox(height: 20),
-                // Sign Up Navigation
-                Column(
-                  children: [
-                    const Text("Don’t have an account?"),
-                    TextButton(
-                      onPressed: () {
-                        // Navigate to SignUpPage
-                        Navigator.pushNamed(context, '/signup');
-                      },
-                      child: const Text("Create Account"),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                // Social Login Buttons (Facebook, Google)
+
+                const SizedBox(height: 50),
+                // Create Account as Button
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    ElevatedButton.icon(
-                      onPressed: () {
-                        // Add Facebook login functionality
-                      },
-                      icon: const Icon(Icons.facebook),
-                      label: const Text("Login with Facebook"),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
+                    const Text(
+                      "Don't have an account?",
+                      style: TextStyle(
+                        color: Colors.black54,
+                        fontSize: 18,
                       ),
                     ),
-                    const SizedBox(width: 10),
-                    ElevatedButton.icon(
+                    const SizedBox(width: 5),
+                    // Create Account Button
+                    ElevatedButton(
                       onPressed: () {
-                        // Add Google login functionality
+                        Navigator.pushNamed(context, '/signup');
                       },
-                      icon: const Icon(Icons.g_mobiledata),
-                      label: const Text("Login with Google"),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
+                        backgroundColor:
+                            const Color.fromARGB(255, 155, 152, 152),
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: Text(
+                        "Create account",
+                        style: GoogleFonts.montserratAlternates(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 50), // Add spacing at the bottom
+
+                const SizedBox(height: 30),
+
+                // OR Divider
+                Row(
+                  children: [
+                    const Expanded(child: Divider(thickness: 2)),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: Text(
+                        "OR",
+                        style: GoogleFonts.montserrat(
+                          fontWeight: FontWeight.bold,
+                          color: const Color.fromARGB(255, 43, 42, 42),
+                        ),
+                      ),
+                    ),
+                    const Expanded(child: Divider(thickness: 2)),
+                  ],
+                ),
+                const SizedBox(height: 30),
+
+                // Social Media Buttons as in Image
+                Column(
+                  children: [
+                    _buildSocialLoginButton(
+                      "Login with Facebook",
+                      Colors.blue,
+                      Icons.facebook,
+                      Colors.white,
+                    ),
+                    const SizedBox(height: 25),
+                    _buildSocialLoginButton(
+                      "Login with Google",
+                      Colors.grey.shade300,
+                      Icons.g_mobiledata,
+                      Colors.black87,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 90), // Add spacing at the bottom
               ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSocialLoginButton(
+      String label, Color bgColor, IconData icon, Color textColor) {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton.icon(
+        onPressed: () {},
+        style: ElevatedButton.styleFrom(
+          backgroundColor: bgColor,
+          padding: const EdgeInsets.symmetric(vertical: 15),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+        ),
+        icon: Icon(icon, color: textColor),
+        label: Text(
+          label,
+          style: GoogleFonts.montserratAlternates(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            color: textColor,
           ),
         ),
       ),
