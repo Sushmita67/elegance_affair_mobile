@@ -1,4 +1,4 @@
-import 'package:elegance_application/view/home_screen_view.dart';
+import 'package:elegance_application/view/bottom_navigation_view.dart';
 import 'package:elegance_application/view/login_screen_view.dart';
 import 'package:elegance_application/view/onboarding_screen.dart';
 import 'package:elegance_application/view/signup_screen_view.dart';
@@ -24,7 +24,7 @@ class App extends StatelessWidget {
         // Login page route
         '/signup': (context) => const SignUpPage(),
         // SignUp page route
-        '/homepage': (context) => const HomePageScreen(),
+        '/bottom page': (context) => const BottomNavigationView(),
       },
     );
   }

@@ -11,7 +11,7 @@ class StartScreen extends StatelessWidget {
         // Background image for the entire screen
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/images/bg.jpg'), // Background image
+            image: AssetImage('assets/images/bg.jpg'),
             fit: BoxFit.cover,
           ),
         ),
@@ -20,16 +20,14 @@ class StartScreen extends StatelessWidget {
           children: [
             // Logo Container outside the background image
             Container(
-              width: double.infinity, // Full width of the screen
-              color:
-              const Color.fromARGB(255, 255, 255, 255), // White background
+              width: double.infinity,
+              color: const Color.fromARGB(255, 255, 255, 255),
               child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 20.0), // Adjust padding as needed
+                padding: const EdgeInsets.symmetric(vertical: 20.0),
                 child: Center(
                   child: Image.asset(
-                    'assets/icons/elegance_affair.png', // Your logo path
-                    height: 90, // Adjust height as needed
+                    'assets/icons/elegance_affair.png',
+                    height: 90,
                   ),
                 ),
               ),
@@ -46,7 +44,7 @@ class StartScreen extends StatelessWidget {
                 color: Colors.black54,
               ),
             ),
-            const SizedBox(height: 300),
+            const SizedBox(height: 350),
             // Main Heading
             Text(
               "Discover Timeless Elegance\nAt Our Jewelers",
@@ -61,14 +59,13 @@ class StartScreen extends StatelessWidget {
             // Start Button
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(
-                    context, '/login');
+                Navigator.pushNamed(context, '/login');
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color.fromARGB(255, 240, 223, 223),
                 foregroundColor: const Color.fromARGB(255, 58, 40, 40),
                 padding:
-                const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),

@@ -36,18 +36,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     Navigator.pushReplacementNamed(context, '/start screen');
   }
 
-  void _skipToLastPage() {
-    _controller.jumpToPage(_onboardingData.length - 1);
-  }
+  // void _skipToLastPage() {
+  //   _controller.jumpToPage(_onboardingData.length - 1);
+  // }
 
-  void _goBack() {
-    if (_currentIndex > 0) {
-      _controller.previousPage(
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-      );
-    }
-  }
+  // void _goBack() {
+  //   if (_currentIndex > 0) {
+  //     _controller.previousPage(
+  //       duration: const Duration(milliseconds: 300),
+  //       curve: Curves.easeInOut,
+  //     );
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -73,27 +73,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             },
           ),
 
-          // Top Navigation Bar with Skip Button and Back Button
+          // Top Navigation Bar with Skip Button
           Positioned(
-            top: 40,
-            left: 20,
+            top: 50,
             right: 20,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // // Back Button (Only visible on 2nd and 3rd pages)
-                // if (_currentIndex > 0)
-                //   IconButton(
-                //     icon: const Icon(Icons.arrow_back,
-                //         color: Colors.black, size: 30),
-                //     onPressed: _goBack,
-                //   )
-                // else
-                //   const SizedBox(width: 48),
-
-                // Skip Button (Visible on all pages)
                 TextButton(
-                  onPressed: _skipToLastPage,
+                  onPressed: _goToLogin,
                   child: const Text(
                     "Skip",
                     style: TextStyle(
@@ -159,18 +146,23 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 Row(
                   children: List.generate(
                     _onboardingData.length,
-                    (index) => Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 4),
-                      width: 8,
-                      height: 8,
-                      decoration: BoxDecoration(
-                        color:
-                            _currentIndex == index ? Colors.pink : Colors.grey,
-                        shape: BoxShape.circle,
+                    (index) => Transform.rotate(
+                      angle: 0.785398, // 45 degrees in radians (π/4)
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 4),
+                        width: 10,
+                        height: 10,
+                        decoration: BoxDecoration(
+                          color: _currentIndex == index
+                              ? const Color.fromARGB(255, 241, 97, 145)
+                              : const Color.fromARGB(255, 133, 127, 127),
+                          shape: BoxShape.rectangle,
+                        ),
                       ),
                     ),
                   ),
                 ),
+
                 // Next or Get Started Button
                 TextButton(
                   onPressed: () {
