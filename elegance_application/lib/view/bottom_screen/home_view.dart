@@ -8,35 +8,39 @@ class HomePageScreen extends StatelessWidget {
     return Scaffold(
       body: ListView(
         children: [
-          // Hero Section
-          Column(
+          Stack(
             children: [
-              Image.asset(
-                'assets/images/jewels.jpg',
-                width: double.infinity,
-                height: 250,
-                fit: BoxFit.cover,
-              ),
               Container(
-                decoration: BoxDecoration(
-                  color: Colors.black
-                      .withOpacity(0.5), // Semi-transparent background
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                padding: const EdgeInsets.all(16.0),
-                child: const Text(
-                  "Elegance Affair's jewelry collection features a stunning array of American diamond and gold-plated designs, perfect for adding a touch of glamour to any outfit. Each piece combines elegance with modern sophistication, offering a variety of styles to complement your personal taste.",
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.white,
-                    height: 1.5,
+                height: 400.0,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/jewels.jpg'),
+                    fit: BoxFit.cover,
                   ),
-                  textAlign: TextAlign.center,
+                ),
+              ),
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                  color: Colors.black.withOpacity(0.3),
+                  // Semi-transparent background
+                  padding: const EdgeInsets.all(12.0),
+                  child: const Text(
+                    "Elegance Affair's jewelry collection features a stunning array of American diamond and gold-plated designs, perfect for adding a touch of glamour to any outfit. Each piece combines elegance with modern sophistication, offering a variety of styles to complement your personal taste.",
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      color: Colors.white,
+                      height: 1.5,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ),
             ],
           ),
-
           // New Arrivals Section
           Padding(
             padding: const EdgeInsets.all(16.0),
