@@ -44,7 +44,7 @@ class StartScreen extends StatelessWidget {
                 color: Colors.black54,
               ),
             ),
-            const SizedBox(height: 350),
+            const SizedBox(height: 300),
             // Main Heading
             Text(
               "Discover Timeless Elegance\nAt Our Jewelers",
@@ -86,7 +86,7 @@ class StartScreen extends StatelessWidget {
                 color: Colors.black54,
               ),
             ),
-            const SizedBox(height: 140),
+            const SizedBox(height: 120),
           ],
         ),
       ),

@@ -20,13 +20,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     },
     {
       "image": "assets/images/ring.jpg",
-      "title": "Personalize Your Look🪞✨",
+      "title": "Personalize Your Look\n🪞✨",
       "description":
           "Create your unique style with customizable jewelry designs.",
     },
     {
       "image": "assets/images/Neckset.jpg",
-      "title": "Shop with Confidence🛍️🪄",
+      "title": "Shop with Confidence\n🛍️🪄",
       "description":
           "Enjoy free returns and a lifetime warranty on all purchases.",
     },
@@ -35,19 +35,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   void _goToLogin() {
     Navigator.pushReplacementNamed(context, '/start screen');
   }
-
-  // void _skipToLastPage() {
-  //   _controller.jumpToPage(_onboardingData.length - 1);
-  // }
-
-  // void _goBack() {
-  //   if (_currentIndex > 0) {
-  //     _controller.previousPage(
-  //       duration: const Duration(milliseconds: 300),
-  //       curve: Curves.easeInOut,
-  //     );
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
