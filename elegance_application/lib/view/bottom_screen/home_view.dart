@@ -24,7 +24,7 @@ class HomePageScreen extends StatelessWidget {
                 left: 0,
                 right: 0,
                 child: Container(
-                  color: Colors.black.withOpacity(0.3),
+                  color: Colors.black.withOpacity(0.2),
                   // Semi-transparent background
                   padding: const EdgeInsets.all(12.0),
                   child: const Text(
