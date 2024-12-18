@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class AboutView extends StatelessWidget {
   const AboutView({super.key});
@@ -6,11 +7,6 @@ class AboutView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text('About Us'),
-      //   centerTitle: true,
-      //   backgroundColor: Colors.grey[900],
-      // ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -26,16 +22,20 @@ class AboutView extends StatelessWidget {
                       fit: BoxFit.cover,
                     ),
                   ),
-                  child: Container(
-                    color: Colors.black.withOpacity(0.2),
-                  ),
+                  // child: Container(
+                  //   color: Colors.black.withOpacity(0.2),
+                  // ),
                 ),
-                Positioned.fill(
-                  child: Center(
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    color: Colors.black.withOpacity(0.1),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Text(
+                      children: const [
+                        Text(
                           'Elevate your senses with our\n exquisite collection of luxury jewellery,\n crafted with the finest attention to detail.',
                           textAlign: TextAlign.center,
                           style: TextStyle(
@@ -116,6 +116,58 @@ class AboutView extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 30.0),
+
+            // Social Media Icons
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Instagram Icon with Gradient
+                  ShaderMask(
+                    shaderCallback: (Rect bounds) => const LinearGradient(
+                      colors: [
+                        Color(0xFFFEDA77),
+                        Color(0xFFFA7E1E),
+                        Color(0xFFD62976),
+                        Color(0xFF962FBF),
+                        Color(0xFF4F5BD5),
+                      ],
+                      begin: Alignment.topRight,
+                      end: Alignment.bottomLeft,
+                    ).createShader(bounds),
+                    child: IconButton(
+                      icon: const Icon(FontAwesomeIcons.instagram),
+                      color: Colors.white,
+                      iconSize: 30.0,
+                      onPressed: () {
+                        // Replace with your Instagram link action
+                      },
+                    ),
+                  ),
+                  const SizedBox(width: 16.0),
+                  // GitHub Icon
+                  IconButton(
+                    icon: const Icon(FontAwesomeIcons.github),
+                    color: Colors.black,
+                    iconSize: 30.0,
+                    onPressed: () {
+                      // Replace with your GitHub link action
+                    },
+                  ),
+                  const SizedBox(width: 16.0),
+                  // Facebook Icon
+                  IconButton(
+                    icon: const Icon(FontAwesomeIcons.facebook),
+                    color: Colors.blue,
+                    iconSize: 30.0,
+                    onPressed: () {
+                      // Replace with your Facebook link action
+                    },
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
