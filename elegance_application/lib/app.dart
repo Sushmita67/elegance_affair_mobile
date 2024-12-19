@@ -1,3 +1,4 @@
+import 'package:elegance_application/core/app_theme/app_theme.dart';
 import 'package:elegance_application/view/bottom_navigation_view.dart';
 import 'package:elegance_application/view/login_screen_view.dart';
 import 'package:elegance_application/view/onboarding_screen.dart';
@@ -12,7 +13,8 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: '/', // Start at the splash screen
+      initialRoute: '/',
+      theme: getApplicationTheme(),
       routes: {
         '/': (context) => const SplashScreenView(),
         // Splash screen route

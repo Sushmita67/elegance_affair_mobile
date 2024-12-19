@@ -2,54 +2,27 @@ import 'package:flutter/material.dart';
 import 'settings_page.dart';
 
 class ProfileView extends StatelessWidget {
-  const ProfileView({super.key});
+  ProfileView({super.key});
 
   final String loggedInEmail = "user@example.com";
   final String userName = "User Name";
+  final List<String> favoriteJewelry = ["Rings", "Necklaces", "Earrings"];
+  final List<String> recentPurchases = [
+    "Gold Ring",
+    "Silver Necklace",
+    "Diamond Earrings"
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Row(
-          children: [
-            Stack(
-              clipBehavior: Clip.none,
-              children: [
-                CircleAvatar(
-                  radius: 25,
-                  backgroundImage: AssetImage('assets/images/jewels.jpg'),
-                ),
-                Positioned(
-                  right: -7,
-                  bottom: -4,
-                  child: GestureDetector(
-                    onTap: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text("Camera clicked")),
-                      );
-                    },
-                    child: CircleAvatar(
-                      radius: 12,
-                      backgroundColor: Colors.white,
-                      child: const Icon(
-                        Icons.camera_alt,
-                        size: 18,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(width: 10),
-            // User's Name
-            Text(
-              userName,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-          ],
+        title: Center(
+          child: Image.asset(
+            'assets/icons/elegance_affair.png',
+            height: 50,
+          ),
         ),
         actions: [
           IconButton(
@@ -62,28 +35,108 @@ class ProfileView extends StatelessWidget {
           ),
         ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Custom message or section can go here below the profile details
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Card(
-                elevation: 2,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const CircleAvatar(
+                      radius: 50,
+                      backgroundImage: AssetImage('assets/images/jewels.jpg'),
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      userName,
+                      style: const TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      loggedInEmail,
+                      style: const TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
                 ),
-                child: const Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Text(
-                    "Welcome to your profile",
-                    style: TextStyle(fontSize: 16, color: Colors.black87),
+              ),
+              const SizedBox(height: 32),
+              Card(
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "Favorite Jewelry Types:",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        favoriteJewelry.join(", "),
+                        style: const TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                      const Divider(height: 20),
+                      const Text(
+                        "Recent Purchases:",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      ...recentPurchases.map((item) => Text(
+                            item,
+                            style: const TextStyle(
+                              fontSize: 16,
+                            ),
+                          )),
+                      const SizedBox(height: 16),
+                      Center(
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 24,
+                              vertical: 12,
+                            ),
+                          ),
+                          onPressed: () {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Profile updated successfully!"),
+                              ),
+                            );
+                          },
+                          child: const Text(
+                            "Update Profile",
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
