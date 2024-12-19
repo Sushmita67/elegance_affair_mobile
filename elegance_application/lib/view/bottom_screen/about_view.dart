@@ -7,6 +7,15 @@ class AboutView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Center(
+          child: Image.asset(
+            'assets/icons/elegance_affair.png',
+            height: 50,
+          ),
+        ),
+      ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -22,16 +31,13 @@ class AboutView extends StatelessWidget {
                       fit: BoxFit.cover,
                     ),
                   ),
-                  // child: Container(
-                  //   color: Colors.black.withOpacity(0.2),
-                  // ),
                 ),
                 Positioned(
                   bottom: 0,
                   left: 0,
                   right: 0,
                   child: Container(
-                    color: Colors.black.withOpacity(0.1),
+                    color: Colors.black.withOpacity(0.2),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: const [
@@ -58,35 +64,35 @@ class AboutView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'About Elegance Affair',
+                    'About Elegance Affair 💎💍',
                     style: TextStyle(
                       fontSize: 24.0,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black87,
+                      // color: Colors.black87,
                     ),
                   ),
                   const SizedBox(height: 12.0),
                   Text(
-                    'Emirates Elegance is a luxury jewelry store, offering an exclusive collection of exquisite pieces for discerning individuals. Our journey began with a deep passion for fine craftsmanship and a commitment to curating jewelry that evokes emotion, inspires confidence, and captures timeless elegance.',
+                    'Emirates Elegance is a luxury jewelry store, offering an exclusive collection of exquisite pieces for discerning individuals. Our journey began with a deep passion for fine craftsmanship and a commitment to curating jewelry that evokes emotion, inspires confidence, and captures timeless elegance. ✨ ',
                     style: TextStyle(
                       fontSize: 16.0,
-                      color: Colors.grey[700],
+                      // color: Colors.grey[700],
                     ),
                   ),
                   const SizedBox(height: 12.0),
                   Text(
-                    'At the heart of Emirates Elegance is a dedication to quality, artistry, and customer satisfaction. We source the finest materials from around the world, and our expert artisans meticulously craft each piece to ensure a harmonious and captivating design.',
+                    'At the heart of Emirates Elegance is a dedication to quality, artistry, and customer satisfaction. We source the finest materials from around the world, and our expert artisans meticulously craft each piece to ensure a harmonious and captivating design.💖',
                     style: TextStyle(
                       fontSize: 16.0,
-                      color: Colors.grey[700],
+                      // color: Colors.grey[700],
                     ),
                   ),
                   const SizedBox(height: 12.0),
                   Text(
-                    'Our mission is to elevate the art of jewelry, providing our customers with a truly luxurious and transformative experience. From the moment you discover an Emirates Elegance piece to the moment you wear it, we strive to create a connection that transcends the senses and leaves a lasting impression.',
+                    'Our mission is to elevate the art of jewelry, providing our customers with a truly luxurious and transformative experience. From the moment you discover an Emirates Elegance piece to the moment you wear it, we strive to create a connection that transcends the senses and leaves a lasting impression.🛍️',
                     style: TextStyle(
                       fontSize: 16.0,
-                      color: Colors.grey[700],
+                      // color: Colors.grey[700],
                     ),
                   ),
                 ],
@@ -103,7 +109,7 @@ class AboutView extends StatelessWidget {
                   borderRadius: BorderRadius.circular(16.0),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
+                      // color: Colors.black.withOpacity(0.1),
                       blurRadius: 10.0,
                       offset: const Offset(0, 5),
                     ),
@@ -116,7 +122,14 @@ class AboutView extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 30.0),
-
+            Text(
+              'Follow Us On Social Media',
+              style: TextStyle(
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
+                // color: Colors.grey[700],
+              ),
+            ),
             // Social Media Icons
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 20.0),
