@@ -9,7 +9,7 @@ class HomePageScreen extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Padding(
-          padding: const EdgeInsets.only(top: 4.0),
+          padding: const EdgeInsets.only(top: 8.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -22,9 +22,10 @@ class HomePageScreen extends StatelessWidget {
           ),
         ),
         elevation: 0,
+        backgroundColor: Colors.transparent,
         actions: [
           IconButton(
-            icon: const Icon(Icons.search),
+            icon: const Icon(Icons.search, color: Colors.black),
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text("Search anything")),
@@ -32,7 +33,7 @@ class HomePageScreen extends StatelessWidget {
             },
           ),
           IconButton(
-            icon: const Icon(Icons.favorite_border),
+            icon: const Icon(Icons.favorite_border, color: Colors.black),
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text("Welcome to Wishlists")),
@@ -41,50 +42,56 @@ class HomePageScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: ListView(
-        children: [
-          Stack(
-            children: [
-              Container(
-                height: 400.0,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/images/Neckset.jpg'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              Positioned(
-                bottom: 5,
-                left: 10,
-                right: 10,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16.0),
-                  child: Container(
-                    color: Colors.black.withOpacity(0.2),
-                    padding: const EdgeInsets.all(12.0),
-                    child: const Text(
-                      "Elegance Affair's jewelry collection features a stunning array of American diamond and gold-plated designs, perfect for adding a touch of glamour to any outfit. Each piece combines elegance with modern sophistication, offering a variety of styles to complement your personal taste.",
-                      style: TextStyle(
-                        fontSize: 16.0,
-                        color: Colors.white,
-                        height: 1.5,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      textAlign: TextAlign.center,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Stack(
+              children: [
+                Container(
+                  height: 400.0,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('assets/images/Neckset.jpg'),
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-          buildSectionTitle("New Arrivals"),
-          buildHorizontalListView(context, itemCount: 6),
-          const SizedBox(height: 20),
-          buildSectionTitle("Explore More Collections"),
-          buildHorizontalCollections(context),
-        ],
+                Positioned(
+                  bottom: 20,
+                  left: 16,
+                  right: 16,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16.0),
+                    child: Container(
+                      padding: const EdgeInsets.all(16.0),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.5),
+                        borderRadius: BorderRadius.circular(16.0),
+                      ),
+                      child: const Text(
+                        "Elegance Affair offers a stunning collection of American diamond and gold-plated jewelry designs, blending elegance and sophistication to elevate your look.",
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.white,
+                          height: 1.4,
+                          fontWeight: FontWeight.w500,
+                          letterSpacing: 1.2,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            buildSectionTitle("New Arrivals"),
+            buildHorizontalListView(context, itemCount: 6),
+            const SizedBox(height: 30),
+            buildSectionTitle("Explore More Collections"),
+            buildHorizontalCollections(context),
+          ],
+        ),
       ),
     );
   }
@@ -95,8 +102,9 @@ class HomePageScreen extends StatelessWidget {
       child: Text(
         title,
         style: const TextStyle(
-          fontSize: 22,
+          fontSize: 24,
           fontWeight: FontWeight.bold,
+          color: Colors.black,
         ),
       ),
     );
@@ -105,7 +113,7 @@ class HomePageScreen extends StatelessWidget {
   Widget buildHorizontalListView(BuildContext context,
       {required int itemCount}) {
     return SizedBox(
-      height: 200,
+      height: 240,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: itemCount,
@@ -115,26 +123,30 @@ class HomePageScreen extends StatelessWidget {
                 Navigator.pushNamed(context, '/new_arrival_${index + 1}'),
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 8.0),
-              width: 150,
+              width: 180,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(12),
                 color: Colors.white,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.grey.withOpacity(0.3),
-                    blurRadius: 5,
-                    offset: const Offset(0, 3),
+                    color: Colors.grey.withOpacity(0.2),
+                    blurRadius: 8,
+                    offset: const Offset(0, 4),
                   ),
                 ],
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Expanded(
+                  ClipRRect(
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(12),
+                    ),
                     child: Image.asset(
                       'assets/images/jewels.jpg',
                       fit: BoxFit.cover,
                       width: double.infinity,
+                      height: 160,
                     ),
                   ),
                   Padding(
@@ -142,16 +154,17 @@ class HomePageScreen extends StatelessWidget {
                     child: Text(
                       "Item ${index + 1}",
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: 18,
                         fontWeight: FontWeight.bold,
+                        color: Colors.black87,
                       ),
                     ),
                   ),
                   Text(
-                    "₹${(1000 + index * 50)}",
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey[700],
+                    "Rs.${(1000 + index * 50)}",
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey,
                     ),
                   ),
                 ],
@@ -171,7 +184,7 @@ class HomePageScreen extends StatelessWidget {
     ];
 
     return SizedBox(
-      height: 200,
+      height: 240,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: collections.length,
@@ -193,9 +206,9 @@ class HomePageScreen extends StatelessWidget {
   Widget buildCollectionItem(
       BuildContext context, String title, String imagePath) {
     return Padding(
-      padding: const EdgeInsets.only(right: 10.0),
+      padding: const EdgeInsets.only(right: 12.0),
       child: Container(
-        width: 150,
+        width: 180,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           image: DecorationImage(
@@ -206,7 +219,8 @@ class HomePageScreen extends StatelessWidget {
         child: Center(
           child: Container(
             color: Colors.black54,
-            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
             child: Text(
               title,
               style: const TextStyle(
