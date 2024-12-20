@@ -37,16 +37,16 @@ ThemeData getApplicationTheme() {
         foregroundColor: const Color.fromARGB(255, 0, 0, 0),
       ),
     ),
-    // inputDecorationTheme: const InputDecorationTheme(
-    //   border: OutlineInputBorder(),
-    //   focusedBorder: OutlineInputBorder(
-    //     borderSide: BorderSide(color: Colors.pinkAccent),
-    //   ),
-    //   enabledBorder: OutlineInputBorder(
-    //     borderSide: BorderSide(color: Colors.grey),
-    //   ),
-    //   hintStyle: TextStyle(fontSize: 14, color: Colors.grey),
-    //   labelStyle: TextStyle(fontSize: 16, color: Colors.black),
-    // ),
+    inputDecorationTheme: const InputDecorationTheme(
+      border: OutlineInputBorder(),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: Colors.pinkAccent),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: Colors.grey),
+      ),
+      hintStyle: TextStyle(fontSize: 14, color: Colors.grey),
+      labelStyle: TextStyle(fontSize: 16, color: Colors.black),
+    ),
   );
 }
