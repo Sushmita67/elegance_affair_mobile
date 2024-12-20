@@ -8,9 +8,9 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      // backgroundColor: Colors.grey[200],
       body: Container(
-        color: Colors.white,
+        // color: Colors.white,
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(20.0),
@@ -32,7 +32,7 @@ class LoginPage extends StatelessWidget {
                   style: GoogleFonts.playfairDisplaySc(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black87,
+                    // color: Colors.black87,
                   ),
                 ),
                 const SizedBox(height: 25),
@@ -42,7 +42,7 @@ class LoginPage extends StatelessWidget {
                     labelText: "E-MAIL",
                     labelStyle: GoogleFonts.montserratAlternates(
                       fontSize: 16,
-                      color: Colors.black54,
+                      // color: Colors.black54,
                     ),
                     border: const OutlineInputBorder(),
                   ),
@@ -54,7 +54,7 @@ class LoginPage extends StatelessWidget {
                     labelText: "PASSWORD",
                     labelStyle: GoogleFonts.montserratAlternates(
                       fontSize: 16,
-                      color: Colors.black54,
+                      // color: Colors.black54,
                     ),
                     border: const OutlineInputBorder(),
                   ),
@@ -74,7 +74,7 @@ class LoginPage extends StatelessWidget {
                       style: GoogleFonts.montserrat(
                         fontWeight: FontWeight.bold,
                         fontSize: 14,
-                        color: Colors.grey.shade600,
+                        // color: Colors.grey.shade600,
                       ),
                     ),
                   ),
@@ -123,9 +123,9 @@ class LoginPage extends StatelessWidget {
                         Navigator.pushNamed(context, '/signup');
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            const Color.fromARGB(255, 155, 152, 152),
-                        foregroundColor: Colors.white,
+                        // backgroundColor:
+                        //     const Color.fromARGB(255, 155, 152, 152),
+                        // foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -163,25 +163,18 @@ class LoginPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 30),
 
-                // Social Media Buttons as in Image
-                Column(
+                // Social Media Icons Row
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    _buildSocialLoginButton(
-                      "Login with Facebook",
-                      Colors.blue,
-                      Icons.facebook,
-                      Colors.white,
-                    ),
-                    const SizedBox(height: 25),
-                    _buildSocialLoginButton(
-                      "Login with Google",
-                      Colors.grey.shade300,
-                      Icons.g_mobiledata,
-                      Colors.black87,
-                    ),
+                    _buildSocialIconButton(Icons.facebook,
+                        const Color.fromARGB(255, 101, 195, 238)),
+                    _buildSocialIconButton(Icons.g_mobiledata,
+                        const Color.fromARGB(255, 255, 128, 128)),
+                    _buildSocialIconButton(Icons.apple, Colors.black),
                   ],
                 ),
-                const SizedBox(height: 90),
+                const SizedBox(height: 90), // Add spacing at the bottom
               ],
             ),
           ),
@@ -190,28 +183,19 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  Widget _buildSocialLoginButton(
-      String label, Color bgColor, IconData icon, Color textColor) {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton.icon(
-        onPressed: () {},
-        style: ElevatedButton.styleFrom(
-          backgroundColor: bgColor,
-          padding: const EdgeInsets.symmetric(vertical: 15),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
-          ),
-        ),
-        icon: Icon(icon, color: textColor),
-        label: Text(
-          label,
-          style: GoogleFonts.montserratAlternates(
-            fontSize: 14,
-            fontWeight: FontWeight.bold,
-            color: textColor,
-          ),
-        ),
+  Widget _buildSocialIconButton(IconData icon, Color color) {
+    return ElevatedButton(
+      onPressed: () {},
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.white,
+        shape: const CircleBorder(),
+        padding: const EdgeInsets.all(15),
+        side: BorderSide(color: color),
+      ),
+      child: Icon(
+        icon,
+        color: color,
+        size: 30,
       ),
     );
   }
