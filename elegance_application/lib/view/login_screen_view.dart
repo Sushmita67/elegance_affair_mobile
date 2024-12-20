@@ -181,7 +181,7 @@ class LoginPage extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 90), // Add spacing at the bottom
+                const SizedBox(height: 90),
               ],
             ),
           ),
