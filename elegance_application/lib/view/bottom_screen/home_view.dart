@@ -9,7 +9,7 @@ class HomePageScreen extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Padding(
-          padding: const EdgeInsets.only(top: 8.0),
+          padding: const EdgeInsets.only(top: 2.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -57,7 +57,7 @@ class HomePageScreen extends StatelessWidget {
                   ),
                 ),
                 Positioned(
-                  bottom: 20,
+                  bottom: 3,
                   left: 16,
                   right: 16,
                   child: ClipRRect(
@@ -65,7 +65,7 @@ class HomePageScreen extends StatelessWidget {
                     child: Container(
                       padding: const EdgeInsets.all(16.0),
                       decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.5),
+                        color: Colors.black.withOpacity(0.3),
                         borderRadius: BorderRadius.circular(16.0),
                       ),
                       child: const Text(
@@ -164,7 +164,7 @@ class HomePageScreen extends StatelessWidget {
                     "Rs.${(1000 + index * 50)}",
                     style: const TextStyle(
                       fontSize: 16,
-                      color: Colors.grey,
+                      color: Colors.black,
                     ),
                   ),
                 ],
@@ -218,7 +218,7 @@ class HomePageScreen extends StatelessWidget {
         ),
         child: Center(
           child: Container(
-            color: Colors.black54,
+            // color: const Color.fromARGB(137, 255, 255, 255),
             padding:
                 const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
             child: Text(
@@ -226,7 +226,7 @@ class HomePageScreen extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: Color.fromARGB(255, 51, 51, 51),
               ),
             ),
           ),
