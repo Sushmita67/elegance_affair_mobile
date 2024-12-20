@@ -65,7 +65,7 @@ class SettingsPage extends StatelessWidget {
           "Settings",
           style: TextStyle(color: Colors.black),
         ),
-        backgroundColor: Colors.white,
+        // backgroundColor: Colors.white,
         elevation: 1,
         iconTheme: const IconThemeData(color: Colors.black),
       ),
@@ -135,7 +135,7 @@ class SettingsPage extends StatelessWidget {
         style: const TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold,
-          color: Colors.black87,
+          // color: Colors.black87,
         ),
       ),
     );
@@ -160,7 +160,7 @@ class SettingsPage extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
-                    color: Colors.black87,
+                    // color: Colors.black87,
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -168,7 +168,7 @@ class SettingsPage extends StatelessWidget {
                   description,
                   style: const TextStyle(
                     fontSize: 14,
-                    color: Colors.black54,
+                    // color: Colors.black54,
                   ),
                 ),
               ],
@@ -176,7 +176,7 @@ class SettingsPage extends StatelessWidget {
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.black,
+              // backgroundColor: Colors.black,
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),

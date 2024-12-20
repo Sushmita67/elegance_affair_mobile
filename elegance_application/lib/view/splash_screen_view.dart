@@ -13,7 +13,7 @@ class SplashScreenView extends StatelessWidget {
     });
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      // backgroundColor: Colors.white,
       body: SafeArea(
         child: Center(
           child: Column(

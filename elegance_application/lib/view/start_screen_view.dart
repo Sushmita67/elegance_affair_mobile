@@ -41,7 +41,7 @@ class StartScreen extends StatelessWidget {
                 fontSize: 26,
                 fontStyle: FontStyle.italic,
                 fontWeight: FontWeight.bold,
-                color: Colors.black54,
+                // color: Colors.black54,
               ),
             ),
             const SizedBox(height: 300),
@@ -52,7 +52,7 @@ class StartScreen extends StatelessWidget {
               style: GoogleFonts.playfairDisplaySc(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
-                color: Colors.black87,
+                // color: Colors.black87,
               ),
             ),
             const SizedBox(height: 50),
@@ -62,8 +62,8 @@ class StartScreen extends StatelessWidget {
                 Navigator.pushNamed(context, '/login');
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 240, 223, 223),
-                foregroundColor: const Color.fromARGB(255, 58, 40, 40),
+                // backgroundColor: const Color.fromARGB(255, 240, 223, 223),
+                // foregroundColor: const Color.fromARGB(255, 58, 40, 40),
                 padding:
                     const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                 shape: RoundedRectangleBorder(
@@ -83,7 +83,7 @@ class StartScreen extends StatelessWidget {
               style: GoogleFonts.montserratAlternates(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: Colors.black54,
+                // color: Colors.black54,
               ),
             ),
             const SizedBox(height: 120),

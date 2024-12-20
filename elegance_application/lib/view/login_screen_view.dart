@@ -8,9 +8,9 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      // backgroundColor: Colors.grey[200],
       body: Container(
-        color: Colors.white,
+        // color: Colors.white,
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(20.0),
@@ -32,7 +32,7 @@ class LoginPage extends StatelessWidget {
                   style: GoogleFonts.playfairDisplaySc(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black87,
+                    // color: Colors.black87,
                   ),
                 ),
                 const SizedBox(height: 25),
@@ -42,7 +42,7 @@ class LoginPage extends StatelessWidget {
                     labelText: "E-MAIL",
                     labelStyle: GoogleFonts.montserratAlternates(
                       fontSize: 16,
-                      color: Colors.black54,
+                      // color: Colors.black54,
                     ),
                     border: const OutlineInputBorder(),
                   ),
@@ -54,7 +54,7 @@ class LoginPage extends StatelessWidget {
                     labelText: "PASSWORD",
                     labelStyle: GoogleFonts.montserratAlternates(
                       fontSize: 16,
-                      color: Colors.black54,
+                      // color: Colors.black54,
                     ),
                     border: const OutlineInputBorder(),
                   ),
@@ -74,7 +74,7 @@ class LoginPage extends StatelessWidget {
                       style: GoogleFonts.montserrat(
                         fontWeight: FontWeight.bold,
                         fontSize: 14,
-                        color: Colors.grey.shade600,
+                        // color: Colors.grey.shade600,
                       ),
                     ),
                   ),
@@ -89,8 +89,8 @@ class LoginPage extends StatelessWidget {
                       Navigator.pushNamed(context, '/bottom page');
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
-                      foregroundColor: Colors.white,
+                      // backgroundColor: Colors.black,
+                      // foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 30, vertical: 15),
                       shape: RoundedRectangleBorder(
@@ -123,9 +123,9 @@ class LoginPage extends StatelessWidget {
                         Navigator.pushNamed(context, '/signup');
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            const Color.fromARGB(255, 155, 152, 152),
-                        foregroundColor: Colors.white,
+                        // backgroundColor:
+                        //     const Color.fromARGB(255, 155, 152, 152),
+                        // foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),

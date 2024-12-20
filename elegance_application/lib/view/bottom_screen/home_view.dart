@@ -8,18 +8,22 @@ class HomePageScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              'assets/icons/elegance_affair.png',
-              height: 60,
-              width: 190,
-            ),
-          ],
+        title: Padding(
+          padding:
+              const EdgeInsets.only(top: 4.0), // Adjust the top padding value
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/icons/elegance_affair.png',
+                height: 60,
+                width: 190,
+              ),
+            ],
+          ),
         ),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
+        // backgroundColor: Colors.white,
+        // foregroundColor: Colors.black,
         elevation: 0,
         actions: [
           IconButton(
@@ -59,7 +63,6 @@ class HomePageScreen extends StatelessWidget {
                 right: 0,
                 child: Container(
                   color: Colors.black.withOpacity(0.2),
-                  // Semi-transparent background
                   padding: const EdgeInsets.all(12.0),
                   child: const Text(
                     "Elegance Affair's jewelry collection features a stunning array of American diamond and gold-plated designs, perfect for adding a touch of glamour to any outfit. Each piece combines elegance with modern sophistication, offering a variety of styles to complement your personal taste.",
@@ -139,7 +142,7 @@ class HomePageScreen extends StatelessWidget {
                                 "Rs${(1000 + index * 50)}", // Changed to ₹
                                 style: TextStyle(
                                   fontSize: 14,
-                                  color: Colors.grey[700],
+                                  // color: Colors.grey[700],
                                 ),
                               ),
                             ],
@@ -152,7 +155,6 @@ class HomePageScreen extends StatelessWidget {
               ],
             ),
           ),
-
           // Explore Collections Section
           Padding(
             padding: const EdgeInsets.all(16.0),

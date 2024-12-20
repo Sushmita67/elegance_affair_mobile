@@ -7,7 +7,7 @@ class SignUpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      // backgroundColor: Colors.grey[200],
       body: Padding(
         padding:
             const EdgeInsets.symmetric(horizontal: 20.0), // Horizontal padding
@@ -29,7 +29,7 @@ class SignUpPage extends StatelessWidget {
                 style: GoogleFonts.playfairDisplaySc(
                   fontSize: 26,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black87,
+                  // color: Colors.black87,
                 ),
               ),
               const SizedBox(height: 30),
@@ -40,7 +40,7 @@ class SignUpPage extends StatelessWidget {
                   labelText: "NAME",
                   labelStyle: GoogleFonts.montserratAlternates(
                     fontSize: 16,
-                    color: Colors.black54,
+                    // color: Colors.black54,
                   ),
                   border: const OutlineInputBorder(),
                 ),
@@ -53,7 +53,7 @@ class SignUpPage extends StatelessWidget {
                   labelText: "E-MAIL",
                   labelStyle: GoogleFonts.montserratAlternates(
                     fontSize: 16,
-                    color: Colors.black54,
+                    // color: Colors.black54,
                   ),
                   border: const OutlineInputBorder(),
                 ),
@@ -66,7 +66,7 @@ class SignUpPage extends StatelessWidget {
                   labelText: "PASSWORD",
                   labelStyle: GoogleFonts.montserratAlternates(
                     fontSize: 16,
-                    color: Colors.black54,
+                    // color: Colors.black54,
                   ),
                   border: const OutlineInputBorder(),
                 ),
@@ -82,8 +82,8 @@ class SignUpPage extends StatelessWidget {
                     Navigator.pushNamed(context, '/login');
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    foregroundColor: Colors.white,
+                    // backgroundColor: Colors.black,
+                    // foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(
                         horizontal: 30, vertical: 15),
                     shape: RoundedRectangleBorder(
@@ -116,8 +116,8 @@ class SignUpPage extends StatelessWidget {
                       Navigator.pushNamed(context, '/login');
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 155, 152, 152),
-                      foregroundColor: Colors.white,
+                      // backgroundColor: const Color.fromARGB(255, 155, 152, 152),
+                      // foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
