@@ -1,52 +1,93 @@
 import 'package:flutter/material.dart';
 
-ThemeData getApplicationTheme() {
-  return ThemeData(
-    primarySwatch: Colors.pink,
-    scaffoldBackgroundColor: const Color.fromARGB(255, 255, 255, 255),
-    fontFamily: 'Montserrat',
-    appBarTheme: const AppBarTheme(
-      backgroundColor: Colors.white,
-      elevation: 2,
-      centerTitle: true,
-      titleTextStyle: TextStyle(
-        fontSize: 20,
-        fontWeight: FontWeight.bold,
-        color: Colors.white,
-      ),
-    ),
-    elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ElevatedButton.styleFrom(
-        textStyle: const TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.w500,
+// Primary and Secondary Colour for Branding
+const Color primaryColor = Color(0xFF9B6763);
+const Color secondaryColor = Color(0xFFB8978C);
+
+class AppTheme {
+  AppTheme._();
+
+  static getApplicationTheme({required bool isDarkMode}) {
+    return ThemeData(
+      primaryColor: primaryColor,
+      secondaryHeaderColor: secondaryColor,
+      scaffoldBackgroundColor: Colors.grey[200],
+      fontFamily: 'Montserrat Regular',
+
+      // AppBar Theme
+      appBarTheme: const AppBarTheme(
+        centerTitle: true,
+        color: primaryColor,
+        elevation: 4,
+        shadowColor: Colors.black,
+        titleTextStyle: TextStyle(
+          fontSize: 20,
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
         ),
-        backgroundColor: const Color.fromARGB(255, 0, 0, 0),
-        foregroundColor: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+      ),
+
+      // Elevated Button Theme
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          foregroundColor: Colors.white,
+          textStyle: const TextStyle(
+            fontSize: 18,
+            color: Colors.white,
+            fontWeight: FontWeight.w500,
+            fontFamily: 'Montserrat-Regular',
+          ),
+          backgroundColor: primaryColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5),
+          ),
         ),
       ),
-    ),
-    textButtonTheme: TextButtonThemeData(
-      style: TextButton.styleFrom(
-        textStyle: const TextStyle(
+
+      // Input Decoration Theme for TextFields
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: Colors.white,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.0),
+          borderSide: BorderSide(color: Colors.grey[400]!),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.0),
+          borderSide: const BorderSide(color: primaryColor),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.0),
+          borderSide: const BorderSide(color: primaryColor, width: 2.0),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.0),
+          borderSide: const BorderSide(color: Colors.red),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.0),
+          borderSide: const BorderSide(color: Colors.red, width: 2.0),
+        ),
+        hintStyle: TextStyle(
           fontSize: 16,
+          color: Colors.grey[600],
+        ),
+        labelStyle: const TextStyle(
+          color: primaryColor,
           fontWeight: FontWeight.w400,
         ),
-        foregroundColor: const Color.fromARGB(255, 0, 0, 0),
       ),
-    ),
-    inputDecorationTheme: const InputDecorationTheme(
-      border: OutlineInputBorder(),
-      focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.pinkAccent),
+
+      // Text Button Theme
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: secondaryColor,
+          textStyle: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
       ),
-      enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.grey),
-      ),
-      hintStyle: TextStyle(fontSize: 14, color: Colors.grey),
-      labelStyle: TextStyle(fontSize: 16, color: Colors.black),
-    ),
-  );
+    );
+  }
 }
