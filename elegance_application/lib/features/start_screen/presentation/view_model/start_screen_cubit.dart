@@ -9,7 +9,7 @@ class StartScreenCubit extends Cubit<void> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const LoginView(),
+        builder: (context) => LoginView(),
       ),
     );
   }
