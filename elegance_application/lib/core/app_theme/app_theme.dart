@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
 // Primary and Secondary Colour for Branding
-const Color primaryColor = Color(0xFF9B6763);
-const Color secondaryColor = Color(0xFFB8978C);
+const Color primaryColor = Color.fromARGB(255, 32, 32, 32);
+const Color secondaryColor = Color.fromARGB(255, 51, 50, 50);
 
 class AppTheme {
   AppTheme._();
 
   static getApplicationTheme({required bool isDarkMode}) {
     return ThemeData(
-      primaryColor: primaryColor,
+      primaryColor: const Color.fromARGB(255, 255, 255, 255),
       secondaryHeaderColor: secondaryColor,
       scaffoldBackgroundColor: Colors.grey[200],
       fontFamily: 'Montserrat Regular',
@@ -17,7 +17,7 @@ class AppTheme {
       // AppBar Theme
       appBarTheme: const AppBarTheme(
         centerTitle: true,
-        color: primaryColor,
+        color: Color.fromARGB(255, 255, 255, 255),
         elevation: 4,
         shadowColor: Colors.black,
         titleTextStyle: TextStyle(

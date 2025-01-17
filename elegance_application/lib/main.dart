@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'app.dart';
+import 'app/di/di.dart';
+import 'app/app.dart';
+import 'core/network/hive_service.dart';
 
-//Hot Reload
-void main() {
-  //Run App
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await HiveService().init();
+  await initDependencies();
   runApp(const App());
 }

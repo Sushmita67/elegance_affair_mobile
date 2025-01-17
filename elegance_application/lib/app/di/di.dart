@@ -74,52 +74,74 @@ import 'package:elegance_application/features/onboarding/presentation/view_model
 import 'package:elegance_application/features/splash/presentation/view_model/splash_cubit.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../core/network/hive_service.dart';
+import '../../features/auth/data/data_source/local_datasource/student_local_datasource.dart';
+import '../../features/auth/data/repository/student_local_repository.dart';
+import '../../features/auth/domain/use_case/create_student_usecase.dart';
+import '../../features/auth/domain/use_case/login_student_usecase.dart';
+
 final getIt = GetIt.instance;
 
 Future<void> initDependencies() async {
-  // Ensure all dependencies are initialized in the correct order
+  await _initHiveService();
+  await _initCommonDependencies();
   await _initHomeDependencies();
   await _initRegisterDependencies();
   await _initLoginDependencies();
-  await _initOnboardingDependencies();
   await _initSplashScreenDependencies();
 }
 
+_initHiveService(){
+  getIt.registerLazySingleton<HiveService>(()=> HiveService());
+}
+
+
 _initHomeDependencies() async {
-  // Register HomeCubit
-  getIt.registerSingleton<HomeCubit>(HomeCubit());
+  getIt.registerFactory<HomeCubit>(
+        () => HomeCubit(),
+  );
+}
+
+_initCommonDependencies() {
+  // Register common dependencies used across multiple features
+  if (!getIt.isRegistered<StudentLocalDatasource>()) {
+    getIt.registerFactory<StudentLocalDatasource>(
+          () => StudentLocalDatasource(getIt<HiveService>()),
+    );
+  }
+
+  if (!getIt.isRegistered<StudentLocalRepository>()) {
+    getIt.registerLazySingleton<StudentLocalRepository>(() =>
+        StudentLocalRepository(studentLocalDataSource: getIt<StudentLocalDatasource>()));
+  }
 }
 
 _initRegisterDependencies() async {
-  // Register RegisterBloc
-  getIt.registerFactory<RegisterBloc>(() => RegisterBloc());
-}
-
-_initLoginDependencies() async {
-  // Assert RegisterBloc and HomeCubit are already registered
-  assert(getIt.isRegistered<RegisterBloc>(), "RegisterBloc not registered");
-  assert(getIt.isRegistered<HomeCubit>(), "HomeCubit not registered");
-
-  // Register LoginBloc with its dependencies
-  getIt.registerFactory<LoginBloc>(
-    () => LoginBloc(
-      registerBloc: getIt<RegisterBloc>(), // Inject RegisterBloc dependency
-      homeCubit: getIt<HomeCubit>(), // Inject HomeCubit dependency
+  // Use common StudentLocalDatasource and StudentLocalRepository
+  getIt.registerLazySingleton<CreateStudentUsecase>(() =>
+      CreateStudentUsecase(studentRepository: getIt<StudentLocalRepository>()));
+  getIt.registerFactory<RegisterBloc>(
+        () => RegisterBloc(
+      createStudentUsecase: getIt<CreateStudentUsecase>(),
     ),
   );
 }
 
-_initOnboardingDependencies() async {
-  // Assert that LoginBloc has been registered before OnboardingCubit
-  assert(getIt.isRegistered<LoginBloc>(), "LoginBloc not registered");
-
-  // Register OnboardingCubit
-  getIt.registerFactory<OnboardingCubit>(
-    () => OnboardingCubit(loginBloc: getIt<LoginBloc>()),
+_initLoginDependencies() async {
+  // Use common StudentLocalDatasource and StudentLocalRepository
+  getIt.registerLazySingleton<LoginStudentUsecase>(() =>
+      LoginStudentUsecase(studentRepository: getIt<StudentLocalRepository>()));
+  getIt.registerFactory<LoginBloc>(
+        () => LoginBloc(
+      registerBloc: getIt<RegisterBloc>(),
+      homeCubit: getIt<HomeCubit>(),
+      loginStudentUsecase: getIt<LoginStudentUsecase>(),
+    ),
   );
 }
 
 _initSplashScreenDependencies() async {
-  // Register SplashCubit
-  getIt.registerFactory<SplashCubit>(() => SplashCubit());
+  getIt.registerFactory<SplashCubit>(
+        () => SplashCubit(getIt<LoginBloc>()),
+  );
 }

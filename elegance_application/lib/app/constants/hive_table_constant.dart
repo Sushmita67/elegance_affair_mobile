@@ -1,40 +1,34 @@
 class HiveTableConstant {
   HiveTableConstant._();
 
-  static const int accommodationTableId = 0;
-  static const String accommodationBox = 'accommodationBox';
+  // Login and Register Table Constants
+  static const int loginTableId = 0;
+  static const String loginBox = 'loginBox';
 
-  static const int bookingTableId = 1;
-  static const String bookingBox = 'bookingBox';
+  static const int registerTableId = 1;
+  static const String registerBox = 'registerBox';
 
-  static const int retreatTableId = 2;
-  static const String retreatBox = 'retreatBox';
+  // For User Authentication or Session
+  static const int userSessionTableId = 2;
+  static const String userSessionBox = 'userSessionBox';
 
-  static const int enrollmentTableId = 3;
-  static const String enrollmentBox = 'enrollmentBox';
+  // For storing user data after login/registration
+  static const int userDataTableId = 3;
+  static const String userDataBox = 'userDataBox';
 
-  static const int instructorTableId = 4;
-  static const String instructorBox = 'instructorBox';
+  // Temporary data if needed (like pre-filled forms or session data)
+  static const int tempDataTableId = 4;
+  static const String tempDataBox = 'tempDataBox';
 
-  static const int workshopTableId = 5;
-  static const String workshopBox = 'workshopBox';
-
-  static const int paymentTableId = 6;
-  static const String paymentBox = 'paymentBox';
-
-  static const int userTableId = 7;
-  static const String userBox = 'userBox';
-
-  static const int workshopCategoryTableId = 8;
-  static const String workshopCategoryBox = 'workshopCategoryBox';
+  // To store OTP or authentication tokens if necessary
+  static const int otpTableId = 5;
+  static const String otpBox = 'otpBox';
 
   // For Testing
-  static const int batchTableId = 9;
-  static const String batchBox = 'batchBox';
+  static const int testTableId = 6;
+  static const String testBox = 'testBox';
 
-  static const int courseTableId = 10;
-  static const String courseBox = 'courseBox';
-
-  static const int studentTableId = 11;
+  // Student
+  static const int studentTableId = 7;
   static const String studentBox = 'studentBox';
 }
