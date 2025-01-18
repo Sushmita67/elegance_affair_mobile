@@ -144,6 +144,7 @@
 // //   );
 // // }
 
+import 'package:elegance_application/core/network/hive_service.dart';
 import 'package:elegance_application/features/auth/data/data_source/local_datasource/customer_local_datasource.dart';
 import 'package:elegance_application/features/auth/data/repository/customer_local_repository.dart';
 import 'package:elegance_application/features/auth/domain/use_case/create_customer_usecase.dart';
@@ -155,8 +156,6 @@ import 'package:elegance_application/features/onboarding/presentation/view_model
 import 'package:elegance_application/features/splash/presentation/view_model/splash_cubit.dart';
 import 'package:elegance_application/features/start_screen/presentation/view_model/start_screen_cubit.dart';
 import 'package:get_it/get_it.dart';
-
-import '../../core/network/hive_service.dart';
 
 final getIt = GetIt.instance;
 
@@ -230,14 +229,14 @@ _initSplashScreenDependencies() async {
 _initOnboardingScreenViewDependencies() {
   getIt.registerFactory<OnboardingCubit>(
     () => OnboardingCubit(
-      getIt<HomeCubit>(), // Pass the required param0 argument here.
-      loginBloc: getIt<LoginBloc>(), // Pass the required loginBloc instance.
+      getIt<HomeCubit>(),
+      loginBloc: getIt<LoginBloc>(),
     ),
   );
 }
 
 _initStartScreenDependencies() async {
   getIt.registerFactory<StartScreenCubit>(
-    () => StartScreenCubit(getIt<LoginBloc>()),
+    () => StartScreenCubit(loginBloc: getIt<LoginBloc>()),
   );
 }
