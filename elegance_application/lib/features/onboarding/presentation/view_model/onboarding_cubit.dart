@@ -1,3 +1,4 @@
+import 'package:elegance_application/features/auth/presentation/view/login_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../auth/presentation/view_model/login/login_bloc.dart';
@@ -22,7 +23,7 @@ class OnboardingCubit extends Cubit<int> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => const StartScreenView(),
+            builder: (context) => LoginView(),
           ),
         );
       }
@@ -55,7 +56,7 @@ class OnboardingCubit extends Cubit<int> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => const StartScreenView(),
+          builder: (context) => LoginView(),
         ),
       );
     }

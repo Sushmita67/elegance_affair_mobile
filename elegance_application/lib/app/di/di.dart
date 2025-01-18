@@ -59,18 +59,9 @@
 //   );
 // }
 
-// _initOnboardingDependencies() async {
-//   assert(getIt.isRegistered<LoginBloc>(), "LoginBloc not registered");
-
-//   getIt.registerFactory<OnboardingCubit>(
-//     () => OnboardingCubit(loginBloc: getIt<LoginBloc>()),
-//   );
-// }
-
 import 'package:elegance_application/features/auth/presentation/view_model/login/login_bloc.dart';
 import 'package:elegance_application/features/auth/presentation/view_model/signup/register_bloc.dart';
 import 'package:elegance_application/features/home/presentation/view_model/home_cubit.dart';
-import 'package:elegance_application/features/onboarding/presentation/view_model/onboarding_cubit.dart';
 import 'package:elegance_application/features/splash/presentation/view_model/splash_cubit.dart';
 import 'package:get_it/get_it.dart';
 
@@ -89,16 +80,16 @@ Future<void> initDependencies() async {
   await _initRegisterDependencies();
   await _initLoginDependencies();
   await _initSplashScreenDependencies();
+  // await _initStartScreenDependencies();
 }
 
-_initHiveService(){
-  getIt.registerLazySingleton<HiveService>(()=> HiveService());
+_initHiveService() {
+  getIt.registerLazySingleton<HiveService>(() => HiveService());
 }
-
 
 _initHomeDependencies() async {
   getIt.registerFactory<HomeCubit>(
-        () => HomeCubit(),
+    () => HomeCubit(),
   );
 }
 
@@ -106,13 +97,14 @@ _initCommonDependencies() {
   // Register common dependencies used across multiple features
   if (!getIt.isRegistered<StudentLocalDatasource>()) {
     getIt.registerFactory<StudentLocalDatasource>(
-          () => StudentLocalDatasource(getIt<HiveService>()),
+      () => StudentLocalDatasource(getIt<HiveService>()),
     );
   }
 
   if (!getIt.isRegistered<StudentLocalRepository>()) {
     getIt.registerLazySingleton<StudentLocalRepository>(() =>
-        StudentLocalRepository(studentLocalDataSource: getIt<StudentLocalDatasource>()));
+        StudentLocalRepository(
+            studentLocalDataSource: getIt<StudentLocalDatasource>()));
   }
 }
 
@@ -121,7 +113,7 @@ _initRegisterDependencies() async {
   getIt.registerLazySingleton<CreateStudentUsecase>(() =>
       CreateStudentUsecase(studentRepository: getIt<StudentLocalRepository>()));
   getIt.registerFactory<RegisterBloc>(
-        () => RegisterBloc(
+    () => RegisterBloc(
       createStudentUsecase: getIt<CreateStudentUsecase>(),
     ),
   );
@@ -132,7 +124,7 @@ _initLoginDependencies() async {
   getIt.registerLazySingleton<LoginStudentUsecase>(() =>
       LoginStudentUsecase(studentRepository: getIt<StudentLocalRepository>()));
   getIt.registerFactory<LoginBloc>(
-        () => LoginBloc(
+    () => LoginBloc(
       registerBloc: getIt<RegisterBloc>(),
       homeCubit: getIt<HomeCubit>(),
       loginStudentUsecase: getIt<LoginStudentUsecase>(),
@@ -142,6 +134,12 @@ _initLoginDependencies() async {
 
 _initSplashScreenDependencies() async {
   getIt.registerFactory<SplashCubit>(
-        () => SplashCubit(getIt<LoginBloc>()),
+    () => SplashCubit(getIt<LoginBloc>()),
   );
 }
+
+// _initStartScreenDependencies() async {
+//   getIt.registerFactory<SplashCubit>(
+//     () => SplashCubit(getIt<LoginBloc>()),
+//   );
+// }

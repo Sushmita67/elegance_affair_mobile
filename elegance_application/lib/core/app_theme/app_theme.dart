@@ -9,7 +9,7 @@ class AppTheme {
 
   static getApplicationTheme({required bool isDarkMode}) {
     return ThemeData(
-      primaryColor: const Color.fromARGB(255, 255, 255, 255),
+      primaryColor: primaryColor,
       secondaryHeaderColor: secondaryColor,
       scaffoldBackgroundColor: Colors.grey[200],
       fontFamily: 'Montserrat Regular',
