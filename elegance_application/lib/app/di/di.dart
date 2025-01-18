@@ -151,7 +151,9 @@ import 'package:elegance_application/features/auth/domain/use_case/login_custome
 import 'package:elegance_application/features/auth/presentation/view_model/login/login_bloc.dart';
 import 'package:elegance_application/features/auth/presentation/view_model/signup/register_bloc.dart';
 import 'package:elegance_application/features/home/presentation/view_model/home_cubit.dart';
+import 'package:elegance_application/features/onboarding/presentation/view_model/onboarding_cubit.dart';
 import 'package:elegance_application/features/splash/presentation/view_model/splash_cubit.dart';
+import 'package:elegance_application/features/start_screen/presentation/view_model/start_screen_cubit.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../core/network/hive_service.dart';
@@ -165,7 +167,8 @@ Future<void> initDependencies() async {
   await _initRegisterDependencies();
   await _initLoginDependencies();
   await _initSplashScreenDependencies();
-  // await _initStartScreenDependencies();
+  await _initOnboardingScreenViewDependencies();
+  await _initStartScreenDependencies();
 }
 
 _initHiveService() {
@@ -220,12 +223,21 @@ _initLoginDependencies() async {
 
 _initSplashScreenDependencies() async {
   getIt.registerFactory<SplashCubit>(
-    () => SplashCubit(getIt<LoginBloc>()),
+    () => SplashCubit(getIt<OnboardingCubit>()),
   );
 }
 
-// _initStartScreenDependencies() async {
-//   getIt.registerFactory<SplashCubit>(
-//     () => SplashCubit(getIt<LoginBloc>()),
-//   );
-// }
+_initOnboardingScreenViewDependencies() {
+  getIt.registerFactory<OnboardingCubit>(
+    () => OnboardingCubit(
+      getIt<HomeCubit>(), // Pass the required param0 argument here.
+      loginBloc: getIt<LoginBloc>(), // Pass the required loginBloc instance.
+    ),
+  );
+}
+
+_initStartScreenDependencies() async {
+  getIt.registerFactory<StartScreenCubit>(
+    () => StartScreenCubit(getIt<LoginBloc>()),
+  );
+}
