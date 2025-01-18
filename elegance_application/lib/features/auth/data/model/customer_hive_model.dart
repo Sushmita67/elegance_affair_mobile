@@ -1,18 +1,17 @@
+import 'package:elegance_application/features/auth/domain/entity/customer_entity.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:uuid/uuid.dart';
 
 import '../../../../app/constants/hive_table_constant.dart';
-import '../../domain/entity/student_entity.dart';
 
-part 'student_hive_model.g.dart';
 //dart run build_runner build -d
 
-@HiveType(typeId: HiveTableConstant.studentTableId)
-class StudentHiveModel extends Equatable {
+@HiveType(typeId: HiveTableConstant.customerTableId)
+class CustomerHiveModel extends Equatable {
   @HiveField(0)
-  final String? studentId;
+  final String? customerId;
 
   @HiveField(1)
   final String fname;
@@ -26,26 +25,25 @@ class StudentHiveModel extends Equatable {
   @HiveField(4)
   final String phone;
 
-
   @HiveField(7)
   final String username;
 
   @HiveField(8)
   final String password;
 
-  StudentHiveModel({
-    String? studentId,
+  CustomerHiveModel({
+    String? customerId,
     required this.fname,
     required this.lname,
     this.image,
     required this.phone,
     required this.username,
     required this.password,
-  }) : studentId = studentId ?? const Uuid().v4();
+  }) : customerId = customerId ?? const Uuid().v4();
 
   /// Initial constructor
-  const StudentHiveModel.initial()
-      : studentId = '',
+  const CustomerHiveModel.initial()
+      : customerId = '',
         fname = '',
         lname = '',
         image = '',
@@ -54,9 +52,9 @@ class StudentHiveModel extends Equatable {
         password = '';
 
   // Convert from entity
-  factory StudentHiveModel.fromEntity(StudentEntity entity) {
-    return StudentHiveModel(
-      studentId: entity.studentId,
+  factory CustomerHiveModel.fromEntity(CustomerEntity entity) {
+    return CustomerHiveModel(
+      customerId: entity.customerId,
       fname: entity.fname,
       lname: entity.lname,
       image: entity.image,
@@ -67,9 +65,9 @@ class StudentHiveModel extends Equatable {
   }
 
   // Convert to entity
-  StudentEntity toEntity() {
-    return StudentEntity(
-      studentId: studentId,
+  CustomerEntity toEntity() {
+    return CustomerEntity(
+      customerId: customerId,
       fname: fname,
       lname: lname,
       image: image,
@@ -79,15 +77,16 @@ class StudentHiveModel extends Equatable {
     );
   }
 
-  static List<StudentHiveModel> fromEntityList(List<StudentEntity> entityList) {
+  static List<CustomerHiveModel> fromEntityList(
+      List<CustomerEntity> entityList) {
     return entityList
-        .map((entity) => StudentHiveModel.fromEntity(entity))
+        .map((entity) => CustomerHiveModel.fromEntity(entity))
         .toList();
   }
 
   @override
   List<Object?> get props => [
-        studentId,
+        customerId,
         fname,
         lname,
         image,

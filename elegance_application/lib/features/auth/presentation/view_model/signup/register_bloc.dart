@@ -1,39 +1,25 @@
 import 'package:bloc/bloc.dart';
+import 'package:elegance_application/features/auth/domain/use_case/create_customer_usecase.dart';
 import 'package:equatable/equatable.dart';
-
-import '../../../domain/use_case/create_student_usecase.dart';
 
 part 'register_event.dart';
 part 'register_state.dart';
 
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
-
-  final CreateStudentUsecase _createStudentUsecase;
+  final CreateCustomerUsecase _createCustomerUsecase;
 
   RegisterBloc({
-
-    required CreateStudentUsecase createStudentUsecase,
-  })  : _createStudentUsecase = createStudentUsecase,
+    required CreateCustomerUsecase createCustomerUsecase,
+  })  : _createCustomerUsecase = createCustomerUsecase,
         super(RegisterState.initial()) {
-    // on<LoadCoursesAndBatches>(_onRegisterEvent);
-    on<RegisterStudent>(_onRegisterStudent);
-
-    // add(LoadCoursesAndBatches());
+    on<RegisterCustomer>(_onRegisterCustomer);
   }
 
-  // void _onRegisterEvent(
-  //   LoadCoursesAndBatches event,
-  //   Emitter<RegisterState> emit,
-  // ) {
-  //   emit(state.copyWith(isLoading: true));
-  //   emit(state.copyWith(isLoading: false, isSuccess: true));
-  // }
-
-  Future<void> _onRegisterStudent(
-      RegisterStudent event, Emitter<RegisterState> emit) async {
+  Future<void> _onRegisterCustomer(
+      RegisterCustomer event, Emitter<RegisterState> emit) async {
     emit(state.copyWith(isLoading: true));
 
-    final params = CreateStudentParams(
+    final params = CreateCustomerParams(
       fName: event.fName,
       lName: event.lName,
       phone: event.phone,
@@ -41,10 +27,10 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       password: event.password,
     );
 
-    final result = await _createStudentUsecase.call(params);
+    final result = await _createCustomerUsecase.call(params);
 
     result.fold(
         (failure) => emit(state.copyWith(isLoading: false, isSuccess: false)),
-        (student) => emit(state.copyWith(isLoading: false, isSuccess: true)));
+        (customer) => emit(state.copyWith(isLoading: false, isSuccess: true)));
   }
 }

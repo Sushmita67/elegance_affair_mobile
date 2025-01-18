@@ -2,7 +2,6 @@ import 'package:elegance_application/features/auth/presentation/view/login_view.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../auth/presentation/view_model/login/login_bloc.dart';
-import 'package:elegance_application/features/start_screen/presentation/view/start_screen_view.dart';
 
 class OnboardingCubit extends Cubit<int> {
   final LoginBloc loginBloc;

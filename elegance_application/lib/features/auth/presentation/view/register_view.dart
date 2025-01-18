@@ -1,217 +1,7 @@
-// import 'package:flutter/material.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
-
-// import '../view_model/signup/register_bloc.dart';
-
-// class RegisterView extends StatefulWidget {
-//   const RegisterView({super.key});
-
-//   @override
-//   State<RegisterView> createState() => _RegisterViewState();
-// }
-
-// class _RegisterViewState extends State<RegisterView> {
-//   final _gap = const SizedBox(height: 8);
-//   final _key = GlobalKey<FormState>();
-//   final _fnameController = TextEditingController(text: 'kiran');
-//   final _lnameController = TextEditingController(text: 'rana');
-//   final _phoneController = TextEditingController(text: '123456789');
-//   final _usernameController = TextEditingController(text: 'kiran');
-//   final _passwordController = TextEditingController(text: 'kiran123');
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text('Register Student'),
-//         centerTitle: true,
-//       ),
-//       body: BlocListener<RegisterBloc, RegisterState>(
-//         listener: (context, state) {
-//           if (state.isLoading) {
-//             // Show a loading Snackbar
-//             ScaffoldMessenger.of(context).showSnackBar(
-//               const SnackBar(
-//                 content: Text('Registering student...'),
-//                 duration: Duration(seconds: 2),
-//               ),
-//             );
-//           } else if (state.isSuccess) {
-//             // Show success message and clear form
-//             ScaffoldMessenger.of(context).showSnackBar(
-//               const SnackBar(
-//                 content: Text('Student registered successfully!'),
-//                 backgroundColor: Colors.green,
-//               ),
-//             );
-//             _key.currentState!.reset();
-
-//             // Navigate back to the login page
-//             Future.delayed(const Duration(seconds: 4), () {
-//               Navigator.pop(
-//                   context); // This pops the current register screen and goes back
-//             });
-//           } else if (!state.isLoading && !state.isSuccess) {
-//             // Show error message
-//             ScaffoldMessenger.of(context).showSnackBar(
-//               const SnackBar(
-//                 content: Text('Failed to register student. Try again.'),
-//                 backgroundColor: Colors.red,
-//               ),
-//             );
-//           }
-//         },
-//         child: SafeArea(
-//           child: SingleChildScrollView(
-//             child: Padding(
-//               padding: const EdgeInsets.all(8),
-//               child: Form(
-//                 key: _key,
-//                 child: Column(
-//                   children: [
-//                     InkWell(
-//                       onTap: () {
-//                         showModalBottomSheet(
-//                           backgroundColor: Colors.grey[300],
-//                           context: context,
-//                           isScrollControlled: true,
-//                           shape: const RoundedRectangleBorder(
-//                             borderRadius: BorderRadius.vertical(
-//                               top: Radius.circular(20),
-//                             ),
-//                           ),
-//                           builder: (context) => Padding(
-//                             padding: const EdgeInsets.all(20),
-//                             child: Row(
-//                               mainAxisAlignment: MainAxisAlignment.spaceAround,
-//                               children: [
-//                                 ElevatedButton.icon(
-//                                   onPressed: () {
-//                                     Navigator.pop(context);
-//                                   },
-//                                   icon: const Icon(Icons.camera),
-//                                   label: const Text('Camera'),
-//                                 ),
-//                                 ElevatedButton.icon(
-//                                   onPressed: () {},
-//                                   icon: const Icon(Icons.image),
-//                                   label: const Text('Gallery'),
-//                                 ),
-//                               ],
-//                             ),
-//                           ),
-//                         );
-//                       },
-//                       child: SizedBox(
-//                         height: 200,
-//                         width: 200,
-//                         child: CircleAvatar(
-//                           radius: 50,
-//                           backgroundImage:
-//                               const AssetImage('assets/images/profile.png')
-//                                   as ImageProvider,
-//                         ),
-//                       ),
-//                     ),
-//                     const SizedBox(height: 25),
-//                     TextFormField(
-//                       controller: _fnameController,
-//                       decoration: const InputDecoration(
-//                         labelText: 'First Name',
-//                       ),
-//                       validator: (value) {
-//                         if (value == null || value.isEmpty) {
-//                           return 'Please enter first name';
-//                         }
-//                         return null;
-//                       },
-//                     ),
-//                     _gap,
-//                     TextFormField(
-//                       controller: _lnameController,
-//                       decoration: const InputDecoration(
-//                         labelText: 'Last Name',
-//                       ),
-//                       validator: (value) {
-//                         if (value == null || value.isEmpty) {
-//                           return 'Please enter last name';
-//                         }
-//                         return null;
-//                       },
-//                     ),
-//                     _gap,
-//                     TextFormField(
-//                       controller: _phoneController,
-//                       decoration: const InputDecoration(
-//                         labelText: 'Phone No',
-//                       ),
-//                       validator: (value) {
-//                         if (value == null || value.isEmpty) {
-//                           return 'Please enter phone number';
-//                         }
-//                         return null;
-//                       },
-//                     ),
-//                     _gap,
-//                     TextFormField(
-//                       controller: _usernameController,
-//                       decoration: const InputDecoration(
-//                         labelText: 'Username',
-//                       ),
-//                       validator: (value) {
-//                         if (value == null || value.isEmpty) {
-//                           return 'Please enter username';
-//                         }
-//                         return null;
-//                       },
-//                     ),
-//                     _gap,
-//                     TextFormField(
-//                       controller: _passwordController,
-//                       obscureText: true,
-//                       decoration: const InputDecoration(
-//                         labelText: 'Password',
-//                       ),
-//                       validator: (value) {
-//                         if (value == null || value.isEmpty) {
-//                           return 'Please enter password';
-//                         }
-//                         return null;
-//                       },
-//                     ),
-//                     _gap,
-//                     SizedBox(
-//                       width: double.infinity,
-//                       child: ElevatedButton(
-//                         onPressed: () {
-//                           if (_key.currentState!.validate()) {
-//                             context.read<RegisterBloc>().add(RegisterStudent(
-//                                   fName: _fnameController.text,
-//                                   lName: _lnameController.text,
-//                                   phone: _phoneController.text,
-//                                   username: _usernameController.text,
-//                                   password: _passwordController.text,
-//                                 ));
-//                           }
-//                         },
-//                         child: const Text('Register'),
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart'; // For custom fonts
+import 'package:google_fonts/google_fonts.dart';
 import '../view_model/signup/register_bloc.dart';
 
 class RegisterView extends StatefulWidget {
@@ -270,7 +60,7 @@ class _RegisterViewState extends State<RegisterView> {
           } else if (!state.isLoading && !state.isSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
-                content: Text('Failed to register student. Try again.'),
+                content: Text('Failed to register customer. Try again.'),
                 backgroundColor: Colors.red,
               ),
             );
@@ -432,7 +222,7 @@ class _RegisterViewState extends State<RegisterView> {
                       child: ElevatedButton(
                         onPressed: () {
                           if (_key.currentState!.validate()) {
-                            context.read<RegisterBloc>().add(RegisterStudent(
+                            context.read<RegisterBloc>().add(RegisterCustomer(
                                   fName: _fnameController.text,
                                   lName: _lnameController.text,
                                   phone: _phoneController.text,

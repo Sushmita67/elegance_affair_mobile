@@ -1,8 +1,9 @@
+import 'package:elegance_application/features/auth/data/model/customer_hive_model.dart';
+import 'package:elegance_application/features/auth/data/model/customer_hive_model.g.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../app/constants/hive_table_constant.dart';
-import '../../features/auth/data/model/student_hive_model.dart';
 
 class HiveService {
   Future<void> init() async {
@@ -14,38 +15,38 @@ class HiveService {
     Hive.init(path);
 
     //Register Adapters
-    Hive.registerAdapter(StudentHiveModelAdapter());
+    Hive.registerAdapter(CustomerHiveModelAdapter());
   }
 
-// Student Queries
-  Future<void> addStudent(StudentHiveModel student) async {
+  // Customer Queries
+  Future<void> addCustomer(CustomerHiveModel customer) async {
     var box =
-        await Hive.openBox<StudentHiveModel>(HiveTableConstant.studentBox);
-    await box.put(student.studentId, student);
+        await Hive.openBox<CustomerHiveModel>(HiveTableConstant.customerBox);
+    await box.put(customer.customerId, customer);
   }
 
-  Future<void> deleteStudent(String id) async {
+  Future<void> deleteCustomer(String id) async {
     var box =
-        await Hive.openBox<StudentHiveModel>(HiveTableConstant.studentBox);
+        await Hive.openBox<CustomerHiveModel>(HiveTableConstant.customerBox);
     await box.delete(id);
   }
 
-  Future<List<StudentHiveModel>> getAllStudents() async {
+  Future<List<CustomerHiveModel>> getAllCustomers() async {
     var box =
-        await Hive.openBox<StudentHiveModel>(HiveTableConstant.studentBox);
-    var students = box.values.toList();
-    return students;
+        await Hive.openBox<CustomerHiveModel>(HiveTableConstant.customerBox);
+    var customers = box.values.toList();
+    return customers;
   }
 
-  Future<StudentHiveModel?> loginStudent(
+  Future<CustomerHiveModel?> loginCustomer(
       String username, String password) async {
     var box =
-        await Hive.openBox<StudentHiveModel>(HiveTableConstant.studentBox);
+        await Hive.openBox<CustomerHiveModel>(HiveTableConstant.customerBox);
 
     var auth = box.values.firstWhere(
         (element) =>
             element.username == username && element.password == password,
-        orElse: () => StudentHiveModel.initial());
+        orElse: () => CustomerHiveModel.initial());
 
     return auth;
   }

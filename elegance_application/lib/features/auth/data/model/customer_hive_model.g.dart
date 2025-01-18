@@ -1,23 +1,18 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
+import 'package:elegance_application/features/auth/data/model/customer_hive_model.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-part of 'student_hive_model.dart';
-
-// **************************************************************************
-// TypeAdapterGenerator
-// **************************************************************************
-
-class StudentHiveModelAdapter extends TypeAdapter<StudentHiveModel> {
+class CustomerHiveModelAdapter extends TypeAdapter<CustomerHiveModel> {
   @override
   final int typeId = 7;
 
   @override
-  StudentHiveModel read(BinaryReader reader) {
+  CustomerHiveModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return StudentHiveModel(
-      studentId: fields[0] as String?,
+    return CustomerHiveModel(
+      customerId: fields[0] as String?,
       fname: fields[1] as String,
       lname: fields[2] as String,
       image: fields[3] as String?,
@@ -28,11 +23,11 @@ class StudentHiveModelAdapter extends TypeAdapter<StudentHiveModel> {
   }
 
   @override
-  void write(BinaryWriter writer, StudentHiveModel obj) {
+  void write(BinaryWriter writer, CustomerHiveModel obj) {
     writer
       ..writeByte(7)
       ..writeByte(0)
-      ..write(obj.studentId)
+      ..write(obj.customerId)
       ..writeByte(1)
       ..write(obj.fname)
       ..writeByte(2)
@@ -53,7 +48,7 @@ class StudentHiveModelAdapter extends TypeAdapter<StudentHiveModel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is StudentHiveModelAdapter &&
+      other is CustomerHiveModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

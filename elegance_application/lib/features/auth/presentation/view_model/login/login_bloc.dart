@@ -1,9 +1,9 @@
+import 'package:elegance_application/features/auth/domain/use_case/login_customer_usecase.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../home/presentation/view_model/home_cubit.dart';
-import '../../../domain/use_case/login_student_usecase.dart';
 import '../signup/register_bloc.dart';
 
 part 'login_event.dart';
@@ -13,16 +13,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final RegisterBloc _registerBloc;
   final HomeCubit _homeCubit;
 
-  final LoginStudentUsecase _loginStudentUsecase;
+  final LoginCustomerUsecase _loginCustomerUsecase;
 
   LoginBloc({
     required RegisterBloc registerBloc,
     required HomeCubit homeCubit,
-
-    required LoginStudentUsecase loginStudentUsecase,
+    required LoginCustomerUsecase loginCustomerUsecase,
   })  : _registerBloc = registerBloc,
         _homeCubit = homeCubit,
-        _loginStudentUsecase = loginStudentUsecase,
+        _loginCustomerUsecase = loginCustomerUsecase,
         super(LoginState.initial()) {
     on<NavigateRegisterScreenEvent>((event, emit) {
       Navigator.push(
@@ -51,22 +50,22 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     });
 
     // Handle login event
-    on<LoginStudentEvent>((event, emit) async {
+    on<LoginCustomerEvent>((event, emit) async {
       emit(state.copyWith(isLoading: true));
 
-      final params = LoginStudentParams(
+      final params = LoginCustomerParams(
         username: event.username,
         password: event.password,
       );
 
-      final result = await _loginStudentUsecase.call(params);
+      final result = await _loginCustomerUsecase.call(params);
 
       result.fold(
         (failure) {
           // Handle failure (update the state with error message or show a failure alert)
           emit(state.copyWith(isLoading: false, isSuccess: false));
         },
-        (student) {
+        (customer) {
           // On success, update state and navigate to the home screen
           emit(state.copyWith(isLoading: false, isSuccess: true));
         },
