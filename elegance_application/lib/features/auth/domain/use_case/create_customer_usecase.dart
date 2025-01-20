@@ -21,6 +21,9 @@ class CreateCustomerParams extends Equatable {
     required this.username,
     required this.password,
     this.image,
+    required String email,
+    required String fname,
+    required String lname,
   });
 
   @override

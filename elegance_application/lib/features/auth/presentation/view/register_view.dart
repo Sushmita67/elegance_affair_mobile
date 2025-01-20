@@ -1,8 +1,11 @@
+import 'dart:io';
+
+import 'package:elegance_application/features/auth/presentation/view_model/signup/register_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../view_model/signup/register_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -12,14 +15,30 @@ class RegisterView extends StatefulWidget {
 }
 
 class _RegisterViewState extends State<RegisterView> {
-  final _gap = const SizedBox(height: 10);
+  bool _termsAccepted = false;
+  File? _selectedImage;
+  final ImagePicker _imagePicker = ImagePicker();
+
+  Future<void> _pickImage(ImageSource source) async {
+    final pickedFile = await _imagePicker.pickImage(source: source);
+
+    if (pickedFile != null) {
+      setState(() {
+        _selectedImage = File(pickedFile.path);
+      });
+      // ignore: use_build_context_synchronously
+      Navigator.pop(context);
+    }
+  }
+
+  final _gap = const SizedBox(height: 8);
   final _key = GlobalKey<FormState>();
-  final _fnameController = TextEditingController(text: '');
-  final _lnameController = TextEditingController(text: '');
-  final _phoneController = TextEditingController(text: '');
-  final _usernameController = TextEditingController(text: '');
-  final _passwordController = TextEditingController(text: '');
-  bool _obscurePassword = true;
+  final _fnameController = TextEditingController();
+  final _lnameController = TextEditingController();
+  final _phoneController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -31,233 +50,293 @@ class _RegisterViewState extends State<RegisterView> {
           children: [
             SvgPicture.asset(
               'assets/icons/logo-4.svg',
-              height: 80,
+              height: 90,
             ),
           ],
         ),
         centerTitle: true,
       ),
-      body: BlocListener<RegisterBloc, RegisterState>(
-        listener: (context, state) {
-          if (state.isLoading) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Registering Customer...'),
-                duration: Duration(seconds: 2),
-              ),
-            );
-          } else if (state.isSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Customer registered successfully!'),
-                backgroundColor: Colors.green,
-              ),
-            );
-            _key.currentState!.reset();
-            Future.delayed(const Duration(seconds: 4), () {
-              Navigator.pop(context);
-            });
-          } else if (!state.isLoading && !state.isSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Failed to register customer. Try again.'),
-                backgroundColor: Colors.red,
-              ),
-            );
-          }
-        },
-        child: SafeArea(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(8),
-              child: Form(
-                key: _key,
-                child: Column(
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        showModalBottomSheet(
-                          backgroundColor: Colors.grey[300],
-                          context: context,
-                          isScrollControlled: true,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(20),
-                            ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(8),
+            child: Form(
+              key: _key,
+              child: Column(
+                children: [
+                  InkWell(
+                    onTap: () {
+                      showModalBottomSheet(
+                        backgroundColor: Colors.grey[300],
+                        context: context,
+                        isScrollControlled: true,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(20),
                           ),
-                          builder: (context) => Padding(
-                            padding: const EdgeInsets.all(20),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                ElevatedButton.icon(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  icon: const Icon(Icons.camera),
-                                  label: const Text('Camera'),
-                                ),
-                                ElevatedButton.icon(
-                                  onPressed: () {},
-                                  icon: const Icon(Icons.image),
-                                  label: const Text('Gallery'),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                      child: SizedBox(
-                        height: 200,
-                        width: 200,
-                        child: CircleAvatar(
-                          radius: 50,
-                          backgroundImage:
-                              const AssetImage('assets/images/profile.png')
-                                  as ImageProvider,
                         ),
-                      ),
+                        builder: (context) => Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              ElevatedButton.icon(
+                                onPressed: () {
+                                  _pickImage(ImageSource
+                                      .camera); // Pick image from camera
+                                },
+                                icon: const Icon(Icons.camera),
+                                label: const Text('Camera'),
+                              ),
+                              ElevatedButton.icon(
+                                onPressed: () {
+                                  _pickImage(ImageSource
+                                      .gallery); // Pick image from gallery
+                                },
+                                icon: const Icon(Icons.image),
+                                label: const Text('Gallery'),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 140,
+                          width: 150,
+                          child: CircleAvatar(
+                            radius: 50,
+                            backgroundImage: _selectedImage != null
+                                ? FileImage(_selectedImage!)
+                                : const AssetImage(
+                                    'assets/images/jewellryyyy.jpg',
+                                  ) as ImageProvider,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        const Text(
+                          'Upload Picture',
+                          style: TextStyle(fontSize: 16),
+                        )
+                      ],
                     ),
-                    const SizedBox(height: 25),
-                    TextFormField(
-                      controller: _fnameController,
-                      decoration: InputDecoration(
+                  ),
+                  const SizedBox(height: 25),
+                  TextFormField(
+                    controller: _fnameController,
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
                         labelText: 'First Name',
                         labelStyle:
                             GoogleFonts.montserratAlternates(fontSize: 16),
+                        prefixIcon: const Icon(Icons.person)),
+                    validator: ((value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter first name';
+                      }
+                      return null;
+                    }),
+                  ),
+                  _gap,
+                  TextFormField(
+                    controller: _lnameController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter first name';
-                        }
-                        return null;
-                      },
+                      labelText: 'Last Name',
+                      labelStyle:
+                          GoogleFonts.montserratAlternates(fontSize: 16),
+                      prefixIcon: const Icon(Icons.person),
                     ),
-                    SizedBox(
-                      height: 22,
-                    ),
-                    TextFormField(
-                      controller: _lnameController,
-                      decoration: InputDecoration(
-                        labelText: 'Last Name',
+                    validator: ((value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter last name';
+                      }
+                      return null;
+                    }),
+                  ),
+                  _gap,
+                  TextFormField(
+                    controller: _phoneController,
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        labelText: 'Phone Number',
                         labelStyle:
                             GoogleFonts.montserratAlternates(fontSize: 16),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter last name';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(
-                      height: 22,
-                    ),
-                    TextFormField(
-                      controller: _phoneController,
-                      decoration: InputDecoration(
-                        labelText: 'Phone No',
+                        prefixIcon: const Icon(Icons.phone)),
+                    validator: ((value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter phone number';
+                      }
+                      return null;
+                    }),
+                  ),
+                  _gap,
+                  TextFormField(
+                    controller: _emailController,
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        labelText: 'Email',
                         labelStyle:
                             GoogleFonts.montserratAlternates(fontSize: 16),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter phone number';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(
-                      height: 22,
-                    ),
-                    TextFormField(
-                      controller: _usernameController,
-                      decoration: InputDecoration(
-                        labelText: 'Username',
-                        labelStyle:
-                            GoogleFonts.montserratAlternates(fontSize: 16),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter username';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(
-                      height: 22,
-                    ),
-                    TextFormField(
-                      controller: _passwordController,
-                      obscureText: _obscurePassword,
-                      decoration: InputDecoration(
+                        prefixIcon: const Icon(Icons.email)),
+                    validator: ((value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter email';
+                      }
+                      return null;
+                    }),
+                  ),
+                  _gap,
+                  TextFormField(
+                    controller: _passwordController,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
                         labelText: 'Password',
                         labelStyle:
                             GoogleFonts.montserratAlternates(fontSize: 16),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _obscurePassword
-                                ? Icons.visibility_off
-                                : Icons.visibility,
+                        prefixIcon: Icon(Icons.lock)),
+                    validator: ((value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter password';
+                      }
+                      return null;
+                    }),
+                  ),
+                  _gap,
+                  TextFormField(
+                    controller: _confirmPasswordController,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      labelText: 'Confirm Password',
+                      labelStyle:
+                          GoogleFonts.montserratAlternates(fontSize: 16),
+                      prefixIcon: Icon(Icons.lock),
+                    ),
+                    validator: ((value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please confirm password';
+                      }
+                      if (value != _passwordController.text) {
+                        return 'Passwords do not match';
+                      }
+                      return null;
+                    }),
+                  ),
+                  _gap,
+                  Row(
+                    children: [
+                      Checkbox(
+                        value: _termsAccepted,
+                        activeColor: Color(0xFFFE5404),
+                        onChanged: (bool? value) {
+                          setState(() {
+                            _termsAccepted = value!;
+                          });
+                        },
+                      ),
+                      Expanded(
+                        child: RichText(
+                          text: TextSpan(
+                            text: 'I accept all the ',
+                            style: const TextStyle(
+                                fontSize: 16, color: Colors.black),
+                            children: [
+                              TextSpan(
+                                text: 'Terms and Conditions.',
+                                style: GoogleFonts.montserratAlternates(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
                           ),
-                          onPressed: () {
-                            setState(() {
-                              _obscurePassword = !_obscurePassword;
-                            });
-                          },
                         ),
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter password';
+                    ],
+                  ),
+                  _gap,
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (!_termsAccepted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                  'Please accept the Terms and Conditions'),
+                            ),
+                          );
+                          return;
                         }
-                        return null;
-                      },
-                    ),
-                    SizedBox(
-                      height: 22,
-                    ),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if (_key.currentState!.validate()) {
-                            context.read<RegisterBloc>().add(RegisterCustomer(
+                        if (_key.currentState!.validate()) {
+                          context.read<RegisterBloc>().add(
+                                RegisterCustomer(
+                                  context: context,
                                   fName: _fnameController.text,
                                   lName: _lnameController.text,
                                   phone: _phoneController.text,
-                                  username: _usernameController.text,
+                                  email: _emailController.text,
                                   password: _passwordController.text,
-                                ));
-                          }
-                        },
-                        child: Text(
-                          'Register',
-                          style: GoogleFonts.montserratAlternates(fontSize: 18),
+                                ),
+                              );
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                              30), // Set the border radius
                         ),
                       ),
+                      child: const Text(
+                        'Sign Up',
+                        style: TextStyle(fontSize: 18, color: Colors.white),
+                      ),
                     ),
-                    SizedBox(
-                      height: 12,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          'Already have an account?',
-                          style: TextStyle(fontSize: 18),
+                  ),
+                  _gap,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'Already have an account?',
+                        style: TextStyle(
+                          color: Colors.black54,
+                          fontSize: 18,
                         ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: const Text('Login',
-                              style: TextStyle(fontSize: 20)),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text(
+                          'Sign In',
+                          style: GoogleFonts.montserratAlternates(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                            color: Colors.black,
+                          ),
                         ),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ),

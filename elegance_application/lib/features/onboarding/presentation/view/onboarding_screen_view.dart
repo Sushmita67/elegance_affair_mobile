@@ -210,8 +210,8 @@ class _OnboardingScreenViewState extends State<OnboardingScreenView> {
     },
   ];
 
-  void _goToStartScreenPage(BuildContext context) {
-    context.read<OnboardingCubit>().skipToStartScreen(context);
+  void _goToLoginPage(BuildContext context) {
+    context.read<OnboardingCubit>().skipToLoginPage(context);
   }
 
   @override
@@ -296,7 +296,7 @@ class _OnboardingScreenViewState extends State<OnboardingScreenView> {
                   child: ElevatedButton(
                     onPressed: () {
                       if (_currentPage == _onboardingData.length - 1) {
-                        _goToStartScreenPage(context);
+                        _goToLoginPage(context);
                       } else {
                         _pageController.nextPage(
                           duration: const Duration(milliseconds: 300),
@@ -331,7 +331,7 @@ class _OnboardingScreenViewState extends State<OnboardingScreenView> {
               children: [
                 // Skip Button
                 TextButton(
-                  onPressed: () => _goToStartScreenPage(context),
+                  onPressed: () => _goToLoginPage(context),
                   child: const Text(
                     "Skip",
                     style: TextStyle(
