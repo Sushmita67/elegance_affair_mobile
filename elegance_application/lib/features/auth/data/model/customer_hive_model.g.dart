@@ -1,5 +1,10 @@
-import 'package:elegance_application/features/auth/data/model/customer_hive_model.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'customer_hive_model.dart';
+
+// **************************************************************************
+// TypeAdapterGenerator
+// **************************************************************************
 
 class CustomerHiveModelAdapter extends TypeAdapter<CustomerHiveModel> {
   @override
@@ -12,9 +17,9 @@ class CustomerHiveModelAdapter extends TypeAdapter<CustomerHiveModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return CustomerHiveModel(
-      customerId: fields[0] as String?,
-      fname: fields[1] as String,
-      lname: fields[2] as String,
+      id: fields[0] as String?,
+      name: fields[1] as String,
+      email: fields[2] as String,
       image: fields[3] as String?,
       phone: fields[4] as String,
       username: fields[7] as String,
@@ -27,11 +32,11 @@ class CustomerHiveModelAdapter extends TypeAdapter<CustomerHiveModel> {
     writer
       ..writeByte(7)
       ..writeByte(0)
-      ..write(obj.customerId)
+      ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.fname)
+      ..write(obj.name)
       ..writeByte(2)
-      ..write(obj.lname)
+      ..write(obj.email)
       ..writeByte(3)
       ..write(obj.image)
       ..writeByte(4)

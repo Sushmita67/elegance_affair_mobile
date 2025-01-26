@@ -7,29 +7,28 @@ import '../../../../app/usecase/usecase.dart';
 import '../../../../core/error/failure.dart';
 
 class CreateCustomerParams extends Equatable {
-  final String fName;
-  final String lName;
-  final String phone;
+  final String? id;
+  final String name;
   final String username;
+  final String phone;
+  final String email;
   final String password;
   final String? image;
 
   const CreateCustomerParams({
-    required this.fName,
-    required this.lName,
-    required this.phone,
+    this.id,
+    required this.name,
     required this.username,
+    required this.phone,
+    required this.email,
     required this.password,
     this.image,
-    required String email,
-    required String fname,
-    required String lname,
   });
 
   @override
   List<Object?> get props => [
-        fName,
-        lName,
+        name,
+        email,
         phone,
         username,
         password,
@@ -47,9 +46,9 @@ class CreateCustomerUsecase
   Future<Either<Failure, void>> call(CreateCustomerParams params) async {
     // Create the customer entity from the params
     final customerEntity = CustomerEntity(
-      customerId: null, // The ID will be generated automatically
-      fname: params.fName,
-      lname: params.lName,
+      id: null, // The ID will be generated automatically
+      name: params.name,
+      email: params.email,
       phone: params.phone,
       username: params.username,
       password: params.password,

@@ -1,5 +1,4 @@
 import 'package:elegance_application/features/auth/data/model/customer_hive_model.dart';
-import 'package:elegance_application/features/auth/data/model/customer_hive_model.g.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -22,7 +21,7 @@ class HiveService {
   Future<void> addCustomer(CustomerHiveModel customer) async {
     var box =
         await Hive.openBox<CustomerHiveModel>(HiveTableConstant.customerBox);
-    await box.put(customer.customerId, customer);
+    await box.put(customer.id, customer);
   }
 
   Future<void> deleteCustomer(String id) async {

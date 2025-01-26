@@ -33,8 +33,8 @@ class _RegisterViewState extends State<RegisterView> {
 
   final _gap = const SizedBox(height: 8);
   final _key = GlobalKey<FormState>();
-  final _fnameController = TextEditingController();
-  final _lnameController = TextEditingController();
+  final _nameController = TextEditingController();
+  final _usernameController = TextEditingController();
   final _phoneController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -125,37 +125,37 @@ class _RegisterViewState extends State<RegisterView> {
                   ),
                   const SizedBox(height: 25),
                   TextFormField(
-                    controller: _fnameController,
+                    controller: _nameController,
                     decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),
-                        labelText: 'First Name',
+                        labelText: 'Full Name',
                         labelStyle:
                             GoogleFonts.montserratAlternates(fontSize: 16),
                         prefixIcon: const Icon(Icons.person)),
                     validator: ((value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter first name';
+                        return 'Please enter full name';
                       }
                       return null;
                     }),
                   ),
                   _gap,
                   TextFormField(
-                    controller: _lnameController,
+                    controller: _usernameController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
-                      labelText: 'Last Name',
+                      labelText: 'Username',
                       labelStyle:
                           GoogleFonts.montserratAlternates(fontSize: 16),
                       prefixIcon: const Icon(Icons.person),
                     ),
                     validator: ((value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter last name';
+                        return 'Please enter usernamename';
                       }
                       return null;
                     }),
@@ -288,9 +288,8 @@ class _RegisterViewState extends State<RegisterView> {
                         if (_key.currentState!.validate()) {
                           context.read<RegisterBloc>().add(
                                 RegisterCustomer(
-                                  context: context,
-                                  fName: _fnameController.text,
-                                  lName: _lnameController.text,
+                                  name: _nameController.text,
+                                  username: _usernameController.text,
                                   phone: _phoneController.text,
                                   email: _emailController.text,
                                   password: _passwordController.text,

@@ -7,40 +7,56 @@ import 'package:flutter/material.dart';
 part 'register_event.dart';
 part 'register_state.dart';
 
+
+
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
-  final CreateCustomerUsecase _registerUseCase;
+  // final BatchBloc _batchBloc;
+  // final WorkshopBloc _workshopBloc;
+  final CreateCustomerUsecase _createCustomerUsecase;
 
   RegisterBloc({
-    required CreateCustomerUsecase registerUseCase,
+    // required BatchBloc batchBloc,
+    // required WorkshopBloc workshopBloc,
     required CreateCustomerUsecase createCustomerUsecase,
-  })  : _registerUseCase = registerUseCase,
+  })  :
+  // _batchBloc = batchBloc,
+  // _workshopBloc = workshopBloc,
+        _createCustomerUsecase = createCustomerUsecase,
         super(RegisterState.initial()) {
-    on<RegisterCustomer>(_onRegisterEvent);
+    // on<LoadCoursesAndBatches>(_onRegisterEvent);
+    on<RegisterCustomer>(_onRegisterUser);
+
+    // add(LoadCoursesAndBatches());
   }
 
   void _onRegisterEvent(
-    RegisterCustomer event,
-    Emitter<RegisterState> emit,
-  ) async {
+      // LoadCoursesAndBatches event,
+      Emitter<RegisterState> emit,
+      ) {
     emit(state.copyWith(isLoading: true));
-    final result = await _registerUseCase.call(CreateCustomerParams(
-      fname: event.fName,
-      lname: event.lName,
+    // _batchBloc.add(LoadBatches());
+    // _workshopBloc.add(LoadWorkshops());
+    emit(state.copyWith(isLoading: false, isSuccess: true));
+  }
+
+  Future<void> _onRegisterUser(
+      RegisterCustomer event, Emitter<RegisterState> emit) async {
+    emit(state.copyWith(isLoading: true));
+
+    final params = CreateCustomerParams(
+      name: event.name,
+      username: event.username,
       phone: event.phone,
       email: event.email,
       password: event.password,
-      fName: '',
-      lName: '',
-      username: '',
-    ));
+      image: event.image,
+
+    );
+
+    final result = await _createCustomerUsecase.call(params);
 
     result.fold(
-      (l) => emit(state.copyWith(isLoading: false, isSuccess: false)),
-      (r) {
-        emit(state.copyWith(isLoading: false, isSuccess: true));
-        showMySnackBar(
-            context: event.context, message: "Registration Successful");
-      },
-    );
+            (failure) => emit(state.copyWith(isLoading: false, isSuccess: false)),
+            (user) => emit(state.copyWith(isLoading: false, isSuccess: true)));
   }
 }

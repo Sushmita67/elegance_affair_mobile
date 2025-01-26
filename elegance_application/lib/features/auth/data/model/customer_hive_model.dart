@@ -6,18 +6,21 @@ import 'package:uuid/uuid.dart';
 
 import '../../../../app/constants/hive_table_constant.dart';
 
+part 'customer_hive_model.g.dart';
+
+
 //dart run build_runner build -d
 
 @HiveType(typeId: HiveTableConstant.customerTableId)
 class CustomerHiveModel extends Equatable {
   @HiveField(0)
-  final String? customerId;
+  final String? id;
 
   @HiveField(1)
-  final String fname;
+  final String name;
 
   @HiveField(2)
-  final String lname;
+  final String email;
 
   @HiveField(3)
   final String? image;
@@ -32,20 +35,20 @@ class CustomerHiveModel extends Equatable {
   final String password;
 
   CustomerHiveModel({
-    String? customerId,
-    required this.fname,
-    required this.lname,
+    String? id,
+    required this.name,
+    required this.email,
     this.image,
     required this.phone,
     required this.username,
     required this.password,
-  }) : customerId = customerId ?? const Uuid().v4();
+  }) : id = id ?? const Uuid().v4();
 
   /// Initial constructor
   const CustomerHiveModel.initial()
-      : customerId = '',
-        fname = '',
-        lname = '',
+      : id = '',
+        name = '',
+        email = '',
         image = '',
         phone = '',
         username = '',
@@ -54,9 +57,9 @@ class CustomerHiveModel extends Equatable {
   // Convert from entity
   factory CustomerHiveModel.fromEntity(CustomerEntity entity) {
     return CustomerHiveModel(
-      customerId: entity.customerId,
-      fname: entity.fname,
-      lname: entity.lname,
+      id: entity.id,
+      name: entity.name,
+      email: entity.email,
       image: entity.image,
       phone: entity.phone,
       username: entity.username,
@@ -67,9 +70,9 @@ class CustomerHiveModel extends Equatable {
   // Convert to entity
   CustomerEntity toEntity() {
     return CustomerEntity(
-      customerId: customerId,
-      fname: fname,
-      lname: lname,
+      id: id,
+      name: name,
+      email: email,
       image: image,
       phone: phone,
       username: username,
@@ -86,9 +89,9 @@ class CustomerHiveModel extends Equatable {
 
   @override
   List<Object?> get props => [
-        customerId,
-        fname,
-        lname,
+        id,
+        name,
+        email,
         image,
         phone,
         username,

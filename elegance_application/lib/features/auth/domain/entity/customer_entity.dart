@@ -1,24 +1,24 @@
 import 'package:equatable/equatable.dart';
 
 class CustomerEntity extends Equatable {
-  final String? customerId;
-  final String fname;
-  final String lname;
-  final String? image;
-  final String phone;
+  final String? id;
+  final String name;
   final String username;
+  final String phone;
+  final String email;
   final String password;
+  final String? image;
 
   const CustomerEntity({
-    this.customerId,
-    required this.fname,
-    required this.lname,
-    this.image,
-    required this.phone,
+    this.id,
+    required this.name,
     required this.username,
+    required this.phone,
+    required this.email,
     required this.password,
+    this.image,
   });
 
   @override
-  List<Object?> get props => [customerId, username];
+  List<Object?> get props => [id, username, email];
 }

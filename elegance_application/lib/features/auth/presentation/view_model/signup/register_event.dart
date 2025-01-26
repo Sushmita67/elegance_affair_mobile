@@ -8,19 +8,19 @@ sealed class RegisterEvent extends Equatable {
 }
 
 class RegisterCustomer extends RegisterEvent {
-  final BuildContext context;
-  final String fName;
-  final String lName;
+  final String name;
+  final String username;
   final String phone;
   final String email;
   final String password;
+  final String? image;
 
   const RegisterCustomer({
-    required this.context,
-    required this.fName,
-    required this.lName,
+    required this.name,
+    required this.username,
     required this.phone,
     required this.email,
     required this.password,
+    this.image,
   });
 }
