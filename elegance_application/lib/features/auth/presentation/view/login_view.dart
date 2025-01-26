@@ -56,7 +56,7 @@ class _LoginViewState extends State<LoginView> {
                       key: const ValueKey('username'),
                       controller: _usernameController,
                       decoration: InputDecoration(
-                        labelText: "E-MAIL",
+                        labelText: "User Name",
                         labelStyle: GoogleFonts.montserratAlternates(
                           fontSize: 16,
                         ),
@@ -163,7 +163,6 @@ class _LoginViewState extends State<LoginView> {
                         ),
                       ),
                     ),
-
                     const SizedBox(height: 50),
                     // Create Account
                     Row(
@@ -206,9 +205,7 @@ class _LoginViewState extends State<LoginView> {
                         ),
                       ],
                     ),
-
                     const SizedBox(height: 30),
-
                     // OR Divider
                     Row(
                       children: [
@@ -227,25 +224,8 @@ class _LoginViewState extends State<LoginView> {
                       ],
                     ),
                     const SizedBox(height: 30),
-
-                    // Social Media Buttons
-                    Column(
-                      children: [
-                        _buildSocialLoginButton(
-                          "Login with Facebook",
-                          Colors.blue,
-                          Icons.facebook,
-                          Colors.white,
-                        ),
-                        const SizedBox(height: 25),
-                        _buildSocialLoginButton(
-                          "Login with Google",
-                          Colors.grey.shade300,
-                          Icons.g_mobiledata,
-                          Colors.black87,
-                        ),
-                      ],
-                    ),
+                    // Social Media Buttons in a Row
+                    _buildSocialLoginRow(),
                     const SizedBox(height: 90),
                   ],
                 ),
@@ -257,29 +237,40 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 
-  Widget _buildSocialLoginButton(
-      String label, Color bgColor, IconData icon, Color textColor) {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton.icon(
-        onPressed: () {},
-        style: ElevatedButton.styleFrom(
-          backgroundColor: bgColor,
-          padding: const EdgeInsets.symmetric(vertical: 15),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
+  Widget _buildSocialLoginRow() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center, // Center the buttons
+      children: [
+        // Facebook Button
+        ElevatedButton(
+          onPressed: () {},
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.blue,
+            padding: const EdgeInsets.all(15), // Adjust padding for size
+            shape: const CircleBorder(),
+          ),
+          child: Icon(
+            Icons.facebook, // Facebook Icon
+            color: Colors.white,
+            size: 30, // Increase icon size
           ),
         ),
-        icon: Icon(icon, color: textColor),
-        label: Text(
-          label,
-          style: GoogleFonts.montserratAlternates(
-            fontSize: 14,
-            fontWeight: FontWeight.bold,
-            color: textColor,
+        const SizedBox(width: 20), // Add spacing between buttons
+        // Google Button
+        ElevatedButton(
+          onPressed: () {},
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.grey.shade300,
+            padding: const EdgeInsets.all(15), // Adjust padding for size
+            shape: const CircleBorder(),
+          ),
+          child: Icon(
+            Icons.g_mobiledata, // Google Icon
+            color: Colors.black87,
+            size: 30, // Increase icon size
           ),
         ),
-      ),
+      ],
     );
   }
 }
