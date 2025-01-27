@@ -1,18 +1,18 @@
-import 'package:elegance_application/features/auth/domain/entity/customer_entity.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:uuid/uuid.dart';
 
 import '../../../../app/constants/hive_table_constant.dart';
+import '../../domain/entity/user_entity.dart';
 
-part 'customer_hive_model.g.dart';
+part 'user_hive_model.g.dart';
 
 
 //dart run build_runner build -d
 
-@HiveType(typeId: HiveTableConstant.customerTableId)
-class CustomerHiveModel extends Equatable {
+@HiveType(typeId: HiveTableConstant.userTableId)
+class UserHiveModel extends Equatable {
   @HiveField(0)
   final String? id;
 
@@ -34,7 +34,7 @@ class CustomerHiveModel extends Equatable {
   @HiveField(8)
   final String password;
 
-  CustomerHiveModel({
+  UserHiveModel({
     String? id,
     required this.name,
     required this.email,
@@ -45,7 +45,7 @@ class CustomerHiveModel extends Equatable {
   }) : id = id ?? const Uuid().v4();
 
   /// Initial constructor
-  const CustomerHiveModel.initial()
+  const UserHiveModel.initial()
       : id = '',
         name = '',
         email = '',
@@ -55,8 +55,8 @@ class CustomerHiveModel extends Equatable {
         password = '';
 
   // Convert from entity
-  factory CustomerHiveModel.fromEntity(CustomerEntity entity) {
-    return CustomerHiveModel(
+  factory UserHiveModel.fromEntity(UserEntity entity) {
+    return UserHiveModel(
       id: entity.id,
       name: entity.name,
       email: entity.email,
@@ -68,8 +68,8 @@ class CustomerHiveModel extends Equatable {
   }
 
   // Convert to entity
-  CustomerEntity toEntity() {
-    return CustomerEntity(
+  UserEntity toEntity() {
+    return UserEntity(
       id: id,
       name: name,
       email: email,
@@ -80,10 +80,10 @@ class CustomerHiveModel extends Equatable {
     );
   }
 
-  static List<CustomerHiveModel> fromEntityList(
-      List<CustomerEntity> entityList) {
+  static List<UserHiveModel> fromEntityList(
+      List<UserEntity> entityList) {
     return entityList
-        .map((entity) => CustomerHiveModel.fromEntity(entity))
+        .map((entity) => UserHiveModel.fromEntity(entity))
         .toList();
   }
 

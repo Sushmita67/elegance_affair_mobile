@@ -1,12 +1,13 @@
 import 'package:dartz/dartz.dart';
-import 'package:elegance_application/features/auth/domain/entity/customer_entity.dart';
-import 'package:elegance_application/features/auth/domain/repository/customer_repository.dart';
+
 import 'package:equatable/equatable.dart';
 
 import '../../../../app/usecase/usecase.dart';
 import '../../../../core/error/failure.dart';
+import '../entity/user_entity.dart';
+import '../repository/user_repository.dart';
 
-class CreateCustomerParams extends Equatable {
+class CreateUserParams extends Equatable {
   final String? id;
   final String name;
   final String username;
@@ -15,7 +16,7 @@ class CreateCustomerParams extends Equatable {
   final String password;
   final String? image;
 
-  const CreateCustomerParams({
+  const CreateUserParams({
     this.id,
     required this.name,
     required this.username,
@@ -36,16 +37,15 @@ class CreateCustomerParams extends Equatable {
       ];
 }
 
-class CreateCustomerUsecase
-    implements UsecaseWithParams<void, CreateCustomerParams> {
-  final ICustomerRepository customerRepository;
+class CreateUserUsecase implements UsecaseWithParams<void, CreateUserParams> {
+  final IUserRepository userRepository;
 
-  const CreateCustomerUsecase({required this.customerRepository});
+  const CreateUserUsecase({required this.userRepository});
 
   @override
-  Future<Either<Failure, void>> call(CreateCustomerParams params) async {
-    // Create the customer entity from the params
-    final customerEntity = CustomerEntity(
+  Future<Either<Failure, void>> call(CreateUserParams params) async {
+    // Create the user entity from the params
+    final userEntity = UserEntity(
       id: null, // The ID will be generated automatically
       name: params.name,
       email: params.email,
@@ -55,7 +55,7 @@ class CreateCustomerUsecase
       image: params.image,
     );
 
-    // Call the repository method to create the customer
-    return await customerRepository.createCustomer(customerEntity);
+    // Call the repository method to create the user
+    return await userRepository.createUser(userEntity);
   }
 }

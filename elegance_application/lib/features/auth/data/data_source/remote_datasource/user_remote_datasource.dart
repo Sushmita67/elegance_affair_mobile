@@ -1,10 +1,9 @@
 import 'package:dio/dio.dart';
 
 import '../../../../../app/constants/api_enpoints.dart';
-import '../../../domain/entity/customer_entity.dart';
+import '../../../domain/entity/login_response_entity.dart';
+import '../../../domain/entity/user_entity.dart';
 import '../../model/user_api_model.dart';
-
-
 
 class UserRemoteDataSource {
   final Dio _dio;
@@ -12,7 +11,7 @@ class UserRemoteDataSource {
   UserRemoteDataSource(this._dio);
 
   /// Creates a new user
-  Future<void> createUser(CustomerEntity userEntity) async {
+  Future<void> createUser(UserEntity userEntity) async {
     try {
       // Convert entity to model
       var userApiModel = UserApiModel.fromEntity(userEntity);
@@ -51,7 +50,7 @@ class UserRemoteDataSource {
   }
 
   /// Gets all users
-  Future<List<CustomerEntity>> getAllUsers() async {
+  Future<List<UserEntity>> getAllUsers() async {
     try {
       var response = await _dio.get(ApiEndpoints.getAllUsers);
       if (response.statusCode == 200) {
@@ -69,8 +68,36 @@ class UserRemoteDataSource {
     }
   }
 
+//   /// Logs in a user
+//   Future<UserEntity> login(String email, String password) async {
+//     try {
+//       var response = await _dio.post(
+//         ApiEndpoints.login,
+//         data: {
+//           'email': email,
+//           'password': password,
+//         },
+//       );
+//
+//       print('Response Data: ${response.data}');
+//
+//       // Check if response is not null and has statusCode 200
+//       if (response.statusCode == 200) {
+//         return UserApiModel.fromJson(response.data).toEntity();
+//       } else {
+//         throw Exception(response.statusMessage);
+//       }
+//     } on DioException catch (e) {
+//       throw Exception(e.message);
+//     } catch (e) {
+//       throw Exception(e.toString());
+//     }
+//   }
+// }
+
+
   /// Logs in a user
-  Future<CustomerEntity> login(String email, String password) async {
+  Future<LoginResponseEntity> login(String email, String password) async {
     try {
       var response = await _dio.post(
         ApiEndpoints.login,
@@ -79,15 +106,47 @@ class UserRemoteDataSource {
           'password': password,
         },
       );
-      if (response.statusCode == 200) {
-        return UserApiModel.fromJson(response.data).toEntity();
+
+      print('Response Data: ${response.data}');
+
+      // Check if response is not null and has statusCode 200
+      if (response.statusCode == 200 && response.data != null) {
+        var responseData = response.data;
+
+        // Ensure the response contains necessary data, including 'token'
+        String? token = responseData['token'];
+        String? userId = responseData['user_id'];
+        String? email = responseData['email'];
+        String? role = responseData['role'];
+        String? image = responseData['image']; // Null is allowed here
+
+        if (token != null && userId != null && email != null && role != null) {
+          // Safely handle nullable fields
+          return LoginResponseEntity(
+            user: UserEntity(
+              id: userId,
+              email: email,
+              image: image ?? '',
+              name: '',
+              username: '',
+              phone: '',
+              password: '',
+            ),
+            token: token,
+          );
+        } else {
+          throw Exception(
+              'Response does not contain valid token, user_id, email, or role');
+        }
       } else {
-        throw Exception(response.statusMessage);
+        throw Exception('Invalid response: ${response.statusMessage}');
       }
     } on DioException catch (e) {
-      throw Exception(e.message);
+      throw Exception('Dio Error: ${e.message ?? 'Unknown error'}');
     } catch (e) {
-      throw Exception(e.toString());
+      throw Exception('An unexpected error occurred: $e');
     }
   }
 }
+
+

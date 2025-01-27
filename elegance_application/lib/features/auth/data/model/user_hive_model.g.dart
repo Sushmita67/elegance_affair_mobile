@@ -1,22 +1,22 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'customer_hive_model.dart';
+part of 'user_hive_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class CustomerHiveModelAdapter extends TypeAdapter<CustomerHiveModel> {
+class UserHiveModelAdapter extends TypeAdapter<UserHiveModel> {
   @override
   final int typeId = 7;
 
   @override
-  CustomerHiveModel read(BinaryReader reader) {
+  UserHiveModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return CustomerHiveModel(
+    return UserHiveModel(
       id: fields[0] as String?,
       name: fields[1] as String,
       email: fields[2] as String,
@@ -28,7 +28,7 @@ class CustomerHiveModelAdapter extends TypeAdapter<CustomerHiveModel> {
   }
 
   @override
-  void write(BinaryWriter writer, CustomerHiveModel obj) {
+  void write(BinaryWriter writer, UserHiveModel obj) {
     writer
       ..writeByte(7)
       ..writeByte(0)
@@ -53,7 +53,7 @@ class CustomerHiveModelAdapter extends TypeAdapter<CustomerHiveModel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is CustomerHiveModelAdapter &&
+      other is UserHiveModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

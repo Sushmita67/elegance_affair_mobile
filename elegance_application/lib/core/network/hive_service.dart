@@ -1,8 +1,8 @@
-import 'package:elegance_application/features/auth/data/model/customer_hive_model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../app/constants/hive_table_constant.dart';
+import '../../features/auth/data/model/user_hive_model.dart';
 
 class HiveService {
   Future<void> init() async {
@@ -14,38 +14,38 @@ class HiveService {
     Hive.init(path);
 
     //Register Adapters
-    Hive.registerAdapter(CustomerHiveModelAdapter());
+    Hive.registerAdapter(UserHiveModelAdapter());
   }
 
-  // Customer Queries
-  Future<void> addCustomer(CustomerHiveModel customer) async {
+  // User Queries
+  Future<void> addUser(UserHiveModel user) async {
     var box =
-        await Hive.openBox<CustomerHiveModel>(HiveTableConstant.customerBox);
-    await box.put(customer.id, customer);
+        await Hive.openBox<UserHiveModel>(HiveTableConstant.userBox);
+    await box.put(user.id, user);
   }
 
-  Future<void> deleteCustomer(String id) async {
+  Future<void> deleteUser(String id) async {
     var box =
-        await Hive.openBox<CustomerHiveModel>(HiveTableConstant.customerBox);
+        await Hive.openBox<UserHiveModel>(HiveTableConstant.userBox);
     await box.delete(id);
   }
 
-  Future<List<CustomerHiveModel>> getAllCustomers() async {
+  Future<List<UserHiveModel>> getAllUsers() async {
     var box =
-        await Hive.openBox<CustomerHiveModel>(HiveTableConstant.customerBox);
-    var customers = box.values.toList();
-    return customers;
+        await Hive.openBox<UserHiveModel>(HiveTableConstant.userBox);
+    var users = box.values.toList();
+    return users;
   }
 
-  Future<CustomerHiveModel?> loginCustomer(
+  Future<UserHiveModel?> loginUser(
       String username, String password) async {
     var box =
-        await Hive.openBox<CustomerHiveModel>(HiveTableConstant.customerBox);
+        await Hive.openBox<UserHiveModel>(HiveTableConstant.userBox);
 
     var auth = box.values.firstWhere(
         (element) =>
             element.username == username && element.password == password,
-        orElse: () => CustomerHiveModel.initial());
+        orElse: () => UserHiveModel.initial());
 
     return auth;
   }

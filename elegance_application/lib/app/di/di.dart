@@ -1,10 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:elegance_application/core/network/hive_service.dart';
-import 'package:elegance_application/features/auth/data/data_source/local_datasource/customer_local_datasource.dart';
 import 'package:elegance_application/features/auth/data/data_source/remote_datasource/user_remote_datasource.dart';
-import 'package:elegance_application/features/auth/data/repository/customer_local_repository.dart';
-import 'package:elegance_application/features/auth/domain/use_case/create_customer_usecase.dart';
-import 'package:elegance_application/features/auth/domain/use_case/login_customer_usecase.dart';
 import 'package:elegance_application/features/auth/presentation/view_model/login/login_bloc.dart';
 import 'package:elegance_application/features/auth/presentation/view_model/signup/register_bloc.dart';
 import 'package:elegance_application/features/home/presentation/view_model/home_cubit.dart';
@@ -14,6 +10,8 @@ import 'package:get_it/get_it.dart';
 
 import '../../core/network/api_service.dart';
 import '../../features/auth/data/repository/user_remote_repository.dart';
+import '../../features/auth/domain/use_case/create_user_usecase.dart';
+import '../../features/auth/domain/use_case/login_user_usecase.dart';
 
 final getIt = GetIt.instance;
 
@@ -47,43 +45,43 @@ _initHomeDependencies() async {
 
 // _initCommonDependencies() {
 //   // Register common dependencies used across multiple features
-//   if (!getIt.isRegistered<CustomerLocalDatasource>()) {
-//     getIt.registerFactory<CustomerLocalDatasource>(
-//       () => CustomerLocalDatasource(getIt<HiveService>()),
+//   if (!getIt.isRegistered<UserLocalDatasource>()) {
+//     getIt.registerFactory<UserLocalDatasource>(
+//       () => UserLocalDatasource(getIt<HiveService>()),
 //     );
 //   }
 //
-//   if (!getIt.isRegistered<CustomerLocalRepository>()) {
-//     getIt.registerLazySingleton<CustomerLocalRepository>(() =>
-//         CustomerLocalRepository(
-//             customerLocalDataSource: getIt<CustomerLocalDatasource>()));
+//   if (!getIt.isRegistered<UserLocalRepository>()) {
+//     getIt.registerLazySingleton<UserLocalRepository>(() =>
+//         UserLocalRepository(
+//             userLocalDataSource: getIt<UserLocalDatasource>()));
 //   }
 // }
 //
 // _initRegisterDependencies() async {
-//   // Register CreateCustomerUsecase once
-//   getIt.registerLazySingleton<CreateCustomerUsecase>(() =>
-//       CreateCustomerUsecase(
-//           customerRepository: getIt<CustomerLocalRepository>()));
+//   // Register CreateUserUsecase once
+//   getIt.registerLazySingleton<CreateUserUsecase>(() =>
+//       CreateUserUsecase(
+//           userRepository: getIt<UserLocalRepository>()));
 //
 //   // Register RegisterBloc with the required parameters
 //   getIt.registerFactory<RegisterBloc>(
 //     () => RegisterBloc(
-//       registerUseCase: getIt<CreateCustomerUsecase>(),
-//       createCustomerUsecase: getIt<CreateCustomerUsecase>(),
+//       registerUseCase: getIt<CreateUserUsecase>(),
+//       createUserUsecase: getIt<CreateUserUsecase>(),
 //     ),
 //   );
 // }
 //
 // _initLoginDependencies() async {
-//   // Use common CustomerLocalDatasource and CustomerLocalRepository
-//   getIt.registerLazySingleton<LoginCustomerUsecase>(() => LoginCustomerUsecase(
-//       customerRepository: getIt<CustomerLocalRepository>()));
+//   // Use common UserLocalDatasource and UserLocalRepository
+//   getIt.registerLazySingleton<LoginUserUsecase>(() => LoginUserUsecase(
+//       userRepository: getIt<UserLocalRepository>()));
 //   getIt.registerFactory<LoginBloc>(
 //     () => LoginBloc(
 //       registerBloc: getIt<RegisterBloc>(),
 //       homeCubit: getIt<HomeCubit>(),
-//       loginCustomerUsecase: getIt<LoginCustomerUsecase>(),
+//       loginUserUsecase: getIt<LoginUserUsecase>(),
 //     ),
 //   );
 // }
@@ -101,24 +99,24 @@ _initRegisterDependencies() async {
   }
 
   // Register CreateStudentUsecase
-  getIt.registerLazySingleton<CreateCustomerUsecase>(
-          () => CreateCustomerUsecase(customerRepository: getIt<UserRemoteRepository>()));
+  getIt.registerLazySingleton<CreateUserUsecase>(
+          () => CreateUserUsecase(userRepository: getIt<UserRemoteRepository>()));
 
   // Register RegisterBloc
   getIt.registerFactory<RegisterBloc>(
         () => RegisterBloc(
       // batchBloc: getIt<BatchBloc>(),
       // workshopBloc: getIt<WorkshopBloc>(),
-      createCustomerUsecase: getIt<CreateCustomerUsecase>(),
+      createUserUsecase: getIt<CreateUserUsecase>(),
     ),
   );
 }
 
 _initLoginDependencies() async {
   // Use common StudentRemoteDataSource and StudentLocalRepository
-  if (!getIt.isRegistered<LoginCustomerUsecase>()) {
-    getIt.registerLazySingleton<LoginCustomerUsecase>(
-            () => LoginCustomerUsecase(customerRepository: getIt<UserRemoteRepository>()));
+  if (!getIt.isRegistered<LoginUserUsecase>()) {
+    getIt.registerLazySingleton<LoginUserUsecase>(
+            () => LoginUserUsecase(userRepository: getIt<UserRemoteRepository>()));
   }
 
   getIt.registerFactory<LoginBloc>(
@@ -127,7 +125,7 @@ _initLoginDependencies() async {
       homeCubit: getIt<HomeCubit>(),
       // batchBloc: getIt<BatchBloc>(),
       // workshopBloc: getIt<WorkshopBloc>(),
-      loginCustomerUsecase: getIt<LoginCustomerUsecase>(),
+      loginUserUsecase: getIt<LoginUserUsecase>(),
     ),
   );
 }

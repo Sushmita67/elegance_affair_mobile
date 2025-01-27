@@ -1,20 +1,19 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/error/failure.dart';
-import '../../domain/entity/customer_entity.dart';
-import '../../domain/repository/customer_repository.dart';
+import '../../domain/entity/user_entity.dart';
+import '../../domain/repository/user_repository.dart';
 import '../data_source/remote_datasource/user_remote_datasource.dart';
 
-
-class UserRemoteRepository implements ICustomerRepository {
+class UserRemoteRepository implements IUserRepository {
   final UserRemoteDataSource _userRemoteDataSource;
 
   UserRemoteRepository(this._userRemoteDataSource);
 
   @override
-  Future<Either<Failure, void>> createCustomer(CustomerEntity customerEntity) async {
+  Future<Either<Failure, void>> createUser(UserEntity userEntity) async {
     try {
-      await _userRemoteDataSource.createUser(customerEntity);
+      await _userRemoteDataSource.createUser(userEntity);
       return const Right(null);
     } catch (e) {
       return Left(
@@ -26,7 +25,7 @@ class UserRemoteRepository implements ICustomerRepository {
   }
 
   @override
-  Future<Either<Failure, List<CustomerEntity>>> getAllUsers() async {
+  Future<Either<Failure, List<UserEntity>>> getAllUsers() async {
     try {
       final users = await _userRemoteDataSource.getAllUsers();
       return Right(users);
@@ -54,31 +53,23 @@ class UserRemoteRepository implements ICustomerRepository {
   }
 
   @override
-  Future<Either<Failure, CustomerEntity>> login(
-      String username, String password) async {
+  Future<Either<Failure, UserEntity>> login(
+      String email, String password) async {
     try {
-      final user = await _userRemoteDataSource.login(username, password);
+      final loginResponse = await _userRemoteDataSource.login(email, password);
+
+      // Extract the UserEntity from the LoginResponseEntity
+      final user = loginResponse.user;
+
+      // Return the UserEntity as a Right value
       return Right(user);
     } catch (e) {
+      // Handle any errors and return the failure message
       return Left(
-        ApiFailure(
+        LocalDatabaseFailure(
           message: 'Login failed: $e',
         ),
       );
     }
-  }
-
-
-
-  @override
-  Future<Either<Failure, void>> deleteCustomer(String id) {
-    // TODO: implement deleteCustomer
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<Failure, List<CustomerEntity>>> getAllCustomers() {
-    // TODO: implement getAllCustomers
-    throw UnimplementedError();
   }
 }

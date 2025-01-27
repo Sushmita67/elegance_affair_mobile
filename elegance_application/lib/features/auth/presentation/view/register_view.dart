@@ -287,7 +287,7 @@ class _RegisterViewState extends State<RegisterView> {
                         }
                         if (_key.currentState!.validate()) {
                           context.read<RegisterBloc>().add(
-                                RegisterCustomer(
+                                RegisterUser(
                                   name: _nameController.text,
                                   username: _usernameController.text,
                                   phone: _phoneController.text,

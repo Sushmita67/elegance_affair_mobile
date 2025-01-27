@@ -28,7 +28,7 @@ class HiveTableConstant {
   static const int testTableId = 6;
   static const String testBox = 'testBox';
 
-  // Customer
-  static const int customerTableId = 7;
-  static const String customerBox = 'customerBox';
+  // User
+  static const int userTableId = 7;
+  static const String userBox = 'userBox';
 }

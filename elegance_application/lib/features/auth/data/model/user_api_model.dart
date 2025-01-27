@@ -1,7 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import '../../domain/entity/customer_entity.dart';
+import '../../domain/entity/user_entity.dart';
+
 
 
 @JsonSerializable()
@@ -43,7 +44,7 @@ class UserApiModel extends Equatable {
       phone: json['phone'] as String,
       email: json['email'] as String,
       password: json['password'] as String,
-      image: json['photo'] as String?,
+      image: json['image'] as String?,
     );
   }
 
@@ -61,7 +62,7 @@ class UserApiModel extends Equatable {
   }
 
   /// Converts the API model to a domain entity
-  CustomerEntity toEntity() => CustomerEntity(
+  UserEntity toEntity() => UserEntity(
     id: id,
     name: name,
     username: username,
@@ -73,7 +74,7 @@ class UserApiModel extends Equatable {
   );
 
   /// Converts a domain entity to an API model
-  factory UserApiModel.fromEntity(CustomerEntity entity) {
+  factory UserApiModel.fromEntity(UserEntity entity) {
     return UserApiModel(
       id: entity.id,
       name: entity.name,
@@ -86,7 +87,7 @@ class UserApiModel extends Equatable {
   }
 
   /// Converts a list of API models to a list of entities
-  static List<CustomerEntity> toEntityList(List<UserApiModel> models) {
+  static List<UserEntity> toEntityList(List<UserApiModel> models) {
     return models.map((model) => model.toEntity()).toList();
   }
 
