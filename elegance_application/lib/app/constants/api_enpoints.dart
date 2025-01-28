@@ -7,6 +7,9 @@ class ApiEndpoints {
   // For Android Emulator
   static const String baseUrl = "http://10.0.2.2:5000/api/";
 
+  // For iphone
+  // static const String baseUrl = "http://localhost:5000/api/";
+
   // ============= Auth Routes =============
   static const String login = "auth/login";
   static const String register = "auth/register-mobile";
@@ -15,7 +18,7 @@ class ApiEndpoints {
   static const String deleteUser = "auth/delete/";
   static const String getAllUsers = "auth/getAllUsers/";
 
-  static const String imageUrl = "http://10.0.2.2:3000/uploads/";
+  static const String imageUrl = "http://10.0.2.2:5000/uploads/";
   static const String uploadImage = "auth/uploadImage";
 
   // ============= Workshop Routes =============
