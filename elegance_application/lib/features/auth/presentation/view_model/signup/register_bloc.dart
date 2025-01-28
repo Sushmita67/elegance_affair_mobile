@@ -9,32 +9,26 @@ part 'register_state.dart';
 
 
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
-  // final BatchBloc _batchBloc;
-  // final WorkshopBloc _workshopBloc;
+
   final CreateUserUsecase _createUserUsecase;
 
   RegisterBloc({
-    // required BatchBloc batchBloc,
-    // required WorkshopBloc workshopBloc,
     required CreateUserUsecase createUserUsecase,
   })  :
-  // _batchBloc = batchBloc,
-  // _workshopBloc = workshopBloc,
+
         _createUserUsecase = createUserUsecase,
         super(RegisterState.initial()) {
-    // on<LoadCoursesAndBatches>(_onRegisterEvent);
+
     on<RegisterUser>(_onRegisterUser);
 
-    // add(LoadCoursesAndBatches());
   }
 
   void _onRegisterEvent(
-      // LoadCoursesAndBatches event,
+
       Emitter<RegisterState> emit,
       ) {
     emit(state.copyWith(isLoading: true));
-    // _batchBloc.add(LoadBatches());
-    // _workshopBloc.add(LoadWorkshops());
+
     emit(state.copyWith(isLoading: false, isSuccess: true));
   }
 
