@@ -105,8 +105,6 @@ _initRegisterDependencies() async {
   // Register RegisterBloc
   getIt.registerFactory<RegisterBloc>(
         () => RegisterBloc(
-      // batchBloc: getIt<BatchBloc>(),
-      // workshopBloc: getIt<WorkshopBloc>(),
       createUserUsecase: getIt<CreateUserUsecase>(),
     ),
   );
@@ -123,8 +121,6 @@ _initLoginDependencies() async {
         () => LoginBloc(
       registerBloc: getIt<RegisterBloc>(),
       homeCubit: getIt<HomeCubit>(),
-      // batchBloc: getIt<BatchBloc>(),
-      // workshopBloc: getIt<WorkshopBloc>(),
       loginUserUsecase: getIt<LoginUserUsecase>(),
     ),
   );
