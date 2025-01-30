@@ -1,0 +1,280 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:elegance_application/features/auth/presentation/view/register_view.dart';
+
+import '../../../../core/common/snackbar/snackbar.dart';
+import '../../../home/presentation/view/home_view.dart';
+import '../view_model/login/login_bloc.dart';
+
+class LoginView extends StatefulWidget {
+  LoginView({Key? key}) : super(key: key);
+
+  @override
+  _LoginViewState createState() => _LoginViewState();
+}
+
+class _LoginViewState extends State<LoginView> {
+  final _formKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController(text: '');
+  final _passwordController = TextEditingController(text: '');
+  bool _obscurePassword = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // Logo
+                    Center(
+                      child: SvgPicture.asset(
+                        'assets/icons/logo-2.svg',
+                        height: 170,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    // Heading Text
+                    Text(
+                      "Welcome Back!",
+                      style: GoogleFonts.playfairDisplaySc(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 25),
+                    // Email Field
+                    TextFormField(
+                      key: const ValueKey('email'),
+                      controller: _emailController,
+                      decoration: InputDecoration(
+                        labelText: "Email",
+                        labelStyle: GoogleFonts.montserratAlternates(
+                          fontSize: 16,
+                        ),
+                        border: const OutlineInputBorder(),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your email';
+                        }
+                        if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                            .hasMatch(value)) {
+                          return 'Please enter a valid email address';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 25),
+                    // Password Field with Toggle
+                    TextFormField(
+                      key: const ValueKey('password'),
+                      controller: _passwordController,
+                      obscureText: _obscurePassword,
+                      decoration: InputDecoration(
+                        labelText: "Password",
+                        labelStyle: GoogleFonts.montserratAlternates(
+                          fontSize: 16,
+                        ),
+                        border: const OutlineInputBorder(),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscurePassword
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _obscurePassword = !_obscurePassword;
+                            });
+                          },
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your password';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    // Forgot Password
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/forgot_password');
+                        },
+                        child: Text(
+                          "FORGOT PASSWORD?",
+                          style: GoogleFonts.montserrat(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    // Login Button
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            context.read<LoginBloc>().add(
+                              LoginUserEvent(
+                                context: context,
+                                email: _emailController.text,
+                                password: _passwordController.text,
+                              ),
+                            );
+
+                            if (_emailController.text == 'sushmita@gmail.com' &&
+                                _passwordController.text == 'sush123') {
+                              context.read<LoginBloc>().add(
+                                NavigateHomeScreenEvent(
+                                  destination: HomeView(),
+                                  context: context,
+                                ),
+                              );
+                            } else {
+                              showMySnackBar(
+                                context: context,
+                                message: 'Invalid email or password',
+                                color: Colors.red,
+                              );
+                            }
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 30, vertical: 15),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                        ),
+                        child: const Text(
+                          "Log In",
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 50),
+                    // Create Account
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "Don't have an account?",
+                          style: TextStyle(
+                            color: Colors.black54,
+                            fontSize: 18,
+                          ),
+                        ),
+                        const SizedBox(width: 5),
+                        ElevatedButton(
+                          key: const ValueKey('createAccountButton'),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => RegisterView()),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.transparent,
+                            elevation: 0,
+                            padding: const EdgeInsets.symmetric(horizontal: 15),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              side: BorderSide.none,
+                            ),
+                          ),
+                          child: Text(
+                            "Create Account",
+                            style: GoogleFonts.montserratAlternates(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 30),
+                    // OR Divider
+                    Row(
+                      children: [
+                        const Expanded(child: Divider(thickness: 2)),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: Text(
+                            "OR",
+                            style: GoogleFonts.montserrat(
+                              fontWeight: FontWeight.bold,
+                              color: const Color.fromARGB(255, 43, 42, 42),
+                            ),
+                          ),
+                        ),
+                        const Expanded(child: Divider(thickness: 2)),
+                      ],
+                    ),
+                    const SizedBox(height: 30),
+                    // Social Media Buttons in a Row
+                    _buildSocialLoginRow(),
+                    const SizedBox(height: 90),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSocialLoginRow() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        // Facebook Button
+        ElevatedButton(
+          onPressed: () {},
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.blue,
+            padding: const EdgeInsets.all(15),
+            shape: const CircleBorder(),
+          ),
+          child: Icon(
+            Icons.facebook,
+            color: Colors.white,
+            size: 30,
+          ),
+        ),
+        const SizedBox(width: 20),
+        // Google Button
+        ElevatedButton(
+          onPressed: () {},
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.grey.shade300,
+            padding: const EdgeInsets.all(15),
+            shape: const CircleBorder(),
+          ),
+          child: Icon(
+            Icons.g_mobiledata,
+            color: Colors.black87,
+            size: 30,
+          ),
+        ),
+      ],
+    );
+  }
+}
