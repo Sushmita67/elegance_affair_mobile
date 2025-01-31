@@ -179,16 +179,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:elegance_application/features/onboarding/presentation/view_model/onboarding_cubit.dart';
 
-class OnboardingScreenView extends StatefulWidget {
-  const OnboardingScreenView({super.key});
 
-  @override
-  State<OnboardingScreenView> createState() => _OnboardingScreenViewState();
-}
+class OnboardingView extends StatelessWidget {
+  OnboardingView({super.key});
 
-class _OnboardingScreenViewState extends State<OnboardingScreenView> {
   final PageController _pageController = PageController();
-  int _currentPage = 0;
+  final ValueNotifier<int> _currentPage = ValueNotifier<int>(0);
 
   final List<Map<String, String>> _onboardingData = [
     {
@@ -199,19 +195,17 @@ class _OnboardingScreenViewState extends State<OnboardingScreenView> {
     {
       "image": "assets/images/ring.jpg",
       "title": "Personalize Your Look\n🪞✨",
-      "description":
-          "Create your unique style with customizable jewelry designs."
+      "description": "Create your unique style with customizable jewelry designs."
     },
     {
       "image": "assets/images/neckset.jpg",
       "title": "Shop with Confidence\n🛍️🪄",
-      "description":
-          "Enjoy free returns and a lifetime warranty on all purchases."
+      "description": "Enjoy free returns and a lifetime warranty on all purchases."
     },
   ];
 
   void _goToLoginPage(BuildContext context) {
-    context.read<OnboardingCubit>().skipToLoginPage(context);
+    context.read<OnboardingCubit>().goToLogin(context);
   }
 
   @override
@@ -219,13 +213,10 @@ class _OnboardingScreenViewState extends State<OnboardingScreenView> {
     return Scaffold(
       body: Stack(
         children: [
-          // Fullscreen PageView for Background Images
           PageView.builder(
             controller: _pageController,
             onPageChanged: (index) {
-              setState(() {
-                _currentPage = index;
-              });
+              _currentPage.value = index;
             },
             itemCount: _onboardingData.length,
             itemBuilder: (context, index) {
@@ -237,7 +228,6 @@ class _OnboardingScreenViewState extends State<OnboardingScreenView> {
               );
             },
           ),
-          // Description Section Positioned Above Progress Dots
           Positioned(
             bottom: 120,
             left: 20,
@@ -248,54 +238,53 @@ class _OnboardingScreenViewState extends State<OnboardingScreenView> {
                 width: double.infinity,
                 decoration: BoxDecoration(
                   color: Colors.black.withOpacity(0.5),
-                  borderRadius: const BorderRadius.vertical(
-                    top: Radius.circular(25),
-                    bottom: Radius.circular(25),
-                  ),
+                  borderRadius: BorderRadius.circular(25),
                 ),
-                padding:
-                    const EdgeInsets.symmetric(vertical: 25, horizontal: 16),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      _onboardingData[_currentPage]['title']!,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      _onboardingData[_currentPage]['description']!,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white70,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                  ],
+                padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 16),
+                child: ValueListenableBuilder<int>(
+                  valueListenable: _currentPage,
+                  builder: (context, value, child) {
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          _onboardingData[value]['title']!,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          _onboardingData[value]['description']!,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white70,
+                          ),
+                        ),
+                      ],
+                    );
+                  },
                 ),
               ),
             ),
           ),
-          // Navigation Buttons and Skip Button (Placed Below the Description Box)
           Positioned(
             bottom: 25,
             left: 330,
             right: 10,
-            child: Column(
-              children: [
-                // Navigation Button
-                SizedBox(
+            child: ValueListenableBuilder<int>(
+              valueListenable: _currentPage,
+              builder: (context, value, child) {
+                return SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {
-                      if (_currentPage == _onboardingData.length - 1) {
+                      if (value == _onboardingData.length - 1) {
                         _goToLoginPage(context);
                       } else {
                         _pageController.nextPage(
@@ -312,50 +301,44 @@ class _OnboardingScreenViewState extends State<OnboardingScreenView> {
                       ),
                     ),
                     child: Text(
-                      _currentPage == _onboardingData.length - 1
-                          ? "Get Started"
-                          : "Next",
+                      value == _onboardingData.length - 1 ? "Get Started" : "Next",
                       style: const TextStyle(fontSize: 18, color: Colors.white),
                     ),
                   ),
-                ),
-                const SizedBox(height: 10),
-              ],
+                );
+              },
             ),
           ),
           Positioned(
             top: 50,
             left: 350,
-            right: 0,
-            child: Column(
-              children: [
-                // Skip Button
-                TextButton(
-                  onPressed: () => _goToLoginPage(context),
-                  child: const Text(
-                    "Skip",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Color.fromARGB(255, 0, 0, 0),
-                    ),
-                  ),
+            child: TextButton(
+              onPressed: () => _goToLoginPage(context),
+              child: const Text(
+                "Skip",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
                 ),
-              ],
+              ),
             ),
           ),
-
-          // Progress Indicator Dots in Diamond Shape
           Positioned(
             bottom: 50,
             left: 0,
             right: 330,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(
-                _onboardingData.length,
-                (index) => _buildDiamondDot(index),
-              ),
+            child: ValueListenableBuilder<int>(
+              valueListenable: _currentPage,
+              builder: (context, value, child) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(
+                    _onboardingData.length,
+                        (index) => _buildDiamondDot(index, value),
+                  ),
+                );
+              },
             ),
           ),
         ],
@@ -363,27 +346,21 @@ class _OnboardingScreenViewState extends State<OnboardingScreenView> {
     );
   }
 
-  // Helper Widget: Diamond-shaped Progress Dots
-  Widget _buildDiamondDot(int index) {
+  Widget _buildDiamondDot(int index, int currentPage) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       margin: const EdgeInsets.symmetric(horizontal: 5),
       height: 12,
       width: 12,
       decoration: BoxDecoration(
-        color: _currentPage == index ? Colors.pink : Colors.white70,
+        color: currentPage == index ? Colors.pink : Colors.white70,
         shape: BoxShape.rectangle,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(10),
-          topRight: Radius.circular(10),
-          bottomLeft: Radius.circular(10),
-          bottomRight: Radius.circular(10),
-        ),
+        borderRadius: BorderRadius.circular(10),
       ),
       child: Transform.rotate(
         angle: 0.785398,
         child: Container(
-          color: _currentPage == index ? Colors.pink : Colors.white70,
+          color: currentPage == index ? Colors.pink : Colors.white70,
         ),
       ),
     );
