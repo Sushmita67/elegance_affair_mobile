@@ -9,7 +9,7 @@ class UserLocalDatasource implements IUserDataSource {
   UserLocalDatasource(this._hiveService);
 
   @override
-  Future<void> createUser(UserEntity userEntity) async {
+  Future<void> createUser(userEntity) async {
     try {
       final userHiveModel = UserHiveModel.fromEntity(userEntity);
       await _hiveService.addUser(userHiveModel);
@@ -41,8 +41,7 @@ class UserLocalDatasource implements IUserDataSource {
   @override
   Future<UserEntity> login(String email, String password) async {
     try {
-      final userHiveModel =
-          await _hiveService.loginUser(email, password);
+      final userHiveModel = await _hiveService.loginUser(email, password);
       return userHiveModel!.toEntity();
     } catch (e) {
       throw Exception(e);
