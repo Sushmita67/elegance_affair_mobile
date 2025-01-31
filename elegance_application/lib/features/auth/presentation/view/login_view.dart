@@ -1,236 +1,178 @@
+import 'package:elegance_application/features/auth/presentation/view/register_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:elegance_application/features/auth/presentation/view/register_view.dart';
 
-import '../../../../core/common/snackbar/snackbar.dart';
+import '../../../../core/common/logo.dart';
 import '../../../home/presentation/view/home_view.dart';
 import '../view_model/login/login_bloc.dart';
 
-class LoginView extends StatefulWidget {
-  LoginView({Key? key}) : super(key: key);
+class LoginView extends StatelessWidget {
+  LoginView({super.key});
 
-  @override
-  _LoginViewState createState() => _LoginViewState();
-}
-
-class _LoginViewState extends State<LoginView> {
   final _formKey = GlobalKey<FormState>();
-  final _emailController = TextEditingController(text: '');
-  final _passwordController = TextEditingController(text: '');
-  bool _obscurePassword = true;
+  final _emailController = TextEditingController(text: 'sush@gmail.com');
+  final _passwordController = TextEditingController(text: 'sush123');
+
+  final _gap = const SizedBox(height: 8);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Form(
-                key: _formKey,
+        child: Form(
+          key: _formKey,
+          child: Center(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(24),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Logo
-                    Center(
-                      child: SvgPicture.asset(
-                        'assets/icons/logo-2.svg',
-                        height: 170,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    // Heading Text
-                    Text(
-                      "Welcome Back!",
-                      style: GoogleFonts.playfairDisplaySc(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 25),
-                    // Email Field
-                    TextFormField(
-                      key: const ValueKey('email'),
-                      controller: _emailController,
-                      decoration: InputDecoration(
-                        labelText: "Email",
-                        labelStyle: GoogleFonts.montserratAlternates(
-                          fontSize: 16,
-                        ),
-                        border: const OutlineInputBorder(),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your email';
-                        }
-                        if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-                            .hasMatch(value)) {
-                          return 'Please enter a valid email address';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 25),
-                    // Password Field with Toggle
-                    TextFormField(
-                      key: const ValueKey('password'),
-                      controller: _passwordController,
-                      obscureText: _obscurePassword,
-                      decoration: InputDecoration(
-                        labelText: "Password",
-                        labelStyle: GoogleFonts.montserratAlternates(
-                          fontSize: 16,
-                        ),
-                        border: const OutlineInputBorder(),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _obscurePassword
-                                ? Icons.visibility_off
-                                : Icons.visibility,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              _obscurePassword = !_obscurePassword;
-                            });
-                          },
-                        ),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your password';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 20),
-                    // Forgot Password
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/forgot_password');
-                        },
-                        child: Text(
-                          "FORGOT PASSWORD?",
-                          style: GoogleFonts.montserrat(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    // Login Button
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
-                            context.read<LoginBloc>().add(
-                              LoginUserEvent(
-                                context: context,
-                                email: _emailController.text,
-                                password: _passwordController.text,
+                    BlocBuilder<LoginBloc, LoginState>(
+                      builder: (context, state) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            // Logo
+                            Center(
+                              child: SvgPicture.asset(
+                                'assets/icons/logo-2.svg',
+                                height: 170,
                               ),
-                            );
+                            ),
+                            const SizedBox(height: 20),
+                            // Heading Text
+                            Text(
+                              "Welcome Back!",
+                              style: GoogleFonts.playfairDisplaySc(
+                                fontSize: 28,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 25),
 
-                            if (_emailController.text == 'sushmita@gmail.com' &&
-                                _passwordController.text == 'sush123') {
-                              context.read<LoginBloc>().add(
-                                NavigateHomeScreenEvent(
-                                  destination: HomeView(),
-                                  context: context,
+                            TextFormField(
+                              key: const ValueKey('email'),
+                              controller: _emailController,
+                              decoration: InputDecoration(
+                                border: const OutlineInputBorder(),
+                                labelText: 'Email', labelStyle: GoogleFonts.montserratAlternates(
+                                fontSize: 16, fontWeight: FontWeight.bold
+                              ),
+                              ),
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Please enter email';
+                                }
+                                if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                                    .hasMatch(value)) {
+                                  return 'Please enter a valid email address';
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 25),
+                            TextFormField(
+                              key: const ValueKey('password'),
+                              controller: _passwordController,
+                              obscureText: !state.isPasswordVisible,
+                              decoration: InputDecoration(
+                                labelText: 'Password', labelStyle: GoogleFonts.montserratAlternates(
+                                fontSize: 16, fontWeight: FontWeight.bold
+                              ),
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    state.isPasswordVisible
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                  ),
+                                  onPressed: () {
+                                    context
+                                        .read<LoginBloc>()
+                                        .add(TogglePasswordVisibilityEvent());
+                                  },
                                 ),
-                              );
-                            } else {
-                              showMySnackBar(
-                                context: context,
-                                message: 'Invalid email or password',
-                                color: Colors.red,
-                              );
-                            }
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 30, vertical: 15),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter password';
+                                }
+                                return null;
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                    _gap,
+                    _gap,
+                    ElevatedButton(
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          final email = _emailController.text.trim();
+                          final password = _passwordController.text.trim();
+
+                          context.read<LoginBloc>().add(
+                            LoginUserEvent(
+                              email: email,
+                              password: password,
+                              context: context,
+                              destination: HomeView(),
+                            ),
+                          );
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
                         ),
-                        child: const Text(
-                          "Log In",
-                          style: TextStyle(fontSize: 18),
+                      ),
+                      child: const SizedBox(
+                        height: 20,
+                        child: Center(
+                          child: Text(
+                            "Log In",
+                              style: TextStyle(fontSize: 18, color: Colors.white),
+                          ),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 50),
-                    // Create Account
+                    const SizedBox(height: 8),
+                    _gap,
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
+                      // Center the content
                       children: [
-                        const Text(
-                          "Don't have an account?",
-                          style: TextStyle(
-                            color: Colors.black54,
-                            fontSize: 18,
-                          ),
+                        const Text('Don’t have an account?',style: TextStyle(
+                          color: Colors.black54,
+                          fontSize: 18,
                         ),
-                        const SizedBox(width: 5),
-                        ElevatedButton(
-                          key: const ValueKey('createAccountButton'),
+                        ),
+                        TextButton(
+                          key: const ValueKey('registerButton'),
                           onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => RegisterView()),
-                            );
+                            context.read<LoginBloc>().add(
+                                  NavigateRegisterScreenEvent(
+                                    destination: RegisterView(),
+                                    context: context,
+                                  ),
+                                );
                           },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.transparent,
-                            elevation: 0,
-                            padding: const EdgeInsets.symmetric(horizontal: 15),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              side: BorderSide.none,
-                            ),
-                          ),
                           child: Text(
-                            "Create Account",
+                            'Register',
                             style: GoogleFonts.montserratAlternates(
                               fontWeight: FontWeight.bold,
-                              fontSize: 14,
+                              fontSize: 16,
                               color: Colors.black,
                             ),
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 30),
-                    // OR Divider
-                    Row(
-                      children: [
-                        const Expanded(child: Divider(thickness: 2)),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          child: Text(
-                            "OR",
-                            style: GoogleFonts.montserrat(
-                              fontWeight: FontWeight.bold,
-                              color: const Color.fromARGB(255, 43, 42, 42),
-                            ),
-                          ),
-                        ),
-                        const Expanded(child: Divider(thickness: 2)),
-                      ],
-                    ),
-                    const SizedBox(height: 30),
-                    // Social Media Buttons in a Row
-                    _buildSocialLoginRow(),
-                    const SizedBox(height: 90),
                   ],
                 ),
               ),
@@ -238,43 +180,6 @@ class _LoginViewState extends State<LoginView> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildSocialLoginRow() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        // Facebook Button
-        ElevatedButton(
-          onPressed: () {},
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.blue,
-            padding: const EdgeInsets.all(15),
-            shape: const CircleBorder(),
-          ),
-          child: Icon(
-            Icons.facebook,
-            color: Colors.white,
-            size: 30,
-          ),
-        ),
-        const SizedBox(width: 20),
-        // Google Button
-        ElevatedButton(
-          onPressed: () {},
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.grey.shade300,
-            padding: const EdgeInsets.all(15),
-            shape: const CircleBorder(),
-          ),
-          child: Icon(
-            Icons.g_mobiledata,
-            color: Colors.black87,
-            size: 30,
-          ),
-        ),
-      ],
     );
   }
 }
