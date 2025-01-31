@@ -1,5 +1,6 @@
-import 'package:dartz/dartz.dart';
+import 'dart:io';
 
+import 'package:dartz/dartz.dart';
 
 import '../../../../core/error/failure.dart';
 import '../../domain/entity/user_entity.dart';
@@ -9,17 +10,16 @@ import '../data_source/local_datasource/user_local_datasource.dart';
 class UserLocalRepository implements IUserRepository {
   final UserLocalDatasource _userLocalDataSource;
 
-  UserLocalRepository(
-      {required UserLocalDatasource userLocalDataSource})
+  UserLocalRepository({required UserLocalDatasource userLocalDataSource})
       : _userLocalDataSource = userLocalDataSource;
 
   @override
-  Future<Either<Failure, void>> createUser(UserEntity userEntity) {
+  Future<Either<Failure, void>> createUser(UserEntity userEntity) async {
     try {
-      _userLocalDataSource.createUser(userEntity);
-      return Future.value(Right(null));
+      await _userLocalDataSource.createUser(userEntity);
+      return const Right(null);
     } catch (e) {
-      return Future.value(Left(LocalDatabaseFailure(message: e.toString())));
+      return Left(LocalDatabaseFailure(message: e.toString()));
     }
   }
 
@@ -27,17 +27,16 @@ class UserLocalRepository implements IUserRepository {
   Future<Either<Failure, void>> deleteUser(String id) async {
     try {
       await _userLocalDataSource.deleteUser(id);
-      return Right(null);
+      return const Right(null);
     } catch (e) {
-      return Future.value(Left(LocalDatabaseFailure(message: e.toString())));
+      return Left(LocalDatabaseFailure(message: e.toString()));
     }
   }
 
   @override
   Future<Either<Failure, List<UserEntity>>> getAllUsers() async {
     try {
-      final List<UserEntity> users =
-          await _userLocalDataSource.getAllUsers();
+      final List<UserEntity> users = await _userLocalDataSource.getAllUsers();
       return Right(users);
     } catch (e) {
       return Left(LocalDatabaseFailure(message: e.toString()));
@@ -45,11 +44,20 @@ class UserLocalRepository implements IUserRepository {
   }
 
   @override
-  Future<Either<Failure, UserEntity>> login(
-      String email, String password) async {
+  Future<Either<Failure, String>> uploadImage(File file) async {
     try {
-      final user = await _userLocalDataSource.login(email, password);
-      return (Right(user));
+      // Placeholder for actual implementation
+      return Right('Image Upload Success!!');
+    } catch (e) {
+      return Left(LocalDatabaseFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> login(String email, String password) async {
+    try {
+      // Placeholder for actual login implementation
+      return Right('Login successful');
     } catch (e) {
       return Left(LocalDatabaseFailure(message: e.toString()));
     }

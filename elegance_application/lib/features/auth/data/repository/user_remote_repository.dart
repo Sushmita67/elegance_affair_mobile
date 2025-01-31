@@ -1,9 +1,11 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/error/failure.dart';
 import '../../domain/entity/user_entity.dart';
 import '../../domain/repository/user_repository.dart';
-import '../data_source/remote_datasource/user_remote_datasource.dart';
+import '../data_source/remote_datasource/user_remote_data_source.dart';
 
 class UserRemoteRepository implements IUserRepository {
   final UserRemoteDataSource _userRemoteDataSource;
@@ -53,23 +55,29 @@ class UserRemoteRepository implements IUserRepository {
   }
 
   @override
-  Future<Either<Failure, UserEntity>> login(
-      String email, String password) async {
+  Future<Either<Failure, String>> login(String email, String password) async {
     try {
-      final loginResponse = await _userRemoteDataSource.login(email, password);
-
-      // Extract the UserEntity from the LoginResponseEntity
-      final user = loginResponse.user;
+      // Call the login function and get the LoginResponseEntity
+      final token = await _userRemoteDataSource.login(email, password);
 
       // Return the UserEntity as a Right value
-      return Right(user);
+      return Right(token);
     } catch (e) {
       // Handle any errors and return the failure message
       return Left(
-        LocalDatabaseFailure(
-          message: 'Login failed: $e',
+        ApiFailure(
+          message: 'Login Failed: $e',
         ),
       );
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> uploadImage(File file) async {
+    try {
+      return Right(await _userRemoteDataSource.uploadImage(file));
+    } catch (e) {
+      return Left(ApiFailure(message: e.toString()));
     }
   }
 }
