@@ -3,8 +3,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 import '../../domain/entity/user_entity.dart';
 
-
-
 @JsonSerializable()
 class UserApiModel extends Equatable {
   @JsonKey(name: '_id') // Maps the server field "_id" to the "userId" field
@@ -14,7 +12,9 @@ class UserApiModel extends Equatable {
   final String phone;
   final String email;
   final String password;
-  final String? image;
+
+  // @JsonKey(name: 'photo') // Maps the server field "photo" to the "image" field
+  final String? photo;
 
   const UserApiModel({
     this.id,
@@ -23,7 +23,8 @@ class UserApiModel extends Equatable {
     required this.phone,
     required this.email,
     required this.password,
-    this.image,
+    this.photo,
+
   });
 
   const UserApiModel.empty()
@@ -33,7 +34,7 @@ class UserApiModel extends Equatable {
         phone = '',
         email = '',
         password = '',
-        image = '';
+        photo = '';
 
   /// Factory constructor for creating a `UserApiModel` from JSON
   factory UserApiModel.fromJson(Map<String, dynamic> json) {
@@ -44,7 +45,8 @@ class UserApiModel extends Equatable {
       phone: json['phone'] as String,
       email: json['email'] as String,
       password: json['password'] as String,
-      image: json['image'] as String?,
+      photo: json['photo'] as String?,
+
     );
   }
 
@@ -57,21 +59,22 @@ class UserApiModel extends Equatable {
       'phone': phone,
       'email': email,
       'password': password,
-      'image': image,
+      'photo': photo,
+
     };
   }
 
   /// Converts the API model to a domain entity
   UserEntity toEntity() => UserEntity(
-    id: id,
-    name: name,
-    username: username,
-    phone: phone,
-    email: email,
-    password: password,
-    image: image,
+        id: id,
+        name: name,
+        username: username,
+        phone: phone,
+        email: email,
+        password: password,
+        photo: photo,
 
-  );
+      );
 
   /// Converts a domain entity to an API model
   factory UserApiModel.fromEntity(UserEntity entity) {
@@ -82,7 +85,8 @@ class UserApiModel extends Equatable {
       phone: entity.phone,
       email: entity.email,
       password: entity.password,
-      image: entity.image,
+      photo: entity.photo,
+
     );
   }
 
@@ -93,12 +97,13 @@ class UserApiModel extends Equatable {
 
   @override
   List<Object?> get props => [
-    id,
-    name,
-    username,
-    phone,
-    email,
-    password,
-    image,
-  ];
+        id,
+        name,
+        username,
+        phone,
+        email,
+        password,
+        photo,
+
+      ];
 }
