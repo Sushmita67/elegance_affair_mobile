@@ -1,4 +1,5 @@
-import 'user_entity.dart';
+
+import 'package:elegance_application/features/auth/domain/entity/user_entity.dart';
 
 class LoginResponseEntity {
   final UserEntity user;
