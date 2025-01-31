@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-
 import 'package:equatable/equatable.dart';
 
 import '../../../../app/usecase/usecase.dart';
@@ -14,7 +13,9 @@ class CreateUserParams extends Equatable {
   final String phone;
   final String email;
   final String password;
-  final String? image;
+  final String? photo;
+
+
 
   const CreateUserParams({
     this.id,
@@ -23,18 +24,32 @@ class CreateUserParams extends Equatable {
     required this.phone,
     required this.email,
     required this.password,
-    this.image,
+    this.photo,
+
   });
 
   @override
   List<Object?> get props => [
         name,
-        email,
-        phone,
         username,
+        phone,
+        email,
         password,
-        image,
+        photo,
+
       ];
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'email': email,
+      'phone': phone,
+      'username': username,
+      'password': password,
+      'photo': photo,
+
+    };
+  }
 }
 
 class CreateUserUsecase implements UsecaseWithParams<void, CreateUserParams> {
@@ -46,13 +61,15 @@ class CreateUserUsecase implements UsecaseWithParams<void, CreateUserParams> {
   Future<Either<Failure, void>> call(CreateUserParams params) async {
     // Create the user entity from the params
     final userEntity = UserEntity(
-      id: null, // The ID will be generated automatically
+      id: null,
+      // The ID will be generated automatically
       name: params.name,
-      email: params.email,
-      phone: params.phone,
       username: params.username,
+      phone: params.phone,
+      email: params.email,
       password: params.password,
-      image: params.image,
+      photo: params.photo,
+
     );
 
     // Call the repository method to create the user

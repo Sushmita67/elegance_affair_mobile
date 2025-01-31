@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+
 import '../../../../app/usecase/usecase.dart';
 import '../../../../core/error/failure.dart';
 import '../entity/user_entity.dart';
