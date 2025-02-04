@@ -1,6 +1,7 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
-class HomeState {
+class HomeState extends Equatable {
   final int selectedIndex;
   final List<Widget> views;
 
@@ -9,7 +10,7 @@ class HomeState {
   // Factory method to define the initial state
   factory HomeState.initial() {
     return HomeState(
-      selectedIndex: 0, // Default tab index
+      selectedIndex: 0,
       views: [
         Center(child: Text('Dashboard View')),
         Center(child: Text('Course View')),
@@ -26,4 +27,7 @@ class HomeState {
       views: views ?? this.views,
     );
   }
+
+  @override
+  List<Object?> get props => [selectedIndex, views];
 }

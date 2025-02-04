@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../../core/common/logo.dart';
 import '../../../home/presentation/view/home_view.dart';
 import '../view_model/login/login_bloc.dart';
 
@@ -58,9 +57,9 @@ class LoginView extends StatelessWidget {
                               controller: _emailController,
                               decoration: InputDecoration(
                                 border: const OutlineInputBorder(),
-                                labelText: 'Email', labelStyle: GoogleFonts.montserratAlternates(
-                                fontSize: 16, fontWeight: FontWeight.bold
-                              ),
+                                labelText: 'Email',
+                                labelStyle: GoogleFonts.montserratAlternates(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
                               ),
                               validator: (value) {
                                 if (value!.isEmpty) {
@@ -79,9 +78,9 @@ class LoginView extends StatelessWidget {
                               controller: _passwordController,
                               obscureText: !state.isPasswordVisible,
                               decoration: InputDecoration(
-                                labelText: 'Password', labelStyle: GoogleFonts.montserratAlternates(
-                                fontSize: 16, fontWeight: FontWeight.bold
-                              ),
+                                labelText: 'Password',
+                                labelStyle: GoogleFonts.montserratAlternates(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
                                 suffixIcon: IconButton(
                                   icon: Icon(
                                     state.isPasswordVisible
@@ -109,23 +108,25 @@ class LoginView extends StatelessWidget {
                     _gap,
                     _gap,
                     ElevatedButton(
+                      key: const Key('loginButton'),
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
                           final email = _emailController.text.trim();
                           final password = _passwordController.text.trim();
 
                           context.read<LoginBloc>().add(
-                            LoginUserEvent(
-                              email: email,
-                              password: password,
-                              context: context,
-                              destination: HomeView(),
-                            ),
-                          );
+                                LoginUserEvent(
+                                  email: email,
+                                  password: password,
+                                  context: context,
+                                  destination: HomeView(),
+                                ),
+                              );
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 15),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),
@@ -135,22 +136,23 @@ class LoginView extends StatelessWidget {
                         child: Center(
                           child: Text(
                             "Log In",
-                              style: TextStyle(fontSize: 18, color: Colors.white),
+                            style: TextStyle(fontSize: 18, color: Colors.white),
                           ),
                         ),
                       ),
                     ),
                     const SizedBox(height: 8),
                     _gap,
-
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       // Center the content
                       children: [
-                        const Text('Don’t have an account?',style: TextStyle(
-                          color: Colors.black54,
-                          fontSize: 18,
-                        ),
+                        const Text(
+                          'Don’t have an account?',
+                          style: TextStyle(
+                            color: Colors.black54,
+                            fontSize: 18,
+                          ),
                         ),
                         TextButton(
                           key: const ValueKey('registerButton'),

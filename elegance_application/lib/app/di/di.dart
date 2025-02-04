@@ -16,7 +16,6 @@ import '../../features/auth/domain/use_case/login_user_usecase.dart';
 import '../../features/auth/domain/use_case/upload_image_usecase.dart';
 import '../shared_prefs/token_shared_prefs.dart';
 
-
 final getIt = GetIt.instance;
 
 Future<void> initDependencies() async {
@@ -42,45 +41,48 @@ _initHiveService() {
 _initApiService() {
   // Remote Data Source
   getIt.registerLazySingleton<Dio>(
-        () => ApiService(Dio()).dio,
+    () => ApiService(Dio()).dio,
   );
 }
 
 Future<void> _initSharedPreferences() async {
   final sharedPreferences = await SharedPreferences.getInstance();
   getIt.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
-}
 
+  getIt.registerLazySingleton<TokenSharedPrefs>(
+    () => TokenSharedPrefs(sharedPreferences),
+  );
+}
 
 _initHomeDependencies() async {
   getIt.registerSingleton<HomeCubit>(
-    HomeCubit(),
+    HomeCubit(tokenSharedPrefs: getIt<TokenSharedPrefs>()),
   );
 }
 
 _initRegisterDependencies() async {
   if (!getIt.isRegistered<UserRemoteDataSource>()) {
     getIt.registerFactory<UserRemoteDataSource>(
-          () => UserRemoteDataSource(getIt<Dio>()),
+      () => UserRemoteDataSource(getIt<Dio>()),
     );
   }
 
   if (!getIt.isRegistered<UserRemoteRepository>()) {
     getIt.registerLazySingleton<UserRemoteRepository>(
-            () => UserRemoteRepository(getIt<UserRemoteDataSource>()));
+        () => UserRemoteRepository(getIt<UserRemoteDataSource>()));
   }
 
   // Register CreateStudentUsecase
   getIt.registerLazySingleton<CreateUserUsecase>(
-          () => CreateUserUsecase(userRepository: getIt<UserRemoteRepository>()));
+      () => CreateUserUsecase(userRepository: getIt<UserRemoteRepository>()));
 
   // Register Upload Image Use Case
   getIt.registerLazySingleton<UploadImageUseCase>(
-          () => UploadImageUseCase(getIt<UserRemoteRepository>()));
+      () => UploadImageUseCase(getIt<UserRemoteRepository>()));
 
   // Register RegisterBloc
   getIt.registerFactory<RegisterBloc>(
-        () => RegisterBloc(
+    () => RegisterBloc(
       createUserUsecase: getIt<CreateUserUsecase>(),
       uploadImageUseCase: getIt<UploadImageUseCase>(),
     ),
@@ -88,9 +90,9 @@ _initRegisterDependencies() async {
 }
 
 _initLoginDependencies() async {
-  getIt.registerLazySingleton<TokenSharedPrefs>(
-        () => TokenSharedPrefs(getIt<SharedPreferences>()),
-  );
+  // getIt.registerLazySingleton<TokenSharedPrefs>(
+  //   () => TokenSharedPrefs(getIt<SharedPreferences>()),
+  // );
 
   // Use common StudentRemoteDataSource and StudentLocalRepository
   if (!getIt.isRegistered<LoginUserUsecase>()) {
@@ -100,7 +102,7 @@ _initLoginDependencies() async {
   }
 
   getIt.registerFactory<LoginBloc>(
-        () => LoginBloc(
+    () => LoginBloc(
       registerBloc: getIt<RegisterBloc>(),
       homeCubit: getIt<HomeCubit>(),
       loginUserUsecase: getIt<LoginUserUsecase>(),
@@ -110,12 +112,12 @@ _initLoginDependencies() async {
 
 _initSplashScreenDependencies() async {
   getIt.registerFactory<SplashCubit>(
-        () => SplashCubit(),
+    () => SplashCubit(),
   );
 }
 
 _initOnboardingScreenDependencies() async {
   getIt.registerFactory<OnboardingCubit>(
-        () => OnboardingCubit(getIt<LoginBloc>()),
+    () => OnboardingCubit(getIt<LoginBloc>()),
   );
 }
