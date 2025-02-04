@@ -32,7 +32,7 @@ class SplashCubit extends Cubit<void> {
   SplashCubit() : super(null);
 
   Future<void> init(BuildContext context) async {
-    await Future.delayed(const Duration(seconds: 2), () async {
+    await Future.delayed(const Duration(seconds: 4), () async {
       // Ensure context is mounted before navigating
       if (context.mounted) {
         // Navigate to OnboardingView wrapped in BlocProvider
