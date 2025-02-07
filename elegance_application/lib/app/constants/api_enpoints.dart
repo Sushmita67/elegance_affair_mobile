@@ -21,10 +21,17 @@ class ApiEndpoints {
   static const String imageUrl = "http://10.0.2.2:5000/uploads/";
   static const String uploadImage = "auth/uploadImage";
 
-  // ============= Workshop Routes =============
-  static const String createWorkshop = "workshops/save";
-  static const String getAllWorkshops = "workshops/";
-  static const String getWorkshopById = "workshops/:id";
-  static const String updateWorkshop = "workshops/update/:id";
-  static const String deleteWorkshop = "workshops/delete/:id";
+  // // ============= Product Routes =============
+  // static const String createProduct = "product/save";
+  // static const String getAllProducts = "product/";
+  // static const String getProductById = "product/:id";
+  // static const String updateProduct = "product/update/:id";
+  // static const String deleteProduct = "product/delete/:id";
+
+  // ============= Product Routes =============
+  static const String createProduct = "product/save";
+  static const String getAllProducts = "product/";
+  static const String getProductById = "product/:id";
+  static const String updateProduct = "product/:id";
+  static const String deleteProduct = "product/:id";
 }

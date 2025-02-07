@@ -1,5 +1,14 @@
+import 'package:elegance_application/features/Dashboard/presentation/view_model/dashboard_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../app/di/di.dart';
+import '../../../Dashboard/presentation/view/dashboard_view.dart';
+import '../../../product/presentation/view/product_view.dart';
+import '../../../product/presentation/view_model/product_bloc.dart';
+import '../../../profile/presentation/view/about_us_view.dart';
+import '../../../profile/presentation/view_model/about_us_bloc.dart';
 
 class HomeState extends Equatable {
   final int selectedIndex;
@@ -12,10 +21,22 @@ class HomeState extends Equatable {
     return HomeState(
       selectedIndex: 0,
       views: [
-        Center(child: Text('Dashboard View')),
-        Center(child: Text('Course View')),
-        Center(child: Text('Batch View')),
-        Center(child: Text('Account View')),
+        BlocProvider(
+          create: (context) => getIt<DashboardBloc>(),
+          child: DashboardView(),
+        ),
+
+        Center(child: Text('Cart')),
+
+        BlocProvider(
+          create: (context) => getIt<ProductBloc>(),
+          child: ProductView(),
+        ),
+
+        BlocProvider(
+          create: (context) => getIt<AboutBloc>(),
+          child: AboutView(),
+        ),
       ],
     );
   }

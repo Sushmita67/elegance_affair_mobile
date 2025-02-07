@@ -14,6 +14,16 @@ import '../../features/auth/data/repository/user_remote_repository.dart';
 import '../../features/auth/domain/use_case/create_user_usecase.dart';
 import '../../features/auth/domain/use_case/login_user_usecase.dart';
 import '../../features/auth/domain/use_case/upload_image_usecase.dart';
+import '../../features/product/data/data_source/local_datasource/product_local_data_source.dart';
+import '../../features/product/data/data_source/remote_datasource/product_remote_data_source.dart';
+import '../../features/product/data/repository/product_local_repository.dart';
+import '../../features/product/data/repository/product_remote_repository.dart';
+import '../../features/product/domain/use_case/create_product_usecase.dart';
+import '../../features/product/domain/use_case/delete_product_usecase.dart';
+import '../../features/product/domain/use_case/get_all_product_usecase.dart';
+import '../../features/product/domain/use_case/get_product_by_id_usecase.dart';
+import '../../features/product/domain/use_case/update_product_usecase.dart';
+import '../../features/product/presentation/view_model/product_bloc.dart';
 import '../shared_prefs/token_shared_prefs.dart';
 
 final getIt = GetIt.instance;
@@ -24,6 +34,8 @@ Future<void> initDependencies() async {
   await _initHiveService();
   await _initApiService();
   await _initSharedPreferences();
+
+  await _initProductDependencies();
   // Initialize Home and Register dependencies before LoginBloc
   await _initHomeDependencies();
   await _initRegisterDependencies();
@@ -52,6 +64,26 @@ Future<void> _initSharedPreferences() async {
   getIt.registerLazySingleton<TokenSharedPrefs>(
     () => TokenSharedPrefs(sharedPreferences),
   );
+}
+
+_initProductDependencies() async {
+  // Local Data Source
+  getIt.registerFactory<ProductLocalDataSource>(
+      () => ProductLocalDataSource(getIt<HiveService>()));
+
+  // Remote Data Source
+  getIt.registerFactory<ProductRemoteDataSource>(
+      () => ProductRemoteDataSource(getIt<Dio>()));
+
+  // Local Repository
+  getIt.registerLazySingleton<ProductLocalRepository>(() =>
+      ProductLocalRepository(
+          productLocalDataSource: getIt<ProductLocalDataSource>()));
+
+  // Remote Repository
+  getIt.registerLazySingleton<ProductRemoteRepository>(() =>
+      ProductRemoteRepository(
+          productRemoteDataSource: getIt<ProductRemoteDataSource>()));
 }
 
 _initHomeDependencies() async {
@@ -85,6 +117,42 @@ _initRegisterDependencies() async {
     () => RegisterBloc(
       createUserUsecase: getIt<CreateUserUsecase>(),
       uploadImageUseCase: getIt<UploadImageUseCase>(),
+    ),
+  );
+
+  // Remote Usecases
+  getIt.registerLazySingleton<CreateProductUseCase>(() => CreateProductUseCase(
+      productRepository: getIt<ProductRemoteRepository>()));
+
+  getIt.registerLazySingleton<GetAllProductsUseCase>(() =>
+      GetAllProductsUseCase(
+          productRepository: getIt<ProductRemoteRepository>()));
+
+  getIt.registerLazySingleton<DeleteProductUseCase>(
+    () => DeleteProductUseCase(
+        productRepository: getIt<ProductRemoteRepository>(),
+        tokenSharedPrefs: getIt<TokenSharedPrefs>()),
+  );
+
+  getIt.registerLazySingleton<UpdateProductUseCase>(
+    () => UpdateProductUseCase(
+        productRepository: getIt<ProductRemoteRepository>(),
+        tokenSharedPrefs: getIt<TokenSharedPrefs>()),
+  );
+
+  getIt.registerLazySingleton<GetProductByIdUseCase>(
+    () => GetProductByIdUseCase(
+        productRepository: getIt<ProductRemoteRepository>()),
+  );
+
+// Bloc
+  getIt.registerFactory<ProductBloc>(
+    () => ProductBloc(
+      createProductUseCase: getIt<CreateProductUseCase>(),
+      getAllProductsUseCase: getIt<GetAllProductsUseCase>(),
+      deleteProductUseCase: getIt<DeleteProductUseCase>(),
+      updateProductUseCase: getIt<UpdateProductUseCase>(),
+      // getProductByIdUseCase: getIt<GetProductByIdUseCase>(),
     ),
   );
 }

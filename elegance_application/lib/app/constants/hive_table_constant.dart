@@ -24,11 +24,19 @@ class HiveTableConstant {
   static const int otpTableId = 5;
   static const String otpBox = 'otpBox';
 
-  // For Testing
-  static const int testTableId = 6;
-  static const String testBox = 'testBox';
+  static const int userTableId = 6;
+  static const String userBox = 'userBox';
 
   // User
-  static const int userTableId = 7;
-  static const String userBox = 'userBox';
+  static const int productTableId = 7;
+  static const String productBox = 'productBox';
+
+  static const int productModuleTableId = 8;
+  static const String productModuleBox = 'productModuleBox';
+
+  // static const int productTableId = 9;
+  // static const String productBox = 'productBox';
+
+  static const int paymentTableId = 10;
+  static const String paymentBox = 'paymentBox';
 }

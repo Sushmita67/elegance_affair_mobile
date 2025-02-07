@@ -15,8 +15,6 @@ class CreateUserParams extends Equatable {
   final String password;
   final String? photo;
 
-
-
   const CreateUserParams({
     this.id,
     required this.name,
@@ -25,7 +23,6 @@ class CreateUserParams extends Equatable {
     required this.email,
     required this.password,
     this.photo,
-
   });
 
   @override
@@ -36,7 +33,6 @@ class CreateUserParams extends Equatable {
         email,
         password,
         photo,
-
       ];
 
   Map<String, dynamic> toJson() {
@@ -47,7 +43,6 @@ class CreateUserParams extends Equatable {
       'username': username,
       'password': password,
       'photo': photo,
-
     };
   }
 }
@@ -62,14 +57,12 @@ class CreateUserUsecase implements UsecaseWithParams<void, CreateUserParams> {
     // Create the user entity from the params
     final userEntity = UserEntity(
       id: null,
-      // The ID will be generated automatically
       name: params.name,
       username: params.username,
       phone: params.phone,
       email: params.email,
       password: params.password,
       photo: params.photo,
-
     );
 
     // Call the repository method to create the user

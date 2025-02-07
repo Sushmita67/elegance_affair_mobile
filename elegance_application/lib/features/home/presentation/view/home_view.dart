@@ -3,6 +3,7 @@ import 'package:elegance_application/features/home/presentation/view_model/home_
 import 'package:elegance_application/features/home/presentation/view_model/home_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -13,7 +14,15 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home'),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SvgPicture.asset(
+              'assets/icons/logo-4.svg',
+              height: 80,
+            ),
+          ],
+        ),
         centerTitle: true,
         actions: [
           IconButton(
@@ -49,27 +58,42 @@ class HomeView extends StatelessWidget {
           return BottomNavigationBar(
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
-                icon: Icon(Icons.dashboard),
+                icon: Icon(
+                  Icons.dashboard,
+                ),
                 label: 'Dashboard',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.book),
-                label: 'Course',
+                icon: Icon(
+                  Icons.production_quantity_limits,
+                ),
+                label: 'cart',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.group),
-                label: 'Batch',
+                icon: Icon(
+                  Icons.collections_outlined,
+                ),
+                label: 'product',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.account_circle),
-                label: 'Account',
+                icon: Icon(
+                  Icons.account_circle,
+                ),
+                label: 'About Us',
               ),
             ],
+            backgroundColor: Colors.black,
+            selectedItemColor: Colors.pink,
+            unselectedItemColor: Colors.black,
             currentIndex: state.selectedIndex,
-            selectedItemColor: Colors.white,
             onTap: (index) {
               context.read<HomeCubit>().onTabTapped(index);
             },
+            // currentIndex: state.selectedIndex,
+            // selectedItemColor: Colors.white,
+            // onTap: (index) {
+            //   context.read<HomeCubit>().onTabTapped(index);
+            // },
           );
         },
       ),
