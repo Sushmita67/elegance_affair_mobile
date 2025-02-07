@@ -1,6 +1,6 @@
 part of 'login_bloc.dart';
 
-class LoginState {
+class LoginState extends Equatable {
   final bool isLoading;
   final bool isSuccess;
   final bool isPasswordVisible;
@@ -27,4 +27,8 @@ class LoginState {
       isPasswordVisible: isPasswordVisible ?? this.isPasswordVisible,
     );
   }
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => throw UnimplementedError();
 }
