@@ -1,85 +1,105 @@
+import 'dart:async';
 import 'dart:io';
 
-import 'package:bloc/bloc.dart';
+import 'package:elegance/core/common/snackbar/my_snackbar.dart';
+import 'package:elegance/features/auth/domain/use_case/register_user_usecase.dart';
+import 'package:elegance/features/auth/domain/use_case/upload_image_usercase.dart';
 import 'package:equatable/equatable.dart';
-
-import '../../../domain/use_case/create_user_usecase.dart';
-import '../../../domain/use_case/upload_image_usecase.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'register_event.dart';
 part 'register_state.dart';
 
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
-  // final BatchBloc _batchBloc;
-  // final WorkshopBloc _workshopBloc;
-  final CreateUserUsecase _createUserUsecase;
-  final UploadImageUseCase _uploadImageUseCase;
+  final RegisterUsecase _registerUsecase;
+  final UploadImageUsecase _uploadImageUsecase;
 
   RegisterBloc({
-    // required BatchBloc batchBloc,
-    // required WorkshopBloc workshopBloc,
-    required CreateUserUsecase createUserUsecase,
-    required UploadImageUseCase uploadImageUseCase,
-  })  :
-        // _batchBloc = batchBloc,
-        // _workshopBloc = workshopBloc,
-        _createUserUsecase = createUserUsecase,
-        _uploadImageUseCase = uploadImageUseCase,
+    required RegisterUsecase registerUseCase,
+    required UploadImageUsecase uploadImageUseCase,
+  })  : _registerUsecase = registerUseCase,
+        _uploadImageUsecase = uploadImageUseCase,
         super(RegisterState.initial()) {
-    on<LoadCoursesAndBatches>(_onRegisterEvent);
-    on<RegisterUser>(_onRegisterUser);
-    on<LoadImage>(_onLoadImage);
+    on<RegisterSubmittedEvent>(_onRegisterEvent);
+    on<TermsAcceptedEvent>(_onTermsAccepted);
+    on<UploadImage>(_onLoadImage);
+  }
 
-    add(LoadCoursesAndBatches());
+  void _onRegisterEvent(
+    RegisterSubmittedEvent event,
+    Emitter<RegisterState> emit,
+  ) async {
+    if (!state.isTermsAccepted) {
+      event.onFailure('You must accept the terms and conditions.');
+      return;
+    }
+
+    if ([
+      event.username,
+      event.email,
+      event.phoneNumber,
+      event.password,
+      event.confirmPassword,
+      event.name
+    ].any((field) => field.isEmpty)) {
+      event.onFailure('All fields must be filled.');
+      return;
+    }
+
+    if (!RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}")
+        .hasMatch(event.email)) {
+      event.onFailure('Invalid email format.');
+      return;
+    }
+
+    if (event.phoneNumber.length <= 9) {
+      event.onFailure('Phone number must be greater than 9 digits.');
+      return;
+    }
+
+    emit(state.copyWith(isLoading: true));
+    final result = await _registerUsecase.call(RegisterUserParams(
+      username: event.username,
+      email: event.email,
+      phone: event.phoneNumber,
+      password: event.password,
+      name: event.name,
+      age: int.parse(event.age),
+      image: event.image,
+    ));
+
+    result.fold(
+      (l) => emit(state.copyWith(isLoading: false, isSuccess: false)),
+      (r) {
+        emit(state.copyWith(isLoading: false, isSuccess: true));
+        // showMySnackBar(
+        //     context: event.context, message: "Registration Successful");
+      },
+    );
+  }
+
+  FutureOr<void> _onTermsAccepted(
+      TermsAcceptedEvent event, Emitter<RegisterState> emit) {
+    emit(state.copyWith(isTermsAccepted: event.isAccepted));
   }
 
   void _onLoadImage(
-    LoadImage event,
+    UploadImage event,
     Emitter<RegisterState> emit,
   ) async {
-    emit(state.copyWith(isImageLoading: true));
-    final result = await _uploadImageUseCase.call(
+    emit(state.copyWith(isLoading: true));
+    final result = await _uploadImageUsecase.call(
       UploadImageParams(
         file: event.file,
       ),
     );
 
     result.fold(
-        (l) =>
-            emit(state.copyWith(isImageLoading: false, isImageSuccess: false)),
-        (r) {
-      emit(state.copyWith(
-          isImageLoading: false, isImageSuccess: true, imageName: r));
-    });
-  }
-
-  void _onRegisterEvent(
-    LoadCoursesAndBatches event,
-    Emitter<RegisterState> emit,
-  ) {
-    emit(state.copyWith(isLoading: true));
-    // _batchBloc.add(LoadBatches());
-    // _workshopBloc.add(LoadWorkshops());
-    emit(state.copyWith(isLoading: false, isSuccess: true));
-  }
-
-  Future<void> _onRegisterUser(
-      RegisterUser event, Emitter<RegisterState> emit) async {
-    emit(state.copyWith(isLoading: true));
-
-    final params = CreateUserParams(
-      name: event.name,
-      username: event.username,
-      phone: event.phone,
-      email: event.email,
-      password: event.password,
-      photo: state.imageName,
+      (l) => emit(state.copyWith(isLoading: false, isSuccess: false)),
+      (r) {
+        emit(state.copyWith(isLoading: false, isSuccess: false, imageName: r));
+      },
     );
-
-    final result = await _createUserUsecase.call(params);
-
-    result.fold(
-        (failure) => emit(state.copyWith(isLoading: false, isSuccess: false)),
-        (user) => emit(state.copyWith(isLoading: false, isSuccess: true)));
   }
 }

@@ -1,110 +1,53 @@
+import 'package:elegance/app/constants/hive_table_constant.dart';
+import 'package:elegance/features/auth/data/model/auth_hive_model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../../app/constants/hive_table_constant.dart';
-import '../../features/auth/data/model/user_hive_model.dart';
-import '../../features/product/data/model/product_hive_model.dart';
-
 class HiveService {
-  Future<void> init() async {
-    //Initialize the Database
+  static Future<void> init() async {
     var directory = await getApplicationDocumentsDirectory();
-    var path = '${directory.path}elegance_application.db';
+    var path = '${directory.path}elegance.db';
 
-    //Create Database
     Hive.init(path);
 
-    //Register Adapters
-    Hive.registerAdapter(UserHiveModelAdapter());
+    // Register Adapters
+    Hive.registerAdapter(AuthHiveModelAdapter());
   }
 
-  // User Queries
-  Future<void> addUser(UserHiveModel user) async {
-    var box = await Hive.openBox<UserHiveModel>(HiveTableConstant.userBox);
-    await box.put(user.id, user);
+  // Register a new user
+  Future<void> register(AuthHiveModel auth) async {
+    var box = await Hive.openBox<AuthHiveModel>(HiveTableConstant.userBox);
+    await box.put(auth.userId, auth);
   }
 
-  Future<void> deleteUser(String id) async {
-    var box = await Hive.openBox<UserHiveModel>(HiveTableConstant.userBox);
+  Future<void> deleteAuth(String id) async {
+    var box = await Hive.openBox<AuthHiveModel>(HiveTableConstant.userBox);
     await box.delete(id);
   }
 
-  Future<List<UserHiveModel>> getAllUsers() async {
-    var box = await Hive.openBox<UserHiveModel>(HiveTableConstant.userBox);
-    var users = box.values.toList();
-    return users;
-  }
-
-  Future<UserHiveModel?> loginUser(String username, String password) async {
-    var box = await Hive.openBox<UserHiveModel>(HiveTableConstant.userBox);
-
-    var auth = box.values.firstWhere(
-        (element) =>
-            element.username == username && element.password == password,
-        orElse: () => UserHiveModel.initial());
-
-    return auth;
-  }
-
-  // Product Queries
-  Future<void> addProduct(ProductHiveModel product) async {
-    var box =
-        await Hive.openBox<ProductHiveModel>(HiveTableConstant.productBox);
-    await box.put(product.productId, product);
-  }
-
-  Future<void> deleteProduct(String productId) async {
-    var box =
-        await Hive.openBox<ProductHiveModel>(HiveTableConstant.productBox);
-    await box.delete(productId);
-  }
-
-  Future<List<ProductHiveModel>> getAllProducts() async {
-    var box =
-        await Hive.openBox<ProductHiveModel>(HiveTableConstant.productBox);
+  Future<List<AuthHiveModel>> getAllAuth() async {
+    var box = await Hive.openBox<AuthHiveModel>(HiveTableConstant.userBox);
     return box.values.toList();
   }
 
-  Future<ProductHiveModel?> getProductById(String productId) async {
-    var box =
-        await Hive.openBox<ProductHiveModel>(HiveTableConstant.productBox);
-    return box.get(productId);
+// Login using username and password
+  Future<AuthHiveModel?> login(String username, String password) async {
+    var box = await Hive.openBox<AuthHiveModel>(HiveTableConstant.userBox);
+    var user = box.values.firstWhere((element) =>
+        element.username == username && element.password == password);
+    box.close();
+    return user;
   }
 
-  Future<void> updateProduct(ProductHiveModel product) async {
-    var box =
-        await Hive.openBox<ProductHiveModel>(HiveTableConstant.productBox);
-    await box.put(product.productId, product);
+
+    // Clear Student Box
+    Future<void> clearStudentBox() async {
+      await Hive.deleteBoxFromDisk(HiveTableConstant.userBox);
+    }
+
+    // close the hive
+    Future<void> close() async {
+      await Hive.close();
+    }
   }
-//
-// // Product Queries
-//   Future<void> addProduct(ProductHiveModel product) async {
-//     var box =
-//         await Hive.openBox<ProductHiveModel>(HiveTableConstant.productBox);
-//     await box.put(product.productId, product);
-//   }
-//
-//   Future<void> deleteProduct(String productId) async {
-//     var box =
-//         await Hive.openBox<ProductHiveModel>(HiveTableConstant.productBox);
-//     await box.delete(productId);
-//   }
-//
-//   Future<List<ProductHiveModel>> getAllProducts() async {
-//     var box =
-//         await Hive.openBox<ProductHiveModel>(HiveTableConstant.productBox);
-//     return box.values.toList();
-//   }
-//
-//   Future<ProductHiveModel?> getProductById(String productId) async {
-//     var box =
-//         await Hive.openBox<ProductHiveModel>(HiveTableConstant.productBox);
-//     return box.get(productId);
-//   }
-//
-//   Future<void> updateProduct(ProductHiveModel product) async {
-//     var box =
-//         await Hive.openBox<ProductHiveModel>(HiveTableConstant.productBox);
-//     await box.put(product.productId, product);
-//   }
-}
+

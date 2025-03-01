@@ -1,18 +1,16 @@
+import 'package:elegance/app/usecase/usecase.dart';
+import 'package:elegance/core/error/failure.dart';
 import 'package:dartz/dartz.dart';
+import 'package:elegance/features/product/domain/entity/product_entity.dart';
+import 'package:elegance/features/product/domain/repository/product_repository.dart';
 
-import '../../../../app/usecase/usecase.dart';
-import '../../../../core/error/failure.dart';
-import '../entity/product_entity.dart';
-import '../repository/product_repository.dart';
-
-class GetAllProductsUseCase
-    implements UsecaseWithoutParams<List<ProductEntity>> {
+class GetAllProductUsecase implements UsecaseWithoutParams<List<ProductEntity>> {
   final IProductRepository productRepository;
 
-  GetAllProductsUseCase({required this.productRepository});
+  GetAllProductUsecase({required this.productRepository});
 
   @override
   Future<Either<Failure, List<ProductEntity>>> call() {
-    return productRepository.getAllProducts();
+    return productRepository.getProducts();
   }
 }

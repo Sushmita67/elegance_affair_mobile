@@ -1,45 +1,41 @@
 part of 'register_bloc.dart';
 
-class RegisterState {
+class RegisterState extends Equatable {
   final bool isLoading;
   final bool isSuccess;
-  final bool isImageLoading;
-  final bool isImageSuccess;
+  final bool isTermsAccepted;
   final String? imageName;
-  final String? errorMessage;
 
-  RegisterState({
+  const RegisterState({
     required this.isLoading,
     required this.isSuccess,
-    required this.isImageLoading,
-    required this.isImageSuccess,
+    required this.isTermsAccepted,
     this.imageName,
-    this.errorMessage,
   });
 
-  RegisterState.initial()
-      : isLoading = false,
-        isSuccess = false,
-        isImageLoading = false,
-        isImageSuccess = false,
-        imageName = null,
-        errorMessage = null;
+  factory RegisterState.initial() {
+    return const RegisterState(
+      isLoading: false,
+      isSuccess: false,
+      isTermsAccepted: false,
+      imageName: null,
+    );
+  }
 
   RegisterState copyWith({
     bool? isLoading,
     bool? isSuccess,
-    bool? isImageLoading,
-    bool? isImageSuccess,
+    bool? isTermsAccepted,
     String? imageName,
-    String? errorMessage,
   }) {
     return RegisterState(
       isLoading: isLoading ?? this.isLoading,
       isSuccess: isSuccess ?? this.isSuccess,
-      isImageLoading: isImageLoading ?? this.isImageLoading,
-      isImageSuccess: isImageSuccess ?? this.isImageSuccess,
-      imageName: imageName ?? this.imageName,
-      errorMessage: errorMessage,
+      isTermsAccepted: isTermsAccepted ?? this.isTermsAccepted,
+      imageName: imageName?? this.imageName,
     );
   }
+
+  @override
+  List<Object?> get props => [isLoading, isSuccess, isTermsAccepted, imageName];
 }
