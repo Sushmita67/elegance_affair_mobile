@@ -1,24 +1,22 @@
-import 'package:elegance_application/features/onboarding/presentation/view/onboarding_screen_view.dart';
-import 'package:elegance_application/features/onboarding/presentation/view_model/onboarding_cubit.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../../app/di/di.dart';
-
+// import 'package:elegance/features/onboarding/presentation/view/on_boarding_screen_view.dart';
+// import 'package:elegance/features/onboarding/presentation/view_model/on_boarding_screen_cubit.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_bloc/flutter_bloc.dart';
+//
 // class SplashCubit extends Cubit<void> {
-//   SplashCubit(this._onboardingCubit) : super(null);
-
-//   final OnboardingCubit _onboardingCubit;
+//   SplashCubit(this._onBoardingScreenCubit) : super(null);
+//
+//   final OnBoardingScreenCubit _onBoardingScreenCubit;
 //
 //   Future<void> init(BuildContext context) async {
-//     await Future.delayed(const Duration(seconds: 3), () async {
+//     await Future.delayed(const Duration(seconds: 2), () async {
 //       if (context.mounted) {
 //         Navigator.pushReplacement(
 //           context,
 //           MaterialPageRoute(
 //             builder: (context) => BlocProvider.value(
-//               value: _onboardingCubit,
-//               child: OnboardingScreenView(),
+//               value: _onBoardingScreenCubit,
+//               child:  OnboardingScreen(),
 //             ),
 //           ),
 //         );
@@ -28,8 +26,17 @@ import '../../../../app/di/di.dart';
 // }
 
 
+import 'package:elegance/features/onboarding/presentation/view_model/on_boarding_screen_cubit.dart';
+import 'package:bloc/bloc.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../app/di/di.dart';
+import '../../../onboarding/presentation/view/on_boarding_screen_view.dart';
+
 class SplashCubit extends Cubit<void> {
-  SplashCubit() : super(null);
+  SplashCubit(OnBoardingScreenCubit onBoardingScreenCubit) : super(null);
 
   Future<void> init(BuildContext context) async {
     await Future.delayed(const Duration(seconds: 4), () async {
@@ -41,10 +48,10 @@ class SplashCubit extends Cubit<void> {
           MaterialPageRoute(
             builder: (context) {
               // Provide OnboardingCubit using getIt
-              return BlocProvider<OnboardingCubit>(
-                create: (_) => getIt<OnboardingCubit>(),
+              return BlocProvider<OnBoardingScreenCubit>(
+                create: (_) => getIt<OnBoardingScreenCubit>(),
                 // Ensure OnboardingCubit is available
-                child: OnboardingView(), // Navigate to OnboardingView
+                child: OnboardingScreen(), // Navigate to OnboardingView
               );
             },
           ),

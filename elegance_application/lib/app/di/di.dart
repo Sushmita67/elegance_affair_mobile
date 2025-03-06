@@ -1,53 +1,167 @@
+import 'package:elegance/app/shared_prefs/token_shared_prefs.dart';
+import 'package:elegance/app/shared_prefs/user_shared_prefs.dart';
+import 'package:elegance/core/network/api_service.dart';
+import 'package:elegance/core/network/hive_service.dart';
+import 'package:elegance/features/FAQ/presentation/view_model/faq_cubit.dart';
+import 'package:elegance/features/about_us/presentation/view_model/about_us_cubit.dart';
+import 'package:elegance/features/auth/data/data_source/local_data_source/auth_local_data_source.dart';
+import 'package:elegance/features/auth/data/data_source/remote_data_source/auth_remote_data_source.dart';
+import 'package:elegance/features/auth/data/repository/auth_local_repository/auth_local_repository.dart';
+import 'package:elegance/features/auth/data/repository/auth_remote_repository/auth_remote_repository.dart';
+import 'package:elegance/features/auth/domain/use_case/login_usecase.dart';
+import 'package:elegance/features/auth/domain/use_case/register_user_usecase.dart';
+import 'package:elegance/features/auth/domain/use_case/update_user_usecase.dart';
+import 'package:elegance/features/auth/domain/use_case/upload_image_usercase.dart';
+import 'package:elegance/features/auth/presentation/view_model/login/login_bloc.dart';
+import 'package:elegance/features/auth/presentation/view_model/signup/register_bloc.dart';
+import 'package:elegance/features/auth/presentation/view_model/update_user/my_information_bloc.dart';
+import 'package:elegance/features/cart/data/data_source/cart_datasource.dart';
+import 'package:elegance/features/cart/data/repository/cart_remote_repository.dart';
+import 'package:elegance/features/cart/domain/use_case/add_product_usecase.dart';
+import 'package:elegance/features/cart/domain/use_case/clear_cart_usecase.dart';
+import 'package:elegance/features/cart/domain/use_case/get_cart_usecase.dart';
+import 'package:elegance/features/cart/domain/use_case/remove_product_usecase.dart';
+import 'package:elegance/features/cart/presentation/view_model/cart_bloc.dart';
+import 'package:elegance/features/delivery_charge/presentation/view_model/delivery_charge_cubit.dart';
+import 'package:elegance/features/feedback/presentation/view_model/feedback_cubit.dart';
+import 'package:elegance/features/help/presentation/view_model/help_cubit.dart';
+import 'package:elegance/features/home/presentation/view_model/home_cubit.dart';
+import 'package:elegance/features/onboarding/presentation/view_model/on_boarding_screen_cubit.dart';
+import 'package:elegance/features/order_view/presentation/view_model/order_view_cubit.dart';
+import 'package:elegance/features/privacy_policy/presentation/view_model/privacy_policy_cubit.dart';
+import 'package:elegance/features/product/data/data_source/remote_data_source/product_remote_data_source.dart';
+import 'package:elegance/features/product/data/repository/product_remote_repository.dart';
+import 'package:elegance/features/product/domain/repository/product_repository.dart';
+import 'package:elegance/features/product/domain/use_case/get_all_product_usecase.dart';
+import 'package:elegance/features/product/presentation/view_model/product_bloc.dart';
+import 'package:elegance/features/profile/presentation/view_model/profile_cubit.dart';
+import 'package:elegance/features/setting/presentation/view_model/setting_cubit.dart';
+import 'package:elegance/features/splash/presentation/view_model/splash_cubit.dart';
+import 'package:elegance/features/support/presentation/view_model/support_cubit.dart';
+import 'package:elegance/features/terms_and_condition/presentation/view_model/terms_and_condition_cubit.dart';
 import 'package:dio/dio.dart';
-import 'package:elegance_application/core/network/hive_service.dart';
-import 'package:elegance_application/features/auth/presentation/view_model/login/login_bloc.dart';
-import 'package:elegance_application/features/auth/presentation/view_model/signup/register_bloc.dart';
-import 'package:elegance_application/features/home/presentation/view_model/home_cubit.dart';
-import 'package:elegance_application/features/onboarding/presentation/view_model/onboarding_cubit.dart';
-import 'package:elegance_application/features/splash/presentation/view_model/splash_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../core/network/api_service.dart';
-import '../../features/auth/data/data_source/remote_datasource/user_remote_data_source.dart';
-import '../../features/auth/data/repository/user_remote_repository.dart';
-import '../../features/auth/domain/use_case/create_user_usecase.dart';
-import '../../features/auth/domain/use_case/login_user_usecase.dart';
-import '../../features/auth/domain/use_case/upload_image_usecase.dart';
-import '../../features/product/data/data_source/local_datasource/product_local_data_source.dart';
-import '../../features/product/data/data_source/remote_datasource/product_remote_data_source.dart';
-import '../../features/product/data/repository/product_local_repository.dart';
-import '../../features/product/data/repository/product_remote_repository.dart';
-import '../../features/product/domain/use_case/create_product_usecase.dart';
-import '../../features/product/domain/use_case/delete_product_usecase.dart';
-import '../../features/product/domain/use_case/get_all_product_usecase.dart';
-import '../../features/product/domain/use_case/get_product_by_id_usecase.dart';
-import '../../features/product/domain/use_case/update_product_usecase.dart';
-import '../../features/product/presentation/view_model/product_bloc.dart';
-import '../shared_prefs/token_shared_prefs.dart';
 
 final getIt = GetIt.instance;
 
 Future<void> initDependencies() async {
-  // Sequence of Dependencies Matter!!
-
   await _initHiveService();
   await _initApiService();
   await _initSharedPreferences();
-
+  await _initCartDependencies();
   await _initProductDependencies();
-  // Initialize Home and Register dependencies before LoginBloc
-  await _initHomeDependencies();
-  await _initRegisterDependencies();
   await _initLoginDependencies();
-
-  // Initialize other dependencies
-  await _initSplashScreenDependencies();
-  await _initOnboardingScreenDependencies();
+  await _initRegisterDependencies();
+  await _initOnboardingDependencies();
+  await _initSplashDependencies();
+  await _initProfileDependencies();
+  await _initSettingsDependencies();
+  await _initHomeDependencies();
 }
 
-_initHiveService() {
-  getIt.registerLazySingleton<HiveService>(() => HiveService());
+
+
+_initCartDependencies() {
+  getIt.registerLazySingleton<CartDatasource>(
+    () => CartDatasource(userSharedPrefs: getIt<UserSharedPrefs>(),dio: getIt<Dio>()),
+  );
+  getIt.registerLazySingleton<CartRemoteRepository>(
+    () => CartRemoteRepository(cartDatasource: getIt<CartDatasource>()),
+  );
+
+  getIt.registerLazySingleton<AddProductUsecase>(
+    () => AddProductUsecase(repository: getIt<CartRemoteRepository>()),
+  );
+  getIt.registerLazySingleton<RemoveProductUsecase>(
+    () => RemoveProductUsecase(repository: getIt<CartRemoteRepository>()),
+  );
+  getIt.registerLazySingleton<ClearCartUsecase>(
+    () => ClearCartUsecase(repository: getIt<CartRemoteRepository>()),
+  );
+  getIt.registerLazySingleton<GetCartUsecase>(
+    () => GetCartUsecase(repository: getIt<CartRemoteRepository>()),
+  );
+
+  getIt.registerFactory<CartBloc>(
+    () => CartBloc(
+        addProductUsecase: getIt(),
+        removeProductUsecase: getIt(),
+        clearCartUsecase: getIt(),
+        getCartUsecase: getIt(), userSharedPrefs: getIt<UserSharedPrefs>()),
+  );
+}
+
+//=======================PRODUCTS================//
+_initProductDependencies() {
+  // Register the remote data source for products
+  getIt.registerLazySingleton<ProductRemoteDataSource>(
+    () => ProductRemoteDataSource(dio: getIt<Dio>()),
+  );
+
+  // Register the product repository
+  getIt.registerLazySingleton<IProductRepository>(
+    () => ProductRemoteRepository(
+        remoteDataSource: getIt<ProductRemoteDataSource>()),
+  );
+
+  // Register the usecase for getting all products
+  getIt.registerLazySingleton<GetAllProductUsecase>(
+    () => GetAllProductUsecase(productRepository: getIt<IProductRepository>()),
+  );
+
+  // Register the ProductBloc  for managing product state in the home screen
+  getIt.registerFactory<ProductBloc>(
+    () => ProductBloc(getAllProductUsecase: getIt<GetAllProductUsecase>()),
+  );
+}
+
+_initSettingsDependencies() {
+  getIt.registerFactory<FeedbackCubit>(
+    () => FeedbackCubit(),
+  );
+  getIt.registerFactory<FaqCubit>(
+    () => FaqCubit(),
+  );
+  getIt.registerFactory<AboutUsCubit>(
+    () => AboutUsCubit(),
+  );
+  getIt.registerFactory<DeliveryChargeCubit>(
+    () => DeliveryChargeCubit(),
+  );
+  getIt.registerFactory<TermsAndConditionCubit>(
+    () => TermsAndConditionCubit(),
+  );
+  getIt.registerFactory<PrivacyPolicyCubit>(
+    () => PrivacyPolicyCubit(),
+  );
+
+  getIt.registerFactory<SettingCubit>(
+    () => SettingCubit(
+      getIt<FeedbackCubit>(),
+      getIt<FaqCubit>(),
+      getIt<AboutUsCubit>(),
+      getIt<DeliveryChargeCubit>(),
+      getIt<TermsAndConditionCubit>(),
+      getIt<PrivacyPolicyCubit>(),
+    ),
+  );
+}
+
+_initSplashDependencies() {
+  getIt.registerFactory<SplashCubit>(
+      () => SplashCubit(getIt<OnBoardingScreenCubit>()));
+}
+
+Future<void> _initSharedPreferences() async {
+  final sharedPreferences = await SharedPreferences.getInstance();
+  getIt.registerLazySingleton<SharedPreferences>(
+    () => sharedPreferences,
+  );
+
+  getIt.registerLazySingleton<UserSharedPrefs>(
+    () => UserSharedPrefs(getIt<SharedPreferences>()),
+  );
 }
 
 _initApiService() {
@@ -57,135 +171,121 @@ _initApiService() {
   );
 }
 
-Future<void> _initSharedPreferences() async {
-  final sharedPreferences = await SharedPreferences.getInstance();
-  getIt.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
+_initHiveService() {
+  getIt.registerLazySingleton<HiveService>(() => HiveService());
+}
 
-  getIt.registerLazySingleton<TokenSharedPrefs>(
-    () => TokenSharedPrefs(sharedPreferences),
+//==================REGISTER==========================
+_initRegisterDependencies() {
+  // init local data source
+  getIt.registerLazySingleton(
+    () => AuthLocalDataSource(getIt<HiveService>()),
   );
-}
 
-_initProductDependencies() async {
-  // Local Data Source
-  getIt.registerFactory<ProductLocalDataSource>(
-      () => ProductLocalDataSource(getIt<HiveService>()));
-
-  // Remote Data Source
-  getIt.registerFactory<ProductRemoteDataSource>(
-      () => ProductRemoteDataSource(getIt<Dio>()));
-
-  // Local Repository
-  getIt.registerLazySingleton<ProductLocalRepository>(() =>
-      ProductLocalRepository(
-          productLocalDataSource: getIt<ProductLocalDataSource>()));
-
-  // Remote Repository
-  getIt.registerLazySingleton<ProductRemoteRepository>(() =>
-      ProductRemoteRepository(
-          productRemoteDataSource: getIt<ProductRemoteDataSource>()));
-}
-
-_initHomeDependencies() async {
-  getIt.registerSingleton<HomeCubit>(
-    HomeCubit(tokenSharedPrefs: getIt<TokenSharedPrefs>()),
+  // init remote data source
+  getIt.registerLazySingleton<AuthRemoteDataSource>(
+    () => AuthRemoteDataSource(getIt<Dio>(), getIt<UserSharedPrefs>()),
   );
-}
 
-_initRegisterDependencies() async {
-  if (!getIt.isRegistered<UserRemoteDataSource>()) {
-    getIt.registerFactory<UserRemoteDataSource>(
-      () => UserRemoteDataSource(getIt<Dio>()),
-    );
-  }
+  // init local repository
+  getIt.registerLazySingleton(
+    () => AuthLocalRepository(getIt<AuthLocalDataSource>()),
+  );
 
-  if (!getIt.isRegistered<UserRemoteRepository>()) {
-    getIt.registerLazySingleton<UserRemoteRepository>(
-        () => UserRemoteRepository(getIt<UserRemoteDataSource>()));
-  }
+  // init remote repository
+  getIt.registerLazySingleton<AuthRemoteRepository>(
+    () => AuthRemoteRepository(getIt<AuthRemoteDataSource>()),
+  );
 
-  // Register CreateStudentUsecase
-  getIt.registerLazySingleton<CreateUserUsecase>(
-      () => CreateUserUsecase(userRepository: getIt<UserRemoteRepository>()));
+  // =========================== Usecases ===========================
+  getIt.registerLazySingleton<RegisterUsecase>(
+    () => RegisterUsecase(
+      getIt<AuthRemoteRepository>(),
+    ),
+  );
+  getIt.registerLazySingleton<UploadImageUsecase>(
+    () => UploadImageUsecase(
+      getIt<AuthRemoteRepository>(),
+    ),
+  );
 
-  // Register Upload Image Use Case
-  getIt.registerLazySingleton<UploadImageUseCase>(
-      () => UploadImageUseCase(getIt<UserRemoteRepository>()));
-
-  // Register RegisterBloc
   getIt.registerFactory<RegisterBloc>(
     () => RegisterBloc(
-      createUserUsecase: getIt<CreateUserUsecase>(),
-      uploadImageUseCase: getIt<UploadImageUseCase>(),
-    ),
-  );
-
-  // Remote Usecases
-  getIt.registerLazySingleton<CreateProductUseCase>(() => CreateProductUseCase(
-      productRepository: getIt<ProductRemoteRepository>()));
-
-  getIt.registerLazySingleton<GetAllProductsUseCase>(() =>
-      GetAllProductsUseCase(
-          productRepository: getIt<ProductRemoteRepository>()));
-
-  getIt.registerLazySingleton<DeleteProductUseCase>(
-    () => DeleteProductUseCase(
-        productRepository: getIt<ProductRemoteRepository>(),
-        tokenSharedPrefs: getIt<TokenSharedPrefs>()),
-  );
-
-  getIt.registerLazySingleton<UpdateProductUseCase>(
-    () => UpdateProductUseCase(
-        productRepository: getIt<ProductRemoteRepository>(),
-        tokenSharedPrefs: getIt<TokenSharedPrefs>()),
-  );
-
-  getIt.registerLazySingleton<GetProductByIdUseCase>(
-    () => GetProductByIdUseCase(
-        productRepository: getIt<ProductRemoteRepository>()),
-  );
-
-// Bloc
-  getIt.registerFactory<ProductBloc>(
-    () => ProductBloc(
-      createProductUseCase: getIt<CreateProductUseCase>(),
-      getAllProductsUseCase: getIt<GetAllProductsUseCase>(),
-      deleteProductUseCase: getIt<DeleteProductUseCase>(),
-      updateProductUseCase: getIt<UpdateProductUseCase>(),
-      // getProductByIdUseCase: getIt<GetProductByIdUseCase>(),
+      registerUseCase: getIt(),
+      uploadImageUseCase: getIt(),
     ),
   );
 }
 
+//==================LOGIN==========================
 _initLoginDependencies() async {
-  // getIt.registerLazySingleton<TokenSharedPrefs>(
-  //   () => TokenSharedPrefs(getIt<SharedPreferences>()),
-  // );
+  // =========================== Token Shared Preferences ===========================
+  getIt.registerLazySingleton<TokenSharedPrefs>(
+    () => TokenSharedPrefs(getIt<SharedPreferences>()),
+  );
 
-  // Use common StudentRemoteDataSource and StudentLocalRepository
-  if (!getIt.isRegistered<LoginUserUsecase>()) {
-    getIt.registerLazySingleton<LoginUserUsecase>(() => LoginUserUsecase(
-        tokenSharedPrefs: getIt<TokenSharedPrefs>(),
-        userRepository: getIt<UserRemoteRepository>()));
-  }
+  // =========================== Usecases ===========================
+  getIt.registerLazySingleton<LoginUseCase>(
+    () => LoginUseCase(
+      getIt<AuthRemoteRepository>(),
+      getIt<TokenSharedPrefs>(),
+      getIt<UserSharedPrefs>(),
+    ),
+  );
 
   getIt.registerFactory<LoginBloc>(
     () => LoginBloc(
       registerBloc: getIt<RegisterBloc>(),
       homeCubit: getIt<HomeCubit>(),
-      loginUserUsecase: getIt<LoginUserUsecase>(),
+      loginUseCase: getIt<LoginUseCase>(),
     ),
   );
 }
 
-_initSplashScreenDependencies() async {
-  getIt.registerFactory<SplashCubit>(
-    () => SplashCubit(),
+_initOnboardingDependencies() {
+  getIt.registerFactory<OnBoardingScreenCubit>(
+    () => OnBoardingScreenCubit(loginBloc: getIt<LoginBloc>()),
   );
 }
 
-_initOnboardingScreenDependencies() async {
-  getIt.registerFactory<OnboardingCubit>(
-    () => OnboardingCubit(getIt<LoginBloc>()),
+//==================PROFILE==========================//
+_initProfileDependencies() {
+//===================Usecases========================//
+  getIt.registerLazySingleton<UpdateUserUsecase>(
+    () => UpdateUserUsecase(
+      getIt<AuthRemoteRepository>(),
+    ),
+  );
+
+  //===================Blocs and Cubits========================//
+  getIt.registerFactory<OrderViewCubit>(
+    () => OrderViewCubit(),
+  );
+
+  getIt.registerFactory<MyInformationBloc>(
+    () => MyInformationBloc(updateUserUsecase: getIt<UpdateUserUsecase>()),
+  );
+
+  getIt.registerFactory<HelpCubit>(
+    () => HelpCubit(),
+  );
+
+  getIt.registerFactory<SupportCubit>(
+    () => SupportCubit(),
+  );
+
+  getIt.registerFactory<ProfileCubit>(
+    () => ProfileCubit(
+      orderViewCubit: getIt<OrderViewCubit>(),
+      myInformationBloc: getIt<MyInformationBloc>(),
+      help: getIt<HelpCubit>(),
+      support: getIt<SupportCubit>(),
+    ),
+  );
+}
+
+_initHomeDependencies() async {
+  getIt.registerFactory<HomeCubit>(
+    () => HomeCubit(),
   );
 }

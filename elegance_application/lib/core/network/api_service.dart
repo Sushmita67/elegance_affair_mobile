@@ -1,9 +1,7 @@
+import 'package:elegance/app/constants/api_endpoints.dart';
+import 'package:elegance/core/network/dio_error_interceptor.dart';
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
-
-import '../../app/constants/api_enpoints.dart';
-import 'dio_error_interceptor.dart';
-
 
 class ApiService {
   final Dio _dio;
@@ -20,7 +18,7 @@ class ApiService {
           requestHeader: true, requestBody: true, responseHeader: true))
       ..options.headers = {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       };
   }
 }
