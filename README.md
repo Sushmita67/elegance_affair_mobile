@@ -1,1 +1,2 @@
 An online jewelry store designed to provide a seamless and elegant shopping experience. It features high-quality, ethically sourced jewelry, along with options for customization, smart recommendations, and detailed product information. With a focus on simplicity and user-friendly navigation, the platform makes finding and purchasing the perfect piece effortless.
+![Screenshot_20250306_214424](https://github.com/user-attachments/assets/6bbdea29-709f-4fdd-a268-75c07363b2ee)
