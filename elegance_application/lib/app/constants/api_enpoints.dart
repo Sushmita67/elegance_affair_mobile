@@ -12,7 +12,7 @@ class ApiEndpoints {
 
   // ============= Auth Routes =============
   static const String login = "auth/login";
-  static const String register = "auth/register-mobile";
+  static const String register = "users/save";
   static const String resetPasswordRequest = "auth/reset-password-request";
   static const String resetPassword = "auth/reset-password";
   static const String deleteUser = "auth/delete/";
